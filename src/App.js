@@ -32,7 +32,7 @@ function App() {
 
   useEffect(() => {
     if (isMenuOpen) {
-      const contentHeight = menuContentRef.current.offsetHeight - 90; // Subtracting the footer height
+      const contentHeight = menuContentRef.current.offsetHeight - 50; // Subtracting the footer height
       dropdownRef.current.style.height = `${contentHeight}px`;
       dropdownRef.current.style.width = "300px"; // Fixed final width
       document.addEventListener("mousedown", handleClickOutside);
