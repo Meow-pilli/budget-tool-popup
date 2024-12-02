@@ -88,6 +88,7 @@ body {
   font-weight: bold;
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative; /* For icon positioning */
+  justify-content: flex-start; /* Align everything to the left */
 }
 
 .menu-item:hover {
@@ -109,12 +110,30 @@ body {
 .menu-icon {
   width: 24px;
   height: 24px;
+  position: absolute; /* Place icon in the text's original position */
+  left: 1; /* Icon starts at the text's original position */
   margin-right: 10px;
   opacity: 0; /* Hidden by default */
   transition: opacity 0.3s ease; /* Smooth fade-in */
 }
 
 /* Show icons on hover */
+.menu-item:hover .menu-icon {
+  opacity: 1; /* Fully visible on hover */
+}
+
+/* For the menu item text shift */
+.menu-item span {
+  display: inline-block;
+  position: relative; /* To allow independent movement */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin-left: 10; /* Initially aligned with the icon */
+}
+
+.menu-item:hover span {
+  transform: translateX(30px); /* Shift text to the left */
+}
+
 .menu-item:hover .menu-icon {
   opacity: 1; /* Fully visible on hover */
 }

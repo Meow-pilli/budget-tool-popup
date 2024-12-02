@@ -80,7 +80,7 @@ function App() {
                 style={{ backgroundColor: item.color }}
               >
                 <img src={item.icon} alt={item.name} className="menu-icon" />
-                {item.name}
+                <span>{item.name}</span>
               </li>
             ))}
           </ul>
