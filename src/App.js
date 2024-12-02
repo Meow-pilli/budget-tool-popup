@@ -2,18 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 const menuItems = [
-  { name: "Gifts", icon: "/Gifts1.png" },
-  { name: "Travel", icon: "/Travel1.png" },
-  { name: "Food & Drinks", icon: "/Drinks1.png" },
-  { name: "Entertainment", icon: "/Entertainment1.png" },
-  { name: "Decorations", icon: "/Decorations1.png" },
-  { name: "Costumes & Clothing", icon: "/Costumes1.png" },
-  { name: "Stationery & Packaging", icon: "/Stationery1.png" },
-  { name: "Charitable Contributions", icon: "/Charitable1.png" },
+  { name: "Gifts", icon: "/Gifts1.png", isOpen: false },
+  { name: "Travel", icon: "/Travel1.png", isOpen: false },
+  { name: "Food & Drinks", icon: "/Drinks1.png", isOpen: false },
+  { name: "Entertainment", icon: "/Entertainment1.png", isOpen: false },
+  { name: "Decorations", icon: "/Decorations1.png", isOpen: false },
+  { name: "Costumes & Clothing", icon: "/Costumes1.png", isOpen: false },
+  { name: "Stationery & Packaging", icon: "/Stationery1.png", isOpen: false },
+  { name: "Charitable Contributions", icon: "/Charitable1.png", isOpen: false },
 ];
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [itemsState, setItemsState] = useState(menuItems);
+
   const dropdownRef = useRef(null);
   const menuContentRef = useRef(null);
 
@@ -22,19 +24,24 @@ function App() {
   };
 
   const handleClickOutside = (event) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsMenuOpen(false);
     }
   };
 
+  const toggleItem = (index) => {
+    setItemsState((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, isOpen: !item.isOpen } : item
+      )
+    );
+  };
+
   useEffect(() => {
     if (isMenuOpen) {
-      const contentHeight = menuContentRef.current.offsetHeight - 90; // Subtracting the footer height
+      const contentHeight = menuContentRef.current.offsetHeight - 60; // Adjust height based on content
       dropdownRef.current.style.height = `${contentHeight}px`;
-      dropdownRef.current.style.width = "300px"; // Fixed final width
+      dropdownRef.current.style.width = "500px"; // Fixed width for dropdown
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       dropdownRef.current.style.height = "0";
@@ -73,14 +80,19 @@ function App() {
 
           {/* Menu Items */}
           <ul>
-            {menuItems.map((item) => (
+            {itemsState.map((item, index) => (
               <li
                 key={item.name}
                 className="menu-item"
-                style={{ backgroundColor: item.color }}
+                onClick={() => toggleItem(index)}
               >
                 <img src={item.icon} alt={item.name} className="menu-icon" />
-                {item.name}
+                <span>{item.name}</span>
+                <div
+                  className={`arrow ${
+                    item.isOpen ? "arrow-up" : "arrow-down"
+                  }`}
+                ></div>
               </li>
             ))}
           </ul>

@@ -45,12 +45,12 @@ body {
 
 /* Expanded state */
 .menu-container.open {
-  width: 300px; /* Final width */
+  width: 500px; /* Final width */
   opacity: 1; /* Fully visible */
 }
 
 .menu {
-  padding: 20px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -59,6 +59,7 @@ body {
 .menu-header {
   text-align: center;
   margin-bottom: 20px;
+  padding: 0;
 }
 
 .menu-title-image {
@@ -77,15 +78,17 @@ body {
   display: flex;
   align-items: center;
   padding: 10px;
+  margin: 0 15px;
   background-color: white;
   cursor: pointer;
   border-radius: 5px;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 19px;
   color: #333;
   font-weight: bold;
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative; /* For icon positioning */
+  justify-content: flex-start; /* Align everything to the left */
 }
 
 .menu-item:hover {
@@ -94,19 +97,21 @@ body {
 }
 
 /* Individual hover colors based on item color */
-.menu-item:nth-child(1):hover { background-color: #DAB5FF; }
-.menu-item:nth-child(2):hover { background-color: #A6A0FF; }
-.menu-item:nth-child(3):hover { background-color: #00C2DE; }
-.menu-item:nth-child(4):hover { background-color: #AAFDFC; }
-.menu-item:nth-child(5):hover { background-color: #98FCBD; }
-.menu-item:nth-child(6):hover { background-color: #F9FFD2; }
-.menu-item:nth-child(7):hover { background-color: #BE5103; }
-.menu-item:nth-child(8):hover { background-color: #FF0000; }
+.menu-item:nth-child(1):hover { background-color: #FFBCB2; }
+.menu-item:nth-child(2):hover { background-color: #FFC3D8; }
+.menu-item:nth-child(3):hover { background-color: #AAA4D7; }
+.menu-item:nth-child(4):hover { background-color: #B1D5F7; }
+.menu-item:nth-child(5):hover { background-color: #B9EEFA; }
+.menu-item:nth-child(6):hover { background-color: #EAECA8; }
+.menu-item:nth-child(7):hover { background-color: #FAE6B2; }
+.menu-item:nth-child(8):hover { background-color: #EBC4F1; }
 
 /* Menu icon styles - Hidden by default */
 .menu-icon {
   width: 24px;
   height: 24px;
+  position: absolute; /* Place icon in the text's original position */
+  left: 1; /* Icon starts at the text's original position */
   margin-right: 10px;
   opacity: 0; /* Hidden by default */
   transition: opacity 0.3s ease; /* Smooth fade-in */
@@ -115,4 +120,40 @@ body {
 /* Show icons on hover */
 .menu-item:hover .menu-icon {
   opacity: 1; /* Fully visible on hover */
+}
+
+/* For the menu item text shift */
+.menu-item span {
+  display: inline-block;
+  position: relative; /* To allow independent movement */
+  transition: transform 0.6s ease, opacity 0.3s ease;
+  margin-left: 10; /* Initially aligned with the icon */
+}
+
+.menu-item:hover span {
+  transform: translateX(30px); /* Shift text to the left */
+}
+
+.menu-item:hover .menu-icon {
+  opacity: 1; /* Fully visible on hover */
+}
+
+/* Arrow styles */
+.arrow {
+  margin-left: auto; /* Push arrow to the far right */
+  width: 10px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  transform: rotate(-135deg); /* Default downward arrow */
+  transition: transform 0.3s ease;
+}
+
+.arrow-up {
+  transform: rotate(-135deg); /* Upward arrow */
+}
+
+.arrow-down {
+  transform: rotate(45deg); /* Downward arrow */
 }
