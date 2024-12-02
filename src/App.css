@@ -1,38 +1,118 @@
-.App {
-  text-align: center;
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f0f8ff;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.nav-bar {
+  background-color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.nav-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-button:hover {
+  background-color: #0056b3;
+}
+
+/* Dropdown menu styles */
+.menu-container {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 1000; /* Ensure it stays on top */
+  width: 0; /* Initially collapsed */
+  height: 0; /* Initially collapsed */
+  opacity: 0; /* Initially invisible */
+  transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease; /* Smooth animation */
+}
+
+/* Expanded state */
+.menu-container.open {
+  width: 300px; /* Final width */
+  opacity: 1; /* Fully visible */
+}
+
+.menu {
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.menu-title-image {
+  width: 100%;
+  height: auto;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Individual menu items */
+.menu-item {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 10px;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative; /* For icon positioning */
 }
 
-.App-link {
-  color: #61dafb;
+.menu-item:hover {
+  background-color: var(--hover-color, #d1d1d1);;
+  color: #000;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Individual hover colors based on item color */
+.menu-item:nth-child(1):hover { background-color: #DAB5FF; }
+.menu-item:nth-child(2):hover { background-color: #A6A0FF; }
+.menu-item:nth-child(3):hover { background-color: #00C2DE; }
+.menu-item:nth-child(4):hover { background-color: #AAFDFC; }
+.menu-item:nth-child(5):hover { background-color: #98FCBD; }
+.menu-item:nth-child(6):hover { background-color: #F9FFD2; }
+.menu-item:nth-child(7):hover { background-color: #BE5103; }
+.menu-item:nth-child(8):hover { background-color: #FF0000; }
+
+/* Menu icon styles - Hidden by default */
+.menu-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+/* Show icons on hover */
+.menu-item:hover .menu-icon {
+  opacity: 1; /* Fully visible on hover */
 }
