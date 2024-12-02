@@ -83,7 +83,7 @@ body {
   cursor: pointer;
   border-radius: 5px;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 19px;
   color: #333;
   font-weight: bold;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -126,7 +126,7 @@ body {
 .menu-item span {
   display: inline-block;
   position: relative; /* To allow independent movement */
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.6s ease, opacity 0.3s ease;
   margin-left: 10; /* Initially aligned with the icon */
 }
 
@@ -136,4 +136,24 @@ body {
 
 .menu-item:hover .menu-icon {
   opacity: 1; /* Fully visible on hover */
+}
+
+/* Arrow styles */
+.arrow {
+  margin-left: auto; /* Push arrow to the far right */
+  width: 10px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  transform: rotate(-135deg); /* Default downward arrow */
+  transition: transform 0.3s ease;
+}
+
+.arrow-up {
+  transform: rotate(-135deg); /* Upward arrow */
+}
+
+.arrow-down {
+  transform: rotate(45deg); /* Downward arrow */
 }
