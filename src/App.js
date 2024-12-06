@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 
+import Modal from "./Modal";
 import Gifts from "./Gifts";
 // import Travel from "./Travel";
 // import FoodAndDrinks from "./FoodAndDrinks";
@@ -38,6 +39,7 @@ const menuItems = [
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isGiftsModalOpen, setIsGiftsModalOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
 
   const dropdownRef = useRef(null);
@@ -61,6 +63,15 @@ function App() {
     );
   };
 
+  const openGiftsModal = () => {
+    setIsGiftsModalOpen(true);
+    setIsMenuOpen(false); // Close menu when opening the modal
+  };
+
+  const closeGiftsModal = () => {
+    setIsGiftsModalOpen(false);
+  };
+
   useEffect(() => {
     if (isMenuOpen) {
       const contentHeight = menuContentRef.current.offsetHeight - 60; // Adjust height based on content
@@ -78,6 +89,7 @@ function App() {
     };
   }, [isMenuOpen]);
 
+  
   return (
     <Router>
       <div className="app">
@@ -105,11 +117,19 @@ function App() {
 
             {/* Menu Items */}
             <ul>
-              {itemsState.map((item, index) => (
+              {menuItems.map((item) => (
                 <li
                   key={item.name}
                   className="menu-item"
-                  onClick={() => window.location.href = item.link}
+                  onClick={() => {
+                    if (item.name === "Gifts") {
+                      openGiftsModal(); // Open modal for Gifts
+                    } else {
+                      // Logic to navigate to other links (if needed)
+                      console.log(`${item.name} clicked`);
+                      // You can use a programmatic navigation library (like `useNavigate` in v6)
+                    }
+                  }}
                 >
                   <img src={item.icon} alt={item.name} className="menu-icon" />
                   <span>{item.name}</span>
@@ -123,17 +143,15 @@ function App() {
             </ul>
           </div>
         </div>
+
+        {/* Modal for Gifts */}
+        <Modal isOpen={isGiftsModalOpen} onClose={closeGiftsModal}>
+          <Gifts onClose={closeGiftsModal} />
+        </Modal>
+
         {/* Routes for Pages */}
-        {/* Routes */}
         <Routes>
-          <Route path="/gifts" element={<Gifts />} />
-          {/* <Route path="/travel" element={<Travel />} />
-          <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
-          <Route path="/entertainment" element={<Entertainment />} />
-          <Route path="/decorations" element={<Decorations />} />
-          <Route path="/costumes-and-clothing" element={<CostumesAndClothing />} />
-          <Route path="/stationery-and-packaging" element={<StationeryAndPackaging />} />
-          <Route path="/charitable-contributions" element={<CharitableContributions />} /> */}
+          {/* Add more routes here if needed */}
         </Routes>
       </div>
     </Router>

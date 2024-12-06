@@ -1,137 +1,138 @@
 /* Main Container */
 .gifts-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Header Section */
-  .gifts-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 12vh; /* 12% of the viewport height */
-    background-color: #E24831; /* Original background color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Back Button */
-  .gifts-back-button {
-    position: absolute;
-    left: 2vw; /* 2% of the viewport width */
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.5em 1em; /* Relative to font size */
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 0.3em; /* Rounded corners */
-    font-size: 0.9rem; /* Responsive font size */
-    cursor: pointer;
-  }
-  
-  .gifts-back-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Center Content */
-  .gifts-center-content {
-    display: flex;
-    align-items: center;
-    gap: 1vw; /* Space scales with viewport width */
-  }
-  
-  /* Icon */
-  .gifts-icon {
-    width: 6vh; /* Scales with viewport height */
-    height: 6vh;
-  }
-  
-  /* Title */
-  .gifts-title {
-    font-size: 1.5rem; /* Relative to root font size */
-    font-weight: bold;
-    color: white;
-    margin: 0;
-  }
-  
-  /* Body Section */
-  .gifts-body {
-    flex-grow: 1;
-    padding: 2vw;
-    color: #333;
-    font-size: 1rem; /* Base font size, adjusts with screen */
-    line-height: 1.5;
-  }
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 0; /* Remove extra padding */
+  text-align: center;
+  background-color: white;
+  position: relative;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for modal */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Ensure red header and content blend seamlessly */
+}
 
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-  }
-  
-  .table-container {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 800px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-  }
-  
-  thead {
-    background-color: #f7f7f7;
-    border-bottom: 2px solid #d9d9d9;
-  }
-  
-  thead th {
-    font-weight: bold;
-    padding: 10px;
-    border-bottom: 1px solid #d9d9d9;
-  }
-  
-  tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  
-  tbody td {
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  tfoot td {
-    font-weight: bold;
-    padding: 10px;
-    background-color: #f7f7f7;
-    border-top: 2px solid #d9d9d9;
-    text-align: right;
-  }
-  
-  tfoot td:first-child {
-    text-align: left;
-  }
-  
-  .checkmark {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .cross {
-    color: red;
-    font-weight: bold;
-  }
-  
+/* Header Section */
+.gifts-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e24831; /* Red background */
+  padding: 16px;
+  position: relative; /* Ensure we can position the close button absolutely */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.gifts-header img {
+  margin-right: 8px; /* Space between icon and text */
+  width: 24px; /* Icon size */
+  height: 24px;
+}
+
+.gifts-header h1 {
+  font-size: 20px; /* Text size */
+  font-weight: bold;
+  color: white;
+  margin: 0;
+}
+
+
+
+.close-button {
+  border: none !important;
+  background: white !important;
+  color: red !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+
+
+
+
+.gifts-header-content {
+  display: flex; /* Align icon and title horizontally */
+  align-items: center; /* Center vertically */
+  gap: 10px; /* Space between icon and text */
+}
+
+.gifts-icon {
+  width: 24px; /* Adjust icon size */
+  height: 24px;
+}
+
+.gifts-title {
+  font-size: 20px; /* Adjust font size */
+  font-weight: bold;
+  color: white; /* White text */
+  margin: 0; /* Remove default margin */
+}
+
+.close-button {
+  position: absolute;
+  top: -15px; /* Positioned slightly above the modal */
+  right: -15px; /* Positioned slightly outside the modal */
+  background: white; /* White button background */
+  color: red; /* Red 'X' */
+  border: 2px solid red; /* Red border */
+  border-radius: 50%; /* Circular shape */
+  width: 35px; /* Width of button */
+  height: 35px; /* Height of button */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px; /* Adjust font size of 'X' */
+  cursor: pointer; /* Clickable cursor */
+  z-index: 10; /* Ensure it's on top */
+}
+
+
+
+
+
+
+/* Table Container */
+.gifts-table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Remove spacing between table cells */
+  text-align: left; /* Align text to the left */
+  table-layout: fixed; /* Ensure consistent column widths */
+}
+
+.gifts-table th,
+.gifts-table td {
+  text-align: left; /* Align text to the left */
+  padding: 10px 20px; /* Add consistent padding around text */
+}
+
+.gifts-table th {
+  font-size: 14px; /* Smaller font for headers */
+  font-weight: bold; /* Bold headers */
+  text-transform: uppercase; /* Uppercase for headers */
+  color: black; /* Black text */
+  border-bottom: 2px solid #e24831; /* Add a red line under headers */
+}
+
+.gifts-table td {
+  font-size: 16px; /* Larger text for rows */
+  color: #333; /* Dark gray text */
+  vertical-align: middle; /* Ensure text is vertically centered */
+}
+
+.gifts-table tfoot td {
+  font-size: 16px;
+  font-weight: bold; /* Make totals bold */
+  padding-top: 15px; /* Add spacing above totals */
+  border-top: 2px solid black; /* Black line above totals */
+  color: #333;
+}
+
+.gifts-table .positive-diff {
+  color: green; /* Green for positive difference */
+  font-weight: bold;
+}
+
+.gifts-table .negative-diff {
+  color: red; /* Red for negative difference */
+  font-weight: bold;
+}
+

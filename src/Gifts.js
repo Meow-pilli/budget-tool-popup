@@ -1,95 +1,94 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import "./Gifts.css";
 
 const data = [
-    { item: "Family", budget: 500.0, spent: 495.0, difference: 5.0 },
-    { item: "Friends", budget: 250.0, spent: 325.0, difference: -75.0 },
-    { item: "Co-workers", budget: 0.0, spent: 0.0, difference: 0.0 },
-    { item: "Teachers, nannies, babysitters, etc.", budget: 0.0, spent: 0.0, difference: 0.0 },
-    { item: "Charitable donations", budget: 0.0, spent: 0.0, difference: 0.0 },
-    { item: "Other (tab in last column of this row to add row)", budget: 0.0, spent: 0.0, difference: 0.0 },
-  ];
-  
-function calculateTotal(data, key) {
-    return data.reduce((acc, row) => acc + row[key], 0).toFixed(2);
-}
+  { item: "Family", budget: 500.0, spent: 500.0, difference: 500.0 },
+  { item: "Friends", budget: 500.0, spent: 500.0, difference: 500.0 },
+  { item: "Co-Workers", budget: "", spent: "", difference: "" },
+  { item: "Teachers", budget: "", spent: "", difference: "" },
+  {
+    item: "Others (tab in last columns of the row to add row)",
+    budget: "",
+    spent: "",
+    difference: "",
+  },
+];
 
-function Gifts() {
-  const navigate = useNavigate();
-  const totalBudget = calculateTotal(data, "budget");
-  const totalSpent = calculateTotal(data, "spent");
-  const totalDifference = calculateTotal(data, "difference");
-
-  useEffect(() => {
-    // Hide the global menu when this component is rendered
-    const globalNavBar = document.querySelector(".nav-bar");
-    const globalMenuContainer = document.querySelector(".menu-container");
-
-    if (globalNavBar) globalNavBar.style.display = "none";
-    if (globalMenuContainer) globalMenuContainer.style.display = "none";
-
-    // Restore visibility when unmounting
-    return () => {
-      if (globalNavBar) globalNavBar.style.display = "flex";
-      if (globalMenuContainer) globalMenuContainer.style.display = "block";
-    };
-  }, []);
+function Gifts({ onClose }) {
+  const totalBudget = data.reduce((sum, row) => sum + (row.budget || 0), 0);
+  const totalSpent = data.reduce((sum, row) => sum + (row.spent || 0), 0);
+  const totalDifference = data.reduce(
+    (sum, row) => sum + (row.difference || 0),
+    0
+  );
 
   return (
     <div className="gifts-container">
+      {/* Header Section */}
       <header className="gifts-header">
-        <button className="gifts-back-button" onClick={() => navigate(-1)}>
-          Go Back
-        </button>
-        <div className="gifts-center-content">
+        <div className="gifts-header-content">
           <img src="/Gifts1.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
+        <button className="close-button" onClick={onClose}>
+          ✖
+        </button>
       </header>
-      <div className="gifts-body">
-        <p>
-            <table>
-                <thead>
-                <tr>
-                    <th>ITEM</th>
-                    <th>BUDGET</th>
-                    <th>SPENT</th>
-                    <th>DIFFERENCE</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((row, index) => (
-                    <tr key={index}>
-                    <td>{row.item}</td>
-                    <td>${row.budget.toFixed(2)}</td>
-                    <td>${row.spent.toFixed(2)}</td>
-                    <td>
-                        {row.difference >= 0 ? (
-                        <span className="checkmark">✔ ${row.difference.toFixed(2)}</span>
-                        ) : (
-                        <span className="cross">✘ ${row.difference.toFixed(2)}</span>
-                        )}
-                    </td>
-                    </tr>
-                ))}
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td>Total</td>
-                    <td>${totalBudget}</td>
-                    <td>${totalSpent}</td>
-                    <td>
-                    {totalDifference >= 0 ? (
-                        <span className="checkmark">✔ ${totalDifference}</span>
-                    ) : (
-                        <span className="cross">✘ ${totalDifference}</span>
-                    )}
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-        </p>
+
+      {/* Table Section */}
+      <div className="gifts-table-container">
+        <table className="gifts-table">
+          <thead>
+            <tr>
+              <th>ITEMS</th>
+              <th>BUDGET</th>
+              <th>SPENT</th>
+              <th>DIFFERENCE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((row, index) => (
+              <tr key={index}>
+                <td>{row.item}</td>
+                <td>{row.budget !== "" ? `$${row.budget.toFixed(2)}` : ""}</td>
+                <td>{row.spent !== "" ? `$${row.spent.toFixed(2)}` : ""}</td>
+                <td
+                  className={
+                    row.difference > 0
+                      ? "positive-diff"
+                      : row.difference < 0
+                      ? "negative-diff"
+                      : ""
+                  }
+                >
+                  {row.difference > 0 && (
+                    <span>✔ ${row.difference.toFixed(2)}</span>
+                  )}
+                  {row.difference < 0 && (
+                    <span>✘ ${row.difference.toFixed(2)}</span>
+                  )}
+                  {row.difference === "" && ""}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total</td>
+              <td>${totalBudget.toFixed(2)}</td>
+              <td>${totalSpent.toFixed(2)}</td>
+              <td>
+                {totalDifference > 0 ? (
+                  <span className="positive-diff">✔ ${totalDifference.toFixed(2)}</span>
+                ) : totalDifference < 0 ? (
+                  <span className="negative-diff">✘ ${totalDifference.toFixed(2)}</span>
+                ) : (
+                  "$0.00"
+                )}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
   );
