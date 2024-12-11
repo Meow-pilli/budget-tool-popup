@@ -39,6 +39,7 @@ const menuItems = [
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
+  const [selectedHoliday, setSelectedHoliday] = useState("");
 
   const dropdownRef = useRef(null);
   const menuContentRef = useRef(null);
@@ -101,6 +102,24 @@ function App() {
                 alt="Holiday Tracker"
                 className="menu-title-image"
               />
+            </div>
+
+              {/* Select a Holiday Dropdown */}
+              <div className="holiday-dropdown">
+              <label htmlFor="holiday-select"></label>
+              <select
+                id="holiday-select"
+                value={selectedHoliday}
+                onChange={(e) => setSelectedHoliday(e.target.value)}
+              >
+                <option value="" disabled>
+                  -- Select a Holiday --
+                </option>
+                <option value="All Holidays">All Holidays</option>
+                <option value="Christmas">Christmas</option>
+                <option value="Thanksgiving">Thanksgiving</option>
+                <option value="New Year">New Year</option>
+              </select>
             </div>
 
             {/* Menu Items */}

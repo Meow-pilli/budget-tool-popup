@@ -18,23 +18,19 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
-  /* Back Button */
-  .gifts-back-button {
-    position: absolute;
-    left: 2vw; /* 2% of the viewport width */
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.5em 1em; /* Relative to font size */
+  .gifts-close-button {
+    background: none;
     border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 0.3em; /* Rounded corners */
-    font-size: 0.9rem; /* Responsive font size */
+    font-size: 24px;
     cursor: pointer;
+    color: #333; /* Adjust color as needed */
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Adjust placement */
   }
   
-  .gifts-back-button:hover {
-    background-color: #0056b3;
+  .gifts-close-button:hover {
+    color: #f00; /* Red hover effect */
   }
   
   /* Center Content */
@@ -135,3 +131,70 @@
     font-weight: bold;
   }
   
+
+  /* Updated CSS in App.css */
+.holiday-dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 15px 20px;
+  font-size: 16px;
+}
+
+.holiday-dropdown label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.holiday-dropdown select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-delete-row-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.add-row-button,
+.delete-row-button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-row-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.add-row-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-row-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-row-button:hover {
+  background-color: #a71d2a;
+}
+
+/* Make items in the ITEM column bold */
+tbody td:first-child, thead th:first-child {
+  font-weight: bold;
+}
