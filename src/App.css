@@ -93,18 +93,21 @@ body {
 
 .menu-item:hover {
   background-color: var(--hover-color, #d1d1d1);;
-  color: #000;
+  color: white;
+  /* color: black; */
 }
 
 /* Individual hover colors based on item color */
 .menu-item:nth-child(1):hover { background-color: #E24831; }
-.menu-item:nth-child(2):hover { background-color: #DE4177; }
-.menu-item:nth-child(3):hover { background-color: #786DD3; }
+.menu-item:nth-child(2):hover { background-color: #ff8c00; } 
+.menu-item:nth-child(3):hover { background-color: #f781ab; }
 .menu-item:nth-child(4):hover { background-color: #2088E7; }
-.menu-item:nth-child(5):hover { background-color: #21C1E7; }
+.menu-item:nth-child(5):hover { background-color: #17b6de; }
 .menu-item:nth-child(6):hover { background-color: #63AB5C; }
-.menu-item:nth-child(7):hover { background-color: #EAC934; }
-.menu-item:nth-child(8):hover { background-color: #65328C; }
+.menu-item:nth-child(7):hover { background-color: #ffcc00; }
+/* #f0be41 */
+/*#ffcc00*/
+.menu-item:nth-child(8):hover { background-color: #786DD3; }
 
 /* Menu icon styles - Hidden by default */
 .menu-icon {
@@ -156,4 +159,26 @@ body {
 
 .arrow-down {
   transform: rotate(45deg); /* Downward arrow */
+}
+
+
+/* Updated CSS in App.css */
+.holiday-dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 15px 20px;
+  font-size: 16px;
+}
+
+.holiday-dropdown label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.holiday-dropdown select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
 }
