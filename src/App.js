@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
+import CustomDropdown from "./CustomDropdown";
 
 import Gifts from "./Gifts";
 // import Travel from "./Travel";
@@ -40,6 +41,8 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
   const [selectedHoliday, setSelectedHoliday] = useState("");
+  const [selectedCurrency, setSelectedCurrency] = useState("");
+
 
   const dropdownRef = useRef(null);
   const menuContentRef = useRef(null);
@@ -104,23 +107,41 @@ function App() {
               />
             </div>
 
-              {/* Select a Holiday Dropdown */}
-              <div className="holiday-dropdown">
-              <label htmlFor="holiday-select"></label>
-              <select
-                id="holiday-select"
-                value={selectedHoliday}
-                onChange={(e) => setSelectedHoliday(e.target.value)}
-              >
-                <option value="" disabled>
-                  -- Select a Holiday --
-                </option>
-                <option value="All Holidays">All Holidays</option>
-                <option value="Christmas">Christmas</option>
-                <option value="Thanksgiving">Thanksgiving</option>
-                <option value="New Year">New Year</option>
-              </select>
-            </div>
+            <div className="dropdown-container">
+  <div className="holiday-dropdown">
+    <CustomDropdown
+      options={[
+        { value: "", label: "-- Select a Holiday --", disabled: true },
+        { value: "Christmas", label: "Christmas" },
+        { value: "Thanksgiving", label: "Thanksgiving" },
+        { value: "New Year", label: "New Year" },
+        { value: "Easter", label: "Easter" },
+        { value: "Halloween", label: "Halloween" },
+      ]}
+      selectedOption={selectedHoliday}
+      setSelectedOption={setSelectedHoliday}
+      placeholder="-- Select a Holiday --"
+    />
+  </div>
+
+  <div className="currency-dropdown">
+    <CustomDropdown
+      options={[
+        { value: "", label: "-- Select a Currency --", disabled: true },
+        { value: "Dollar ($)", label: "Dollar ($)" },
+        { value: "Pound (£)", label: "Pound (£)" },
+        { value: "Euro (€)", label: "Euro (€)" },
+        { value: "Rupees (₹)", label: "Rupees (₹)" },
+        { value: "Yen (¥)", label: "Yen (¥)" },
+      ]}
+      selectedOption={selectedCurrency}
+      setSelectedOption={setSelectedCurrency}
+      placeholder="-- Select a Currency --"
+    />
+  </div>
+</div>
+
+
 
             {/* Menu Items */}
             <ul>

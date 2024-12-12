@@ -182,3 +182,72 @@ body {
   border-radius: 5px;
   font-size: 14px;
 }
+
+
+
+/* Parent container for dropdowns */
+.dropdown-container {
+  display: flex; /* Align dropdowns side by side */
+  gap: 15px; /* Space between dropdowns */
+  margin-bottom: 20px; /* Spacing below dropdowns */
+}
+
+/* Styling for dropdown wrappers */
+.holiday-dropdown,
+.currency-dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Shared styles for dropdown select elements */
+.holiday-dropdown select,
+.currency-dropdown select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 180px; /* Consistent width */
+  box-sizing: border-box; /* Prevent padding from affecting width */
+  max-height: 40px; /* Shrinks the dropdown height */
+  overflow-y: auto; /* Enables scrolling */
+  cursor: pointer;
+}
+
+/* Add custom scrolling behavior */
+.holiday-dropdown select::-webkit-scrollbar,
+.currency-dropdown select::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+}
+
+/* Scrollbar track */
+.holiday-dropdown select::-webkit-scrollbar-track,
+.currency-dropdown select::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+/* Scrollbar thumb */
+.holiday-dropdown select::-webkit-scrollbar-thumb,
+.currency-dropdown select::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar color */
+  border-radius: 10px;
+}
+
+/* Scrollbar hover effect */
+.holiday-dropdown select::-webkit-scrollbar-thumb:hover,
+.currency-dropdown select::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker on hover */
+}
+
+/* Limit the options visible at one time */
+.holiday-dropdown select option,
+.currency-dropdown select option {
+  padding: 5px;
+}
+
+/* Ensure dropdowns display proper overflow behavior */
+select {
+  appearance: none; /* Remove native styling for dropdowns */
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+}
