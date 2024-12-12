@@ -18,17 +18,18 @@ function Gifts() {
   const [data, setData] = useState(initialData);
   const navigate = useNavigate();
 
-  const totalBudget = calculateTotal(data, "budget");
-  const totalSpent = calculateTotal(data, "spent");
-  const totalDifference = (totalBudget - totalSpent).toFixed(2);
+  const totalBudget = parseFloat(calculateTotal(data, "budget"));
+  const totalSpent = parseFloat(calculateTotal(data, "spent"));
+  const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const handleInputChange = (index, key, value) => {
     setData((prevData) => {
       const newData = [...prevData];
-      newData[index][key] = parseFloat(value) || 0;
+      newData[index][key] = key === "item" ? value : parseFloat(value) || 0;
       return newData;
     });
   };
+  
 
   const addRow = () => {
     setData((prevData) => [
@@ -84,7 +85,7 @@ function Gifts() {
                   ) : (
                     <input
                       type="text"
-                      value={row.item}
+                      value={row.item || ""}
                       onChange={(e) => handleInputChange(index, "item", e.target.value)}
                       placeholder="Enter item"
                     />
@@ -133,9 +134,16 @@ function Gifts() {
             </tr>
             <tr className="footer-row">
               <td>Total</td>
-              <td>${totalBudget}</td>
-              <td>${totalSpent}</td>
-              <td>${totalDifference}</td>
+              <td>${totalBudget.toFixed(2)}</td>
+              <td>
+                ${totalSpent.toFixed(2)}{" "}
+                {totalSpent <= totalBudget ? (
+                  <span className="checkmark">✔</span>
+                ) : (
+                  <span className="cross">✘</span>
+                )}
+              </td>
+              <td>${totalDifference.toFixed(2)}</td>
             </tr>
           </tfoot>
         </table>
