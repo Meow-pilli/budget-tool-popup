@@ -29,7 +29,6 @@ function Gifts() {
       return newData;
     });
   };
-  
 
   const addRow = () => {
     setData((prevData) => [
@@ -70,68 +69,74 @@ function Gifts() {
         <table>
           <thead>
             <tr>
-              <th>ITEM</th>
+              <th>CATEGORY</th>
               <th>BUDGET</th>
               <th>SPENT</th>
               <th>DIFFERENCE</th>
+              <th></th>
             </tr>
           </thead>
+          
           <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                <td>
-                  {index < 3 ? (
-                    row.item
-                  ) : (
-                    <input
-                      type="text"
-                      value={row.item || ""}
-                      onChange={(e) => handleInputChange(index, "item", e.target.value)}
-                      placeholder="Enter item"
-                    />
-                  )}
-                </td>
-                <td>
-                  $
-                  <input
-                    type="number"
-                    value={row.budget}
-                    onChange={(e) => handleInputChange(index, "budget", e.target.value)}
-                    placeholder="0.00"
-                  />
-                </td>
-                <td>
-                  $
-                  <input
-                    type="number"
-                    value={row.spent}
-                    onChange={(e) => handleInputChange(index, "spent", e.target.value)}
-                    placeholder="0.00"
-                  />
-                  {row.spent <= row.budget ? (
-                    <span className="checkmark"> ✔</span>
-                  ) : (
-                    <span className="cross"> ✘</span>
-                  )}
-                </td>
-                <td>${(row.budget - row.spent).toFixed(2)}</td>
-              </tr>
-            ))}
-          </tbody>
+  {data.map((row, index) => (
+    <tr key={index}>
+      <td>
+        {index < 3 ? (
+          row.item
+        ) : (
+          <input
+            type="text"
+            value={row.item || ""}
+            onChange={(e) => handleInputChange(index, "item", e.target.value)}
+            placeholder="Enter Category"
+          />
+        )}
+      </td>
+      <td>
+        $
+        <input
+          type="number"
+          value={row.budget}
+          onChange={(e) => handleInputChange(index, "budget", e.target.value)}
+          placeholder="0.00"
+        />
+      </td>
+      <td>
+        $
+        <input
+          type="number"
+          value={row.spent}
+          onChange={(e) => handleInputChange(index, "spent", e.target.value)}
+          placeholder="0.00"
+        />
+        {row.spent <= row.budget ? (
+          <span className="checkmark">✔</span>
+        ) : (
+          <span className="cross">✘</span>
+        )}
+      </td>
+      <td>${(row.budget - row.spent).toFixed(2)}</td>
+      <td className="action-buttons">
+        {index >= 3 && (
+          <button
+            onClick={() => deleteRow(index)}
+            className="delete-row-button"
+            aria-label="Delete Row"
+          >
+            −
+          </button>
+        )}
+        <button onClick={addRow} className="add-row-button" aria-label="Add Row">
+          +
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+
+
           <tfoot>
-            <tr className="add-delete-row">
-              <td colSpan="4" className="add-delete-row-container">
-                <button onClick={addRow} className="add-row-button">
-                  Add Row
-                </button>
-                <button
-                  onClick={() => deleteRow(data.length - 1)}
-                  className="delete-row-button"
-                >
-                  Delete Row
-                </button>
-              </td>
-            </tr>
             <tr className="footer-row">
               <td>Total</td>
               <td>${totalBudget.toFixed(2)}</td>
@@ -144,6 +149,7 @@ function Gifts() {
                 )}
               </td>
               <td>${totalDifference.toFixed(2)}</td>
+              <td></td>
             </tr>
           </tfoot>
         </table>
