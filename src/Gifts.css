@@ -1,215 +1,246 @@
 /* Main Container */
 .gifts-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Header Section */
-  .gifts-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 12vh; /* 12% of the viewport height */
-    background-color: #E24831; /* Original background color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .gifts-close-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333; /* Adjust color as needed */
-    position: absolute;
-    top: 10px;
-    left: 10px; /* Adjust placement */
-  }
-  
-  .gifts-close-button:hover {
-    color: #f00; /* Red hover effect */
-  }
-  
-  /* Center Content */
-  .gifts-center-content {
-    display: flex;
-    align-items: center;
-    gap: 1vw; /* Space scales with viewport width */
-  }
-  
-  /* Icon */
-  .gifts-icon {
-    width: 6vh; /* Scales with viewport height */
-    height: 6vh;
-  }
-  
-  /* Title */
-  .gifts-title {
-    font-size: 1.5rem; /* Relative to root font size */
-    font-weight: bold;
-    color: white;
-    margin: 0;
-  }
-  
-  /* Body Section */
-  .gifts-body {
-    flex-grow: 1;
-    padding: 2vw;
-    color: #333;
-    font-size: 1rem; /* Base font size, adjusts with screen */
-    line-height: 1.5;
-  }
-
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-  }
-  
-  .table-container {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 800px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-  }
-  
-  thead {
-    background-color: #f7f7f7;
-    border-bottom: 2px solid #d9d9d9;
-  }
-  
-  thead th {
-    font-weight: bold;
-    padding: 10px;
-    border-bottom: 1px solid #d9d9d9;
-  }
-  
-  tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  
-  tbody td {
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  tfoot td {
-    font-weight: bold;
-    padding: 10px;
-    background-color: #f7f7f7;
-    border-top: 2px solid #d9d9d9;
-    text-align: right;
-  }
-  
-  tfoot td:first-child {
-    text-align: left;
-  }
-  
-  .checkmark {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .cross {
-    color: red;
-    font-weight: bold;
-  }
-  
-
-  /* Updated CSS in App.css */
-.holiday-dropdown {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin: 0 15px 20px;
-  font-size: 16px;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
-.holiday-dropdown label {
-  margin-bottom: 5px;
+/* Header Section */
+.gifts-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 12vh;
+  background-color: #E24831;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.gifts-center-content {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+.gifts-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin: 0;
+}
+
+
+
+/* Icon */
+.gifts-icon {
+  width: 6vh;
+  height: 6vh;
+}
+
+/* Body Section */
+.gifts-body {
+  flex-grow: 1;
+  padding: 2vw;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.table-container {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead {
+  background-color: #f7f7f7;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+thead th {
+  font-weight: bold;
+  padding: 10px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+tfoot td {
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-top: 2px solid #d9d9d9;
+  text-align: right;
+}
+
+tfoot td:first-child {
+  text-align: left;
+}
+
+.checkmark {
+  color: green;
   font-weight: bold;
 }
 
-.holiday-dropdown select {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
+.cross {
+  color: red;
+  font-weight: bold;
 }
 
-.input {
-  width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.add-delete-row-container {
+/* Add and Delete Button Styling */
+.action-buttons {
   display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  gap: 10px;
 }
 
-.add-row-button,
-.delete-row-button {
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
+/* Common Circular Button Styling */
+.circle-button {
+  width: 30px;
+  height: 30px;
+  border: 2px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* Add Row Button (+) */
 .add-row-button {
-  background-color: #007bff;
-  color: white;
+  color: green;
+  border-color: green;
+  background-color: white;
 }
 
 .add-row-button:hover {
-  background-color: #0056b3;
+  background-color: green;
+  color: white;
+  transform: scale(1.1);
 }
 
+/* Delete Row Button (−) */
 .delete-row-button {
-  background-color: #dc3545;
-  color: white;
+  color: red;
+  border-color: red;
+  background-color: white;
 }
 
 .delete-row-button:hover {
-  background-color: #a71d2a;
+  background-color: red;
+  color: white;
+  transform: scale(1.1);
 }
 
-/* Make items in the ITEM column bold */
-tbody td:first-child, thead th:first-child {
-  font-weight: bold;
+/* Close Button (X) */
+.gifts-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border: 2px solid white; /* White border */
+  border-radius: 50%; /* Circular shape */
+  background-color: transparent; /* Transparent background */
+  color: white; /* White 'X' */
+  font-size: 16px; /* Increase 'X' size */
+  font-family: Arial, sans-serif; /* Ensure proper font */
+  line-height: 30px; /* Vertical centering */
+  text-align: center; /* Horizontal centering */
+  font-weight: bold; /* Bold X */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+/* Input Field Styling */
+.gifts-body input[type="text"],
+.gifts-body input[type="number"] {
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 14px;
+  color: #000;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+/* Specific width for text input boxes */
+.gifts-body input[type="text"] {
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Specific width for number input boxes */
+.gifts-body input[type="number"] {
+  width: 93px;
+}
+
+/* Hover State: Darker Border */
+.gifts-body input[type="text"]:hover,
+.gifts-body input[type="number"]:hover {
+  border-color: #aaa;
+}
+
+/* Focus State: Darker Border */
+.gifts-body input[type="text"]:focus,
+.gifts-body input[type="number"]:focus {
+  border-color: #888;
+  outline: none;
+}
+
+/* Placeholder Styling */
+.gifts-body input[type="text"]::placeholder,
+.gifts-body input[type="number"]::placeholder {
+  color: #bbb;
 }
 
 /* Total Row Alignment */
 tfoot tr.footer-row td {
-  text-align: left; /* Align text like the other rows */
-  padding: 10px; /* Match padding with other rows */
-  font-size: 16px; /* Ensure the font size matches */
-  vertical-align: middle; /* Center vertically */
-  background-color: #f7f7f7; /* Optional: Add background to match */
-  border-top: 2px solid #d9d9d9; /* Optional: Add a top border */
+  text-align: left;
+  padding: 10px;
+  font-size: 16px;
+  vertical-align: middle;
+  background-color: #f7f7f7;
+  border-top: 2px solid #d9d9d9;
 }
 
-/* Align input text in BUDGET and SPENT columns to the right */
-.gifts-body input[type="number"] {
-  text-align: right; /* Align text and placeholder to the right */
+/* Adjust Difference Column */
+tbody td:nth-child(4) {
+  text-align: left;
+  padding-left: 10px;
 }
