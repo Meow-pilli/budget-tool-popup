@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Gifts.css";
 
 const initialData = [
-  { item: "Family", budget: 500.0, spent: 495.0 },
-  { item: "Friends", budget: 250.0, spent: 325.0 },
+  { item: "Family", budget: 500.0, spent: 0.0 },
+  { item: "Friends", budget: 250.0, spent: 0.0 },
   { item: "Co-workers", budget: 0.0, spent: 0.0 },
   { item: "Teachers, nannies, babysitters, etc.", budget: 0.0, spent: 0.0 },
   { item: "Charitable donations", budget: 0.0, spent: 0.0 },
@@ -57,13 +57,13 @@ function Gifts() {
   return (
     <div className="gifts-container">
       <header className="gifts-header">
-        <button className="gifts-close-button" onClick={() => navigate(-1)}>
-          ✖
-        </button>
         <div className="gifts-center-content">
           <img src="/Gifts1.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
+        <button className="gifts-close-button" onClick={() => navigate(-1)}>
+          ✖
+        </button>
       </header>
       <div className="gifts-body">
         <table>
@@ -73,70 +73,76 @@ function Gifts() {
               <th>BUDGET</th>
               <th>SPENT</th>
               <th>DIFFERENCE</th>
-              <th></th>
+              <th>ACTION</th>
             </tr>
           </thead>
-          
           <tbody>
-  {data.map((row, index) => (
-    <tr key={index}>
-      <td>
-        {index < 3 ? (
-          row.item
-        ) : (
-          <input
-            type="text"
-            value={row.item || ""}
-            onChange={(e) => handleInputChange(index, "item", e.target.value)}
-            placeholder="Enter Category"
-          />
-        )}
-      </td>
-      <td>
-        $
-        <input
-          type="number"
-          value={row.budget}
-          onChange={(e) => handleInputChange(index, "budget", e.target.value)}
-          placeholder="0.00"
-        />
-      </td>
-      <td>
-        $
-        <input
-          type="number"
-          value={row.spent}
-          onChange={(e) => handleInputChange(index, "spent", e.target.value)}
-          placeholder="0.00"
-        />
-        {row.spent <= row.budget ? (
-          <span className="checkmark">✔</span>
-        ) : (
-          <span className="cross">✘</span>
-        )}
-      </td>
-      <td>${(row.budget - row.spent).toFixed(2)}</td>
-      <td className="action-buttons">
-        {index >= 3 && (
-          <button
-            onClick={() => deleteRow(index)}
-            className="delete-row-button"
-            aria-label="Delete Row"
-          >
-            −
-          </button>
-        )}
-        <button onClick={addRow} className="add-row-button" aria-label="Add Row">
-          +
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
-
-
+            {data.map((row, index) => (
+              <tr key={index}>
+                <td>
+                  {index < 3 ? (
+                    row.item // Fixed text for the first 3 rows
+                  ) : (
+                    <input
+                      type="text"
+                      value={row.item || ""}
+                      onChange={(e) => handleInputChange(index, "item", e.target.value)}
+                      placeholder="Enter Category"
+                    />
+                  )}
+                </td>
+                <td>
+                  $
+                  <input
+                    type="number"
+                    value={row.budget}
+                    onChange={(e) => handleInputChange(index, "budget", e.target.value)}
+                    placeholder="0.00"
+                  />
+                </td>
+                <td>
+                  $
+                  <input
+                    type="number"
+                    value={row.spent}
+                    onChange={(e) => handleInputChange(index, "spent", e.target.value)}
+                    placeholder="0.00"
+                  />
+                  {row.spent <= row.budget ? (
+                    <span className="checkmark">✔</span>
+                  ) : (
+                    <span className="cross">✘</span>
+                  )}
+                </td>
+                <td>
+                  {row.budget - row.spent < 0 
+                    ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}` 
+                    : `\u00A0 $${(row.budget - row.spent).toFixed(2)}`}
+                </td>
+                <td>
+                  <button
+                    onClick={() => deleteRow(index)}
+                    className="delete-row-button circle-button"
+                  >
+                    −
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
           <tfoot>
+            {/* Add Row Button */}
+            <tr>
+    {/* Empty cells for alignment */}
+    <td colSpan="4"></td>
+    {/* Add Row Button in ACTION column */}
+    <td className="add-row-cell">
+      <button onClick={addRow} className="add-row-button circle-button">
+        +
+      </button>
+    </td>
+  </tr>
+            {/* Total Row */}
             <tr className="footer-row">
               <td>Total</td>
               <td>${totalBudget.toFixed(2)}</td>
@@ -148,7 +154,10 @@ function Gifts() {
                   <span className="cross">✘</span>
                 )}
               </td>
-              <td>${totalDifference.toFixed(2)}</td>
+              <td>
+                {totalDifference < 0 ? "- $" : "\u00A0$"}
+                {Math.abs(totalDifference).toFixed(2)}
+              </td>
               <td></td>
             </tr>
           </tfoot>
