@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from
 import "./App.css";
 import CustomDropdown from "./CustomDropdown";
 
-import Gifts from "./Gifts";
+import Gifts, { initialGiftsData } from "./Gifts";
+import useGiftsTotal from "./hooks/useGiftsTotal";
+import DataProvider from "./context/DataContext";
+import Travel from "./Travel";
 // import Travel from "./Travel";
 // import FoodAndDrinks from "./FoodAndDrinks";
 // import Entertainment from "./Entertainment";
@@ -42,6 +45,9 @@ function App() {
   const [itemsState, setItemsState] = useState(menuItems);
   const [selectedHoliday, setSelectedHoliday] = useState("");
   const [selectedCurrency, setSelectedCurrency] = useState("");
+  const [giftsData, setGiftsData] = useState(initialGiftsData);
+  console.log(giftsData);
+  const totalSpent = useGiftsTotal(giftsData, "spent");
 
 
   const dropdownRef = useRef(null);
@@ -83,6 +89,7 @@ function App() {
   }, [isMenuOpen]);
 
   return (
+    <DataProvider>
     <Router>
       <div className="app">
         {/* Top Navigation Bar */}
@@ -152,7 +159,7 @@ function App() {
                   onClick={() => window.location.href = item.link}
                 >
                   <img src={item.icon} alt={item.name} className="menu-icon" />
-                  <span>{item.name}</span>
+                  <span>{item.name} ({totalSpent})</span>
                   <div
                     className={`arrow ${
                       item.isOpen ? "arrow-up" : "arrow-down"
@@ -166,7 +173,8 @@ function App() {
         {/* Routes for Pages */}
         {/* Routes */}
         <Routes>
-          <Route path="/gifts" element={<Gifts />} />
+          <Route path="/gifts" element={<Gifts data={giftsData} setData={setGiftsData} />} />
+          {/* <Route path="/" element={<Travel />} /> */}
           {/* <Route path="/travel" element={<Travel />} />
           <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
           <Route path="/entertainment" element={<Entertainment />} />
@@ -177,6 +185,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </DataProvider>
   );
 }
 
