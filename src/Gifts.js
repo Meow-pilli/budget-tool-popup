@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Gifts.css";
+import useGiftsTotal from "./hooks/useGiftsTotal";
+import { useData } from "./context/DataContext";
 
-const initialData = [
+export const initialGiftsData = [
   { item: "Family", budget: 500.0, spent: 0.0 },
   { item: "Friends", budget: 250.0, spent: 0.0 },
   { item: "Co-workers", budget: 0.0, spent: 0.0 },
@@ -10,16 +12,13 @@ const initialData = [
   { item: "Charitable donations", budget: 0.0, spent: 0.0 },
 ];
 
-function calculateTotal(data, key) {
-  return data.reduce((acc, row) => acc + parseFloat(row[key] || 0), 0).toFixed(2);
-}
-
 function Gifts() {
-  const [data, setData] = useState(initialData);
+  //const [data, setData] = useState(initialData);
+  const {data, setData} = useData();
   const navigate = useNavigate();
 
-  const totalBudget = parseFloat(calculateTotal(data, "budget"));
-  const totalSpent = parseFloat(calculateTotal(data, "spent"));
+  const totalBudget = useGiftsTotal(data, "budget");
+  const totalSpent = useGiftsTotal(data, "spent");
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const handleInputChange = (index, key, value) => {
