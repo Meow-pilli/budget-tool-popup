@@ -15,6 +15,7 @@ export const initialGiftsData = [
 function Gifts() {
   //const [data, setData] = useState(initialData);
   const {data, setData} = useData();
+  console.log("🚀 ~ Gifts ~ data:", data)
   const navigate = useNavigate();
 
   const totalBudget = useGiftsTotal(data, "budget");
@@ -60,7 +61,7 @@ function Gifts() {
           <img src="/Gifts1.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
-        <button className="gifts-close-button" onClick={() => navigate(-1)}>
+        <button type = "button" className="gifts-close-button" onClick={() => navigate("/")}>
           ✖
         </button>
       </header>
