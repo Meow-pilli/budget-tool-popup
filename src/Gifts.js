@@ -25,7 +25,12 @@ function Gifts() {
   const handleInputChange = (index, key, value) => {
     setData((prevData) => {
       const newData = [...prevData];
-      newData[index][key] = key === "item" ? value : parseFloat(value) || 0;
+      if (key === "item") {
+        newData[index][key] = value; // Non-numeric field
+      } else {
+        const formattedValue = parseFloat(value || 0).toFixed(2); // Format numeric inputs to two decimals
+        newData[index][key] = parseFloat(formattedValue);
+      }
       return newData;
     });
   };
@@ -86,7 +91,9 @@ function Gifts() {
                     <input
                       type="text"
                       value={row.item || ""}
-                      onChange={(e) => handleInputChange(index, "item", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(index, "item", e.target.value)
+                      }
                       placeholder="Enter Category"
                     />
                   )}
@@ -95,8 +102,11 @@ function Gifts() {
                   $
                   <input
                     type="number"
-                    value={row.budget}
-                    onChange={(e) => handleInputChange(index, "budget", e.target.value)}
+                    step="0.01"
+                    value={row.budget.toFixed(2)} // Ensure display of two decimal places
+                    onChange={(e) =>
+                      handleInputChange(index, "budget", e.target.value)
+                    }
                     placeholder="0.00"
                   />
                 </td>
@@ -104,8 +114,11 @@ function Gifts() {
                   $
                   <input
                     type="number"
-                    value={row.spent}
-                    onChange={(e) => handleInputChange(index, "spent", e.target.value)}
+                    step="0.01"
+                    value={row.spent.toFixed(2)} // Ensure display of two decimal places
+                    onChange={(e) =>
+                      handleInputChange(index, "spent", e.target.value)
+                    }
                     placeholder="0.00"
                   />
                   {row.spent <= row.budget ? (
@@ -115,8 +128,8 @@ function Gifts() {
                   )}
                 </td>
                 <td>
-                  {row.budget - row.spent < 0 
-                    ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}` 
+                  {row.budget - row.spent < 0
+                    ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}`
                     : `\u00A0 $${(row.budget - row.spent).toFixed(2)}`}
                 </td>
                 <td>
@@ -133,15 +146,13 @@ function Gifts() {
           <tfoot>
             {/* Add Row Button */}
             <tr>
-    {/* Empty cells for alignment */}
-    <td colSpan="4"></td>
-    {/* Add Row Button in ACTION column */}
-    <td className="add-row-cell">
-      <button onClick={addRow} className="add-row-button circle-button">
-        +
-      </button>
-    </td>
-  </tr>
+              <td colSpan="4"></td>
+              <td className="add-row-cell">
+                <button onClick={addRow} className="add-row-button circle-button">
+                  +
+                </button>
+              </td>
+            </tr>
             {/* Total Row */}
             <tr className="footer-row">
               <td>Total</td>
