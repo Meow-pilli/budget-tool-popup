@@ -132,13 +132,13 @@ tfoot td:first-child {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Add Row Button (+) */
+  /* Add Row Button */
 .add-row-button {
   color: green;
   border-color: green;
@@ -171,20 +171,30 @@ tfoot td:first-child {
   right: 10px;
   width: 30px;
   height: 30px;
-  border: 2px solid white; /* White border */
-  border-radius: 50%; /* Circular shape */
-  background-color: transparent; /* Transparent background */
-  color: white; /* White 'X' */
-  font-size: 16px; /* Increase 'X' size */
-  font-family: Arial, sans-serif; /* Ensure proper font */
-  line-height: 30px; /* Vertical centering */
-  text-align: center; /* Horizontal centering */
-  font-weight: bold; /* Bold X */
-  cursor: pointer;
+    border: 2px solid white;
+    border-radius: 50%;
+    background-color: transparent;
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+    font-family: Arial, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
   
+  /* Hover Effect */
+  .gifts-close-button:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: linear-gradient(45deg, #ffffff, #ffcccc); 
+    color: #e24831;
+  }
+  
+  /* Active Effect (when clicked) */
+  .gifts-close-button:active {
+    transform: translateY(1px) scale(0.95);
 }
 
 /* Input Field Styling */
