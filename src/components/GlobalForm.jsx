@@ -1,14 +1,31 @@
-import { Form } from 'antd';
-import React from 'react';
+import { useForm } from 'react-hook-form';
+import { Form } from './ui/form';
+import { initialGiftsData } from '@/Gifts';
 
+// {
+//     holiday: 'christmas',
+//     currency: 'dollars',
+//     gifts: [
+//      { item: "Family", budget: 500.0, spent: 0.0 },
+//     ]
+// }
 function GlobalForm({ children }) {
-    const onFormChange = (formName, info) => {
-        console.log("🚀 ~ onFormChange ~ formName, info:", formName, info)
-    };
+    const methods = useForm({
+        defaultValues: {
+            gifts: initialGiftsData
+        }
+    });
+    const watch = methods.watch;
+    const holiday = watch('holiday');
+    const currency = watch('currency');
+    const formData = watch();
+
+    console.log("🚀 ~ GlobalForm ~ holiday, currency:", {holiday, currency, formData});
+
     return (
-        <Form.Provider onFormChange={onFormChange}>
+        <Form {...methods}>
             {children}
-        </Form.Provider>
+        </Form>
     );
 }
 
