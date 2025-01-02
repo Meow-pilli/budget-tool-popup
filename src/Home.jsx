@@ -3,6 +3,8 @@ import { useData } from "./context/DataContext";
 import CustomDropdown from "./CustomDropdown";
 import useGiftsTotal from "./hooks/useGiftsTotal";
 import HolidayForm from "./components/HolidayForm";
+import { Link, useNavigate } from "react-router-dom";
+import holidayTrackerImg from './Black2.png';
 
 const menuItems = [
   { name: "Gifts", icon: "/Gifts1.png", isOpen: false, link: "/gifts" },
@@ -16,11 +18,10 @@ const menuItems = [
 ];
 
 function Home() {
-  const { data = {}, setData } = useData();
+  const navigate = useNavigate();
+  const { data } = useData();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
-  const [selectedHoliday, setSelectedHoliday] = useState("");
-  const [selectedCurrency, setSelectedCurrency] = useState("");
   const totalGiftsSpent = useGiftsTotal(data, "spent");
 
   const dropdownRef = useRef(null);
@@ -31,7 +32,8 @@ function Home() {
   };
 
   const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    console.log("🚀 ~ handleClickOutside ~ event:", event)
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target) && isClickOutsideArea(dropdownRef.current, event)) {
       setIsMenuOpen(false);
     }
   };
@@ -49,15 +51,15 @@ function Home() {
       const contentHeight = menuContentRef.current.offsetHeight - 60; // Adjust height based on content
       dropdownRef.current.style.height = `${contentHeight}px`;
       dropdownRef.current.style.width = "500px"; // Fixed width for dropdown
-      // document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
       dropdownRef.current.style.height = "0";
       dropdownRef.current.style.width = "0";
-      // document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      // document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
 
@@ -80,54 +82,13 @@ function Home() {
             {/* Holiday Tracker Title at the Top */}
             <div className="menu-header">
               <img
-                src={require("./Black2.png")}
+                src={holidayTrackerImg}
                 alt="Holiday Tracker"
                 className="menu-title-image"
               />
             </div>
 
-            <HolidayForm/>
-            {/* <div className="dropdown-container">
-              <div className="holiday-dropdown">
-                <CustomDropdown
-                  options={[
-                    {
-                      value: "",
-                      label: "-- Select a Holiday --",
-                      disabled: true,
-                    },
-                    { value: "Christmas", label: "Christmas" },
-                    { value: "Thanksgiving", label: "Thanksgiving" },
-                    { value: "New Year", label: "New Year" },
-                    { value: "Easter", label: "Easter" },
-                    { value: "Halloween", label: "Halloween" },
-                  ]}
-                  selectedOption={selectedHoliday}
-                  setSelectedOption={setSelectedHoliday}
-                  placeholder="-- Select a Holiday --"
-                />
-              </div>
-
-              <div className="currency-dropdown">
-                <CustomDropdown
-                  options={[
-                    {
-                      value: "",
-                      label: "-- Select a Currency --",
-                      disabled: true,
-                    },
-                    { value: "Dollar ($)", label: "Dollar ($)" },
-                    { value: "Pound (£)", label: "Pound (£)" },
-                    { value: "Euro (€)", label: "Euro (€)" },
-                    { value: "Rupees (₹)", label: "Rupees (₹)" },
-                    { value: "Yen (¥)", label: "Yen (¥)" },
-                  ]}
-                  selectedOption={selectedCurrency}
-                  setSelectedOption={setSelectedCurrency}
-                  placeholder="-- Select a Currency --"
-                />
-              </div>
-            </div> */}
+            <HolidayForm />
 
             {/* Menu Items */}
             <ul>
@@ -135,26 +96,36 @@ function Home() {
                 <li
                   key={item.name}
                   className="menu-item"
-                  onClick={() => (window.location.href = item.link)}
+                // onClick={() => navigate(item.link)}
                 >
-                  <img src={item.icon} alt={item.name} className="menu-icon" />
-                  <span>
-                    {item.name} ({item.name === "Gifts" ? totalGiftsSpent: 0})
-                  </span>
-                  <div
-                    className={`arrow ${
-                      item.isOpen ? "arrow-up" : "arrow-down"
-                    }`}
-                  ></div>
+                  <Link to={item.link} className="flex">
+                    <img src={item.icon} alt={item.name} className="menu-icon" />
+                    <span>
+                      {item.name} ({item.name === "Gifts" ? totalGiftsSpent : 0})
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
         </div>
       </div>
-      {JSON.stringify(data, null, 2)}
     </div>
   );
 }
 
 export default Home;
+
+
+function isClickOutsideArea(element, event) {
+  const rect = element.getBoundingClientRect();
+  const clickX = event.clientX;
+  const clickY = event.clientY;
+
+  if (clickX < rect.left || clickX > rect.right ||
+    clickY < rect.top || clickY > rect.bottom) {
+    return true;
+  }
+
+  return false;
+}
