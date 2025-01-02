@@ -19,12 +19,13 @@ export const initialGiftsData = [
 function Gifts() {
   // const { data, setData } = useData();
   const navigate = useNavigate();
-  
+
   const form = useFormContext();
 
   const { watch, control, defaultValues, getValues } = form;
-  const currency = watch('currency');
-  const currencyPrefix = currencyItems.find(c => c.value === currency)?.symbol || "$";
+  const currency = watch("currency");
+  const currencyPrefix =
+    currencyItems.find((c) => c.value === currency)?.symbol || "$";
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -32,13 +33,12 @@ function Gifts() {
   });
   console.log("🚀 ~ fields:", fields);
 
-
   const totalBudget = 0; // useGiftsTotal(data, "budget");
   const totalSpent = 0; //useGiftsTotal(data, "spent");
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const addRow = () => {
-    append({item: "", budget: "0", spent: "0"});
+    append({ item: "", budget: "0", spent: "0" });
   };
 
   useEffect(() => {
@@ -54,8 +54,6 @@ function Gifts() {
     };
   }, []);
 
-  
-
   return (
     <div className="gifts-container">
       <header className="gifts-header">
@@ -63,7 +61,11 @@ function Gifts() {
           <img src="/Gifts1.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
-        <button type="button" className="gifts-close-button" onClick={() => navigate("/")}>
+        <button
+          type="button"
+          className="gifts-close-button"
+          onClick={() => navigate("/")}
+        >
           ✖
         </button>
       </header>
@@ -83,25 +85,41 @@ function Gifts() {
             {fields.map((row, index) => (
               <tr key={index}>
                 <td>
-                  {index < 3 ? (
+                  {index < 1 ? (
                     row.item
                   ) : (
                     <InputField form={form} name={`gifts.${index}.item`} />
                   )}
                 </td>
                 <td>
-                  <CurrencyInputField name={`gifts.${index}.budget`} form={form} placeholder={'0.00'} prefix={currencyPrefix} />
+                  <CurrencyInputField
+                    name={`gifts.${index}.budget`}
+                    form={form}
+                    placeholder={"0.00"}
+                    prefix={currencyPrefix}
+                  />
                 </td>
                 <td>
-                  <CurrencyInputField name={`gifts.${index}.spent`} form={form} placeholder={'0.00'} prefix={currencyPrefix} />
-                  {+row.spent <= +row.budget ? (
-                    <span className="checkmark">✔</span>
-                  ) : (
-                    <span className="cross">✘</span>
+                  <div className="currency-input-with-status">
+                    <CurrencyInputField
+                      name={`gifts.${index}.spent`}
+                      form={form}
+                      placeholder={"0.00"}
+                      prefix={currencyPrefix}
+                    />
+                    {+row.spent <= +row.budget ? (
+                      <span className="checkmark">✔</span>
+                    ) : (
+                      <span className="cross">✘</span>
+                    )}
+                  </div>
+                </td>
+                <td>
+                  {formatCurrency(
+                    +getValues("gifts")[index].budget -
+                      +getValues("gifts")[index].spent,
+                    currencyPrefix
                   )}
-                </td>
-                <td>
-                  {formatCurrency(+getValues('gifts')[index].budget - +getValues('gifts')[index].spent, currencyPrefix)}
                   {/* {+row.budget - +row.spent < 0
                     ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}`
                     : `\u00A0 $${(row.budget - row.spent).toFixed(2)}`} */}
@@ -125,7 +143,10 @@ function Gifts() {
               <td colSpan="4"></td>
               {/* Add Row Button in ACTION column */}
               <td className="add-row-cell">
-                <button onClick={addRow} className="add-row-button circle-button">
+                <button
+                  onClick={addRow}
+                  className="add-row-button circle-button"
+                >
                   +
                 </button>
               </td>
@@ -157,12 +178,11 @@ function Gifts() {
 
 export default Gifts;
 
-
 function formatCurrency(value, prefix) {
   const formattedValue = formatValue({
     value: String(value),
-    groupSeparator: ',',
-    decimalSeparator: '.',
+    groupSeparator: ",",
+    decimalSeparator: ".",
     prefix,
   });
 
