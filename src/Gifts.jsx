@@ -33,8 +33,16 @@ function Gifts() {
   });
   console.log("🚀 ~ fields:", fields);
 
-  const totalBudget = 0; // useGiftsTotal(data, "budget");
-  const totalSpent = 0; //useGiftsTotal(data, "spent");
+  const totalBudget = fields.reduce(
+    (sum, field, index) => sum + parseFloat(getValues(`gifts.${index}.budget`) || 0),
+    0
+  );
+  
+  const totalSpent = fields.reduce(
+    (sum, field, index) => sum + parseFloat(getValues(`gifts.${index}.spent`) || 0),
+    0
+  );
+  
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const addRow = () => {
