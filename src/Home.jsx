@@ -7,11 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 import holidayTrackerImg from './Black2.png';
 
 const menuItems = [
-  { name: "Gifts", icon: "/Gifts1.png", isOpen: false, link: "/gifts" },
-  { name: "Travel", icon: "/Travel1.png", isOpen: false, link: "/travel" },
+  { name: "Gifts", icon: "/Gifts.png", isOpen: false, link: "/gifts" },
+  { name: "Travel", icon: "/Travel.png", isOpen: false, link: "/travel" },
   { name: "Food & Drinks", icon: "/Drinks1.png", isOpen: false, link: "/food-and-drinks" },
-  { name: "Entertainment", icon: "/Entertainment1.png", isOpen: false, link: "/entertainment" },
-  { name: "Decorations", icon: "/Decorations1.png", isOpen: false, link: "/decorations" },
+  { name: "Entertainment", icon: "/Entertainment.png", isOpen: false, link: "/entertainment" },
+  { name: "Decorations", icon: "/Decorations.png", isOpen: false, link: "/decorations" },
   { name: "Costumes & Clothing", icon: "/Costumes1.png", isOpen: false, link: "/costumes-and-clothing" },
   { name: "Stationery & Packaging", icon: "/Stationery1.png", isOpen: false, link: "/stationery-and-packaging" },
   { name: "Charitable Contributions", icon: "/Charitable1.png", isOpen: false, link: "/charitable-contributions" },
