@@ -19,6 +19,7 @@ export default function CurrencyInputField({ form, name, label, placeholder, pre
                             groupSeparator=","
                             decimalScale={2}
                             className='shadcn-input-class'
+                            style={{ width: '120px' }}
                             value={field.value}
                             onValueChange={(value, _name, values) => form.setValue(name, value)}
                         />
