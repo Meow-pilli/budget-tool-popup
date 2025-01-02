@@ -1,11 +1,12 @@
-import { createContext,  useContext, useState } from "react";
+import { createContext,  useContext, useMemo, useState } from "react";
 import { initialGiftsData } from "../Gifts";
 
 const DataContext = createContext();
 
 export default function DataProvider ({ children }) {
     const [data, setData] = useState(initialGiftsData);
-    const value = { data, setData };
+    const value = useMemo(() => ({ data, setData }), [data]);
+    console.log("🚀 ~ DataProvider ~ data:", data)
 
   return (
     <DataContext.Provider value={value}>{children}</DataContext.Provider>
