@@ -4,25 +4,59 @@ import CustomDropdown from "./CustomDropdown";
 import useGiftsTotal from "./hooks/useGiftsTotal";
 import HolidayForm from "./components/HolidayForm";
 import { Link, useNavigate } from "react-router-dom";
-import holidayTrackerImg from './Black2.png';
+import holidayTrackerImg from "./Black2.png";
+import { useFormContext } from "react-hook-form";
 
 const menuItems = [
-  { name: "Gifts", icon: "/Gifts1.png", isOpen: false, link: "/gifts" },
-  { name: "Travel", icon: "/Travel1.png", isOpen: false, link: "/travel" },
-  { name: "Food & Drinks", icon: "/Drinks1.png", isOpen: false, link: "/food-and-drinks" },
-  { name: "Entertainment", icon: "/Entertainment1.png", isOpen: false, link: "/entertainment" },
-  { name: "Decorations", icon: "/Decorations1.png", isOpen: false, link: "/decorations" },
-  { name: "Costumes & Clothing", icon: "/Costumes1.png", isOpen: false, link: "/costumes-and-clothing" },
-  { name: "Stationery & Packaging", icon: "/Stationery1.png", isOpen: false, link: "/stationery-and-packaging" },
-  { name: "Charitable Contributions", icon: "/Charitable1.png", isOpen: false, link: "/charitable-contributions" },
+  { name: "Gifts", icon: "/Gifts.png", isOpen: false, link: "/gifts" },
+  { name: "Travel", icon: "/Travel.png", isOpen: false, link: "/travel" },
+  {
+    name: "Food & Drinks",
+    icon: "/Drinks1.png",
+    isOpen: false,
+    link: "/food-and-drinks",
+  },
+  {
+    name: "Entertainment",
+    icon: "/Entertainment.png",
+    isOpen: false,
+    link: "/entertainment",
+  },
+  {
+    name: "Decorations",
+    icon: "/Decorations.png",
+    isOpen: false,
+    link: "/decorations",
+  },
+  {
+    name: "Costumes & Clothing",
+    icon: "/Costumes1.png",
+    isOpen: false,
+    link: "/costumes-and-clothing",
+  },
+  {
+    name: "Stationery & Packaging",
+    icon: "/Stationery1.png",
+    isOpen: false,
+    link: "/stationery-and-packaging",
+  },
+  {
+    name: "Charitable Contributions",
+    icon: "/Charitable1.png",
+    isOpen: false,
+    link: "/charitable-contributions",
+  },
 ];
 
 function Home() {
   const navigate = useNavigate();
-  const { data } = useData();
+  //const { data } = useData();
+  const { watch } = useFormContext();
+  const giftsData = watch("gifts");
+  const totalGiftsSpent = useGiftsTotal(giftsData, "spent");
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
-  const totalGiftsSpent = useGiftsTotal(data, "spent");
 
   const dropdownRef = useRef(null);
   const menuContentRef = useRef(null);
@@ -32,8 +66,12 @@ function Home() {
   };
 
   const handleClickOutside = (event) => {
-    console.log("🚀 ~ handleClickOutside ~ event:", event)
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target) && isClickOutsideArea(dropdownRef.current, event)) {
+    console.log("🚀 ~ handleClickOutside ~ event:", event);
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      isClickOutsideArea(dropdownRef.current, event)
+    ) {
       setIsMenuOpen(false);
     }
   };
@@ -96,12 +134,19 @@ function Home() {
                 <li
                   key={item.name}
                   className="menu-item"
-                // onClick={() => navigate(item.link)}
+                  // onClick={() => navigate(item.link)}
                 >
-                  <Link to={item.link} className="flex">
-                    <img src={item.icon} alt={item.name} className="menu-icon" />
-                    <span>
-                      {item.name} ({item.name === "Gifts" ? totalGiftsSpent : 0})
+                  <Link to={item.link} className="menu-item-link">
+                    <img
+                      src={item.icon}
+                      alt={item.name}
+                      className="menu-icon"
+                    />
+                    <span className="menu-item-text">
+                      {item.name}
+                      <span className="menu-item-value">
+                        {item.name === "Gifts" ? totalGiftsSpent : ""}
+                      </span>
                     </span>
                   </Link>
                 </li>
@@ -116,14 +161,17 @@ function Home() {
 
 export default Home;
 
-
 function isClickOutsideArea(element, event) {
   const rect = element.getBoundingClientRect();
   const clickX = event.clientX;
   const clickY = event.clientY;
 
-  if (clickX < rect.left || clickX > rect.right ||
-    clickY < rect.top || clickY > rect.bottom) {
+  if (
+    clickX < rect.left ||
+    clickX > rect.right ||
+    clickY < rect.top ||
+    clickY > rect.bottom
+  ) {
     return true;
   }
 

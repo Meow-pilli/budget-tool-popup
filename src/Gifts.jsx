@@ -33,8 +33,16 @@ function Gifts() {
   });
   console.log("🚀 ~ fields:", fields);
 
-  const totalBudget = 0; // useGiftsTotal(data, "budget");
-  const totalSpent = 0; //useGiftsTotal(data, "spent");
+  const totalBudget = fields.reduce(
+    (sum, field, index) => sum + parseFloat(getValues(`gifts.${index}.budget`) || 0),
+    0
+  );
+  
+  const totalSpent = fields.reduce(
+    (sum, field, index) => sum + parseFloat(getValues(`gifts.${index}.spent`) || 0),
+    0
+  );
+  
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const addRow = () => {
@@ -58,7 +66,7 @@ function Gifts() {
     <div className="gifts-container">
       <header className="gifts-header">
         <div className="gifts-center-content">
-          <img src="/Gifts1.png" alt="Gifts" className="gifts-icon" />
+          <img src="/Gifts.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
         <button
@@ -85,7 +93,7 @@ function Gifts() {
             {fields.map((row, index) => (
               <tr key={index}>
                 <td>
-                  {index < 1 ? (
+                  {index < 0 ? (
                     row.item
                   ) : (
                     <InputField form={form} name={`gifts.${index}.item`} />

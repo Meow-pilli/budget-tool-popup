@@ -141,6 +141,28 @@ body {
   opacity: 1; /* Fully visible on hover */
 }
 
+.menu-item-text {
+  position: relative; /* Ensures proper positioning for value */
+  display: inline-block; /* Keep text and value inline */
+}
+
+/* Initially hide the value */
+.menu-item-value {
+  transform: none;
+  position: static;
+  visibility: hidden; /* Hide the value */
+  opacity: 0; /* Fully transparent */
+  margin-left: 100px; /* Add space between name and value */
+  font-weight: normal; /* Optional: differentiate visually */
+  color: black; /* Optional: differentiate value text */
+}
+
+/* Show the value on hover */
+.menu-item:hover .menu-item-value {
+  visibility: visible; /* Make it visible */
+  opacity: 1; /* Fully opaque */
+}
+
 /* Arrow styles */
 .arrow {
   margin-left: auto; /* Push arrow to the far right */
