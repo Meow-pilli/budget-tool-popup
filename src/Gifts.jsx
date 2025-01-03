@@ -93,7 +93,7 @@ function Gifts() {
             {fields.map((row, index) => (
               <tr key={index}>
                 <td>
-                  {index < 1 ? (
+                  {index < 0 ? (
                     row.item
                   ) : (
                     <InputField form={form} name={`gifts.${index}.item`} />

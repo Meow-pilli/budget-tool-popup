@@ -5,6 +5,7 @@ import useGiftsTotal from "./hooks/useGiftsTotal";
 import HolidayForm from "./components/HolidayForm";
 import { Link, useNavigate } from "react-router-dom";
 import holidayTrackerImg from "./Black2.png";
+import { useFormContext } from "react-hook-form";
 
 const menuItems = [
   { name: "Gifts", icon: "/Gifts.png", isOpen: false, link: "/gifts" },
@@ -49,10 +50,13 @@ const menuItems = [
 
 function Home() {
   const navigate = useNavigate();
-  const { data } = useData();
+  //const { data } = useData();
+  const { watch } = useFormContext();
+  const giftsData = watch("gifts");
+  const totalGiftsSpent = useGiftsTotal(giftsData, "spent");
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
-  const totalGiftsSpent = useGiftsTotal(data, "spent");
 
   const dropdownRef = useRef(null);
   const menuContentRef = useRef(null);
@@ -141,7 +145,7 @@ function Home() {
                     <span className="menu-item-text">
                       {item.name}
                       <span className="menu-item-value">
-                        {item.name === "Gifts" ? totalGiftsSpent : 0}
+                        {item.name === "Gifts" ? totalGiftsSpent : ""}
                       </span>
                     </span>
                   </Link>
