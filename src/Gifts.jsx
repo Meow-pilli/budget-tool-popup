@@ -123,11 +123,10 @@ function Gifts() {
                   </div>
                 </td>
                 <td>
-                  {formatCurrency(
-                    +getValues("gifts")[index].budget -
-                      +getValues("gifts")[index].spent,
-                    currencyPrefix
-                  )}
+                {formatCurrency(
+                 (+getValues("gifts")[index].budget - +getValues("gifts")[index].spent).toFixed(2),
+                     currencyPrefix
+                     )}
                   {/* {+row.budget - +row.spent < 0
                     ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}`
                     : `\u00A0 $${(row.budget - row.spent).toFixed(2)}`} */}
