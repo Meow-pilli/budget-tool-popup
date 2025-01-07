@@ -5,9 +5,9 @@ import "./globals.css";
 import CustomDropdown from "./CustomDropdown";
 
 import Gifts, { initialGiftsData } from "./Gifts";
+//import Travel, { initialTravelData } from "./Travel";
 import useGiftsTotal from "./hooks/useGiftsTotal";
 import DataProvider from "./context/DataContext";
-// import Travel from "./Travel";
 import Home from "./Home";
 import GlobalForm from "./components/GlobalForm";
 // import Travel from "./Travel";

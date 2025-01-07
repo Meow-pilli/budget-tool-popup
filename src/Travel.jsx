@@ -8,7 +8,7 @@ import "./Gifts.css";
 import useTravelsTotal from "./hooks/useGiftsTotal";
 import { formatValue } from "react-currency-input-field";
 
-export const initialGiftsData = [
+export const initialTravelData = [
   { item: "Family", budget: "500", spent: "0" },
   { item: "Friends", budget: "250", spent: "0" },
   { item: "Co-workers", budget: "0", spent: "0" },
