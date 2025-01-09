@@ -1,90 +1,96 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useData } from "./context/DataContext";
-import CustomDropdown from "./CustomDropdown";
-import useGiftsTotal from "./hooks/useGiftsTotal";
+import { useEffect, useRef, useState } from "react";
+// import { useData } from "./context/DataContext";
+// import CustomDropdown from "./CustomDropdown";
+import useTotal from "./hooks/useTotal";
 import HolidayForm from "./components/HolidayForm";
 import { Link, useNavigate } from "react-router-dom";
 import holidayTrackerImg from "./Black2.png";
 import { useFormContext } from "react-hook-form";
 
 const menuItems = [
-  { name: "Gifts", icon: "/Gifts.png", isOpen: false, link: "/gifts" },
-  { name: "Travel", icon: "/Travel.png", isOpen: false, link: "/travel" },
+  { name: "Gifts", icon: "/Gifts.png", isOpen: false, link: "/gifts", formKey: "gifts" },
+  { name: "Travel", icon: "/Travel.png", isOpen: false, link: "/travel", formKey: "travels" },
   {
     name: "Food & Drinks",
     icon: "/Drinks1.png",
     isOpen: false,
     link: "/food-and-drinks",
+    formKey: "foodAndDrinks",
   },
   {
     name: "Entertainment",
     icon: "/Entertainment.png",
     isOpen: false,
     link: "/entertainment",
+    formKey: "entertainment",
   },
   {
     name: "Decorations",
     icon: "/Decorations.png",
     isOpen: false,
     link: "/decorations",
+    formKey: "decorations",
   },
   {
     name: "Costumes & Clothing",
     icon: "/Costumes1.png",
     isOpen: false,
     link: "/costumes-and-clothing",
+    formKey: "costumesAndClothing",
   },
   {
     name: "Stationery & Packaging",
     icon: "/Stationery1.png",
     isOpen: false,
     link: "/stationery-and-packaging",
+    formKey: "stationeryAndPackaging",
   },
   {
     name: "Charitable Contributions",
     icon: "/Charitable1.png",
     isOpen: false,
     link: "/charitable-contributions",
+    formKey: "charitableContributions",
   },
 ];
 
 function Home() {
   const navigate = useNavigate();
   //const { data } = useData();
-  const { watch } = useFormContext();
-  const giftsData = watch("gifts");
-  const totalGiftsSpent = useGiftsTotal(giftsData, "spent");
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState, setItemsState] = useState(menuItems);
 
-  const dropdownRef = useRef(null);
-  const menuContentRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const menuContentRef = useRef<HTMLDivElement | null>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: MouseEvent) => {
     console.log("🚀 ~ handleClickOutside ~ event:", event);
     if (
       dropdownRef.current &&
-      !dropdownRef.current.contains(event.target) &&
+      !dropdownRef.current.contains(event.target as HTMLDivElement) &&
       isClickOutsideArea(dropdownRef.current, event)
     ) {
       setIsMenuOpen(false);
     }
   };
 
-  const toggleItem = (index) => {
-    setItemsState((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, isOpen: !item.isOpen } : item
-      )
-    );
-  };
+  // const toggleItem = (index) => {
+  //   setItemsState((prev) =>
+  //     prev.map((item, i) =>
+  //       i === index ? { ...item, isOpen: !item.isOpen } : item
+  //     )
+  //   );
+  // };
 
   useEffect(() => {
+    if (menuContentRef.current === null || dropdownRef.current === null) {
+      return;
+    }
     if (isMenuOpen) {
       const contentHeight = menuContentRef.current.offsetHeight - 60; // Adjust height based on content
       dropdownRef.current.style.height = `${contentHeight}px`;
@@ -144,9 +150,7 @@ function Home() {
                     />
                     <span className="menu-item-text">
                       {item.name}
-                      <span className="menu-item-value">
-                        {item.name === "Gifts" ? totalGiftsSpent : ""}
-                      </span>
+                      <CategoryTotal item={item} />
                     </span>
                   </Link>
                 </li>
@@ -161,7 +165,7 @@ function Home() {
 
 export default Home;
 
-function isClickOutsideArea(element, event) {
+function isClickOutsideArea(element: HTMLDivElement, event: MouseEvent) {
   const rect = element.getBoundingClientRect();
   const clickX = event.clientX;
   const clickY = event.clientY;
@@ -176,4 +180,16 @@ function isClickOutsideArea(element, event) {
   }
 
   return false;
+}
+
+interface CategoryTotalProps {
+  item: typeof menuItems[0];
+}
+
+function CategoryTotal({ item }: CategoryTotalProps) {
+  const { watch } = useFormContext();
+  const data = watch(item.formKey);
+  const totalSpent = useTotal("spent", data);
+  return <span className="menu-item-value"> {totalSpent}
+</span>
 }

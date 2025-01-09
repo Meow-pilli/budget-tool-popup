@@ -1,8 +1,6 @@
-
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Control, FieldValues } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormMessage } from './ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { symbol } from "zod";
 
 const holidayItems = [
   { value: "all-holidays", label: "All Holidays" },
@@ -21,20 +19,39 @@ export const currencyItems = [
   { value: "yen", label: "Yen (¥)", symbol: "¥" },
 ];
 
+interface MenuSelectProps {
+  name: string;
+  placeholder: string;
+  items: { value: string; label: string; symbol?: string }[];
+  form: {
+    control: Control<FieldValues>;
+  };
+}
+
 function HolidayForm() {
   const form = useFormContext();
 
   return (
-    <form name='holiday-form' className="grid grid-cols-2 gap-4 px-4 mb-2">
-      <MenuSelect name="holiday" placeholder="-- Select a Holiday --" items={holidayItems} form={form} />
-      <MenuSelect name="currency" placeholder="-- Select a Currency --" items={currencyItems} form={form} />
+    <form name="holiday-form" className="grid grid-cols-2 gap-4 px-4 mb-2">
+      <MenuSelect
+        name="holiday"
+        placeholder="-- Select a Holiday --"
+        items={holidayItems}
+        form={form}
+      />
+      <MenuSelect
+        name="currency"
+        placeholder="-- Select a Currency --"
+        items={currencyItems}
+        form={form}
+      />
     </form>
   );
 }
 
 export default HolidayForm;
 
-function MenuSelect({ name, placeholder, items = [], form }) {
+function MenuSelect({ name, placeholder, items = [], form }: MenuSelectProps) {
   return (
     <FormField
       control={form.control}
@@ -47,8 +64,12 @@ function MenuSelect({ name, placeholder, items = [], form }) {
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className='z-[1001]'>
-              {items.map(h => <SelectItem key={h.value} value={h.value}>{h.label}</SelectItem>)}
+            <SelectContent className="z-[1001]">
+              {items.map((h) => (
+                <SelectItem key={h.value} value={h.value}>
+                  {h.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <FormMessage />
@@ -57,4 +78,3 @@ function MenuSelect({ name, placeholder, items = [], form }) {
     />
   );
 }
-
