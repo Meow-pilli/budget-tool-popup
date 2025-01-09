@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "./globals.css";
 import CustomDropdown from "./CustomDropdown";
 
 import Gifts, { initialGiftsData } from "./Gifts";
-import useGiftsTotal from "./hooks/useGiftsTotal";
+import useTotal from "./hooks/useTotal";
 import DataProvider from "./context/DataContext";
-// import Travel from "./Travel";
 import Home from "./Home";
 import GlobalForm from "./components/GlobalForm";
-// import Travel from "./Travel";
+import Travel from "./Travel";
 // import FoodAndDrinks from "./FoodAndDrinks";
 // import Entertainment from "./Entertainment";
 // import Decorations from "./Decorations";
@@ -42,8 +40,8 @@ function App() {
         <Routes>
           <Route path="/gifts" element={<Gifts />} />
           <Route path="/" element={<Home />} />
-          {/* <Route path="/travel" element={<Travel />} />
-          <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
+          <Route path="/travel" element={<Travel />} />
+          {/* <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
           <Route path="/entertainment" element={<Entertainment />} />
           <Route path="/decorations" element={<Decorations />} />
           <Route path="/costumes-and-clothing" element={<CostumesAndClothing />} />

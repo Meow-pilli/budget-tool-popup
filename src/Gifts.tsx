@@ -5,10 +5,15 @@ import CurrencyInputField from "./components/CurrencyInputField";
 import { currencyItems } from "./components/HolidayForm";
 import InputField from "./components/InputField";
 import "./Gifts.css";
-import useGiftsTotal from "./hooks/useGiftsTotal";
 import { formatValue } from "react-currency-input-field";
 
-export const initialGiftsData = [
+export interface Gift {
+  item: string;
+  budget: string;
+  spent: string;
+}
+
+export const initialGiftsData: Gift[] = [
   { item: "Family", budget: "500", spent: "0" },
   { item: "Friends", budget: "250", spent: "0" },
   { item: "Co-workers", budget: "0", spent: "0" },
@@ -17,12 +22,10 @@ export const initialGiftsData = [
 ];
 
 function Gifts() {
-  // const { data, setData } = useData();
   const navigate = useNavigate();
-
   const form = useFormContext();
 
-  const { watch, control, defaultValues, getValues } = form;
+  const { watch, control, getValues } = form;
   const currency = watch("currency");
   const currencyPrefix =
     currencyItems.find((c) => c.value === currency)?.symbol || "$";
@@ -31,18 +34,19 @@ function Gifts() {
     control,
     name: "gifts",
   });
-  console.log("🚀 ~ fields:", fields);
 
   const totalBudget = fields.reduce(
-    (sum, field, index) => sum + parseFloat(getValues(`gifts.${index}.budget`) || 0),
+    (sum, field, index) =>
+      sum + parseFloat(getValues(`gifts.${index}.budget`) || 0),
     0
   );
-  
+
   const totalSpent = fields.reduce(
-    (sum, field, index) => sum + parseFloat(getValues(`gifts.${index}.spent`) || 0),
+    (sum, field, index) =>
+      sum + parseFloat(getValues(`gifts.${index}.spent`) || 0),
     0
   );
-  
+
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const addRow = () => {
@@ -50,8 +54,10 @@ function Gifts() {
   };
 
   useEffect(() => {
-    const globalNavBar = document.querySelector(".nav-bar");
-    const globalMenuContainer = document.querySelector(".menu-container");
+    const globalNavBar = document.querySelector(".nav-bar") as HTMLElement | null;
+    const globalMenuContainer = document.querySelector(
+      ".menu-container"
+    ) as HTMLElement | null;
 
     if (globalNavBar) globalNavBar.style.display = "none";
     if (globalMenuContainer) globalMenuContainer.style.display = "none";
@@ -89,15 +95,10 @@ function Gifts() {
             </tr>
           </thead>
           <tbody>
-            {/* {data.map((row, index) => ( */}
             {fields.map((row, index) => (
-              <tr key={index}>
+              <tr key={row.id}>
                 <td>
-                  {index < 0 ? (
-                    row.item
-                  ) : (
-                    <InputField form={form} name={`gifts.${index}.item`} />
-                  )}
+                  <InputField form={form} name={`gifts.${index}.item`} />
                 </td>
                 <td>
                   <CurrencyInputField
@@ -115,7 +116,8 @@ function Gifts() {
                       placeholder={"0.00"}
                       prefix={currencyPrefix}
                     />
-                    {+row.spent <= +row.budget ? (
+                    {+getValues(`gifts.${index}.spent`) <=
+                    +getValues(`gifts.${index}.budget`) ? (
                       <span className="checkmark">✔</span>
                     ) : (
                       <span className="cross">✘</span>
@@ -123,18 +125,17 @@ function Gifts() {
                   </div>
                 </td>
                 <td>
-                {formatCurrency(
-                 (+getValues("gifts")[index].budget - +getValues("gifts")[index].spent).toFixed(2),
-                     currencyPrefix
-                     )}
-                  {/* {+row.budget - +row.spent < 0
-                    ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}`
-                    : `\u00A0 $${(row.budget - row.spent).toFixed(2)}`} */}
+                  {formatCurrency(
+                    (
+                      +getValues(`gifts.${index}.budget`) -
+                      +getValues(`gifts.${index}.spent`)
+                    ).toFixed(2),
+                    currencyPrefix
+                  )}
                 </td>
                 <td>
                   <button
                     onClick={() => remove(index)}
-                    // onClick={() => deleteRow(index)}
                     className="delete-row-button circle-button"
                   >
                     −
@@ -144,11 +145,8 @@ function Gifts() {
             ))}
           </tbody>
           <tfoot>
-            {/* Add Row Button */}
             <tr>
-              {/* Empty cells for alignment */}
-              <td colSpan="4"></td>
-              {/* Add Row Button in ACTION column */}
+              <td colSpan={4}></td>
               <td className="add-row-cell">
                 <button
                   onClick={addRow}
@@ -158,7 +156,6 @@ function Gifts() {
                 </button>
               </td>
             </tr>
-            {/* Total Row */}
             <tr className="footer-row">
               <td>Total</td>
               <td>${totalBudget.toFixed(2)}</td>
@@ -185,13 +182,11 @@ function Gifts() {
 
 export default Gifts;
 
-function formatCurrency(value, prefix) {
-  const formattedValue = formatValue({
+function formatCurrency(value: string, prefix: string): string | undefined {
+  return formatValue({
     value: String(value),
     groupSeparator: ",",
     decimalSeparator: ".",
     prefix,
   });
-
-  return formattedValue;
 }
