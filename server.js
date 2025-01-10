@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 // Fetch data API from 'budget_tool.currency'
 app.get('/api/data', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('admin_users').select('*');
+    const { data, error } = await supabase.schema("budget_tool").from('appuser').select('*');
     if (error) {
       return res.status(500).json({ message: 'Error fetching data', error });
     }
@@ -30,7 +30,7 @@ app.get('/api/data', async (req, res) => {
 
 // Add data API to 'budget_tool.currency'
 app.post('/api/data', async (req, res) => {
-  const { currency_code, currency_name, exchange_rate } = req.body; // Example fields, adjust based on your schema
+  const { currency_code, currency_name, exchange_rate } = req.body;
 
   try {
     const { data, error } = await supabase
