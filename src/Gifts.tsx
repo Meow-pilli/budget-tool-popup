@@ -78,7 +78,7 @@ function Gifts() {
     <div className="gifts-container">
       <header className="gifts-header">
         <div className="gifts-center-content">
-          <img src="/Gifts.png" alt="Gifts" className="gifts-icon" />
+          <img src="images/Gifts.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
         <button

@@ -64,7 +64,7 @@ function Travel() {
     <div className="gifts-container">
       <header className="gifts-header">
         <div className="gifts-center-content">
-          <img src="/Travel.png" alt="Travels" className="gifts-icon" />
+          <img src="images/Travel.png" alt="Travels" className="gifts-icon" />
           <h1 className="gifts-title">Travels</h1>
         </div>
         <button
