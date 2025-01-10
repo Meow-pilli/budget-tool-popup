@@ -1,10 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./CustomDropdown.css"; // Import styles if you want a dedicated CSS file
 
-function CustomDropdown({ options, selectedOption, setSelectedOption, placeholder }) {
+// Define the type for an individual option
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+// Define the props for the CustomDropdown component
+interface CustomDropdownProps {
+  options: Option[];
+  selectedOption: string | null;
+  setSelectedOption: (value: string) => void;
+  placeholder?: string;
+}
+
+function CustomDropdown({
+  options,
+  selectedOption,
+  setSelectedOption,
+  placeholder = "Select an option",
+}: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleOptionClick = (value) => {
+  const handleOptionClick = (value: string) => {
     setSelectedOption(value);
     setIsOpen(false);
   };
