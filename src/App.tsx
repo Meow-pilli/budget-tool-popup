@@ -9,6 +9,7 @@ import DataProvider from "./context/DataContext";
 import Home from "./Home";
 import GlobalForm from "./components/GlobalForm";
 import Travel from "./Travel";
+import FoodAndDrinks from "./FoodAndDrinks";
 // import FoodAndDrinks from "./FoodAndDrinks";
 // import Entertainment from "./Entertainment";
 // import Decorations from "./Decorations";
@@ -41,6 +42,7 @@ function App() {
           <Route path="/gifts" element={<Gifts />} />
           <Route path="/" element={<Home />} />
           <Route path="/travel" element={<Travel />} />
+          <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
           {/* <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
           <Route path="/entertainment" element={<Entertainment />} />
           <Route path="/decorations" element={<Decorations />} />

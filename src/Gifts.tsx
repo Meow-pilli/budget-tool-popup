@@ -14,8 +14,8 @@ export interface Gift {
 }
 
 export const initialGiftsData: Gift[] = [
-  { item: "Family", budget: "0", spent: "0" },
-  { item: "Friends", budget: "0", spent: "0" },
+  { item: "Family", budget: "500", spent: "0" },
+  { item: "Friends", budget: "250", spent: "0" },
   { item: "Co-workers", budget: "0", spent: "0" },
   { item: "Teachers, nannies, babysitters, etc.", budget: "0", spent: "0" },
   { item: "Charitable donations", budget: "0", spent: "0" },
@@ -23,33 +23,27 @@ export const initialGiftsData: Gift[] = [
 
 function Gifts() {
   const navigate = useNavigate();
-
   const form = useFormContext();
 
   const { watch, control, getValues } = form;
-
   const currency = watch("currency");
-
   const currencyPrefix =
-    (currencyItems.find((c) => c.value === currency)?.symbol || "$") + " ";
+    currencyItems.find((c) => c.value === currency)?.symbol || "$";
 
-  const { fields, append, remove } = useFieldArray<Gift>({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "gifts",
   });
 
-  console.log("🚀 ~ fields:", fields);
-
-  // Calculate totals
   const totalBudget = fields.reduce(
     (sum, field, index) =>
-      sum + parseFloat(getValues(`gifts.${index}.budget`) || "0"),
+      sum + parseFloat(getValues(`gifts.${index}.budget`) || 0),
     0
   );
 
   const totalSpent = fields.reduce(
     (sum, field, index) =>
-      sum + parseFloat(getValues(`gifts.${index}.spent`) || "0"),
+      sum + parseFloat(getValues(`gifts.${index}.spent`) || 0),
     0
   );
 
@@ -78,7 +72,7 @@ function Gifts() {
     <div className="gifts-container">
       <header className="gifts-header">
         <div className="gifts-center-content">
-          <img src="images/Gifts.png" alt="Gifts" className="gifts-icon" />
+          <img src="/Gifts.png" alt="Gifts" className="gifts-icon" />
           <h1 className="gifts-title">Gifts</h1>
         </div>
         <button
@@ -111,7 +105,7 @@ function Gifts() {
                     name={`gifts.${index}.budget`}
                     form={form}
                     placeholder={"0.00"}
-                    prefix={currencyPrefix} 
+                    prefix={currencyPrefix}
                   />
                 </td>
                 <td>
@@ -154,16 +148,19 @@ function Gifts() {
             <tr>
               <td colSpan={4}></td>
               <td className="add-row-cell">
-                <button onClick={addRow} className="add-row-button circle-button">
+                <button
+                  onClick={addRow}
+                  className="add-row-button circle-button"
+                >
                   +
                 </button>
               </td>
             </tr>
             <tr className="footer-row">
               <td>Total</td>
-              <td>{formatCurrency(totalBudget.toFixed(2), currencyPrefix)}</td>
+              <td>${totalBudget.toFixed(2)}</td>
               <td>
-                {formatCurrency(totalSpent.toFixed(2), currencyPrefix)}{" "}
+                ${totalSpent.toFixed(2)}{" "}
                 {totalSpent <= totalBudget ? (
                   <span className="checkmark">✔</span>
                 ) : (
@@ -171,8 +168,8 @@ function Gifts() {
                 )}
               </td>
               <td>
-                {totalDifference < 0 ? "- " : ""}
-                {formatCurrency(Math.abs(totalDifference).toFixed(2), currencyPrefix)}
+                {totalDifference < 0 ? "- $" : "\u00A0$"}
+                {Math.abs(totalDifference).toFixed(2)}
               </td>
               <td></td>
             </tr>
@@ -186,12 +183,10 @@ function Gifts() {
 export default Gifts;
 
 function formatCurrency(value: string, prefix: string): string | undefined {
-  const formattedValue = formatValue({
+  return formatValue({
     value: String(value),
     groupSeparator: ",",
     decimalSeparator: ".",
-    prefix: `${prefix}`,
+    prefix,
   });
-
-  return formattedValue;
 }
