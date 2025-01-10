@@ -1,12 +1,12 @@
-// server.js
-
+// API to get and post data between supabase - holiday budget tool 
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase client
-const supabaseUrl = 'https://ceptwlzghgoadfrxghxx.supabase.co'; // Replace with your Supabase URL
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlcHR3bHpnaGdvYWRmcnhnaHh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgwMjEwMzMsImV4cCI6MjA0MzU5NzAzM30.Qa2URgnFbO-nyFPa3zkjbbCdbAsRTD7xfuMEF0WG8n4'; // Replace with your Supabase anon key
+const supabaseUrl = process.env.SUPABASE_URL; 
+const supabaseKey = process.env.ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
@@ -15,8 +15,8 @@ const port = 3000;
 // Middleware to parse JSON
 app.use(bodyParser.json());
 
-// Fetch data API from 'budget_tool.currency'
-app.get('/api/data', async (req, res) => {
+// Fetch data API from 'budget_tool.appuser'
+app.get('/api/budget_tool/appuser', async (req, res) => {
   try {
     const { data, error } = await supabase.schema("budget_tool").from('appuser').select('*');
     if (error) {
@@ -28,14 +28,15 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
-// Add data API to 'budget_tool.currency'
-app.post('/api/data', async (req, res) => {
-  const { currency_code, currency_name, exchange_rate } = req.body;
+// Add data API to 'budget_tool.appuser'
+app.post('/api/budget_tool/appuser', async (req, res) => {
+  const { iduser, username } = req.body;
 
   try {
     const { data, error } = await supabase
-      .from('budget_tool.currency') // Using the correct schema and table
-      .insert([{ currency_code, currency_name, exchange_rate }]); // Adjust field names accordingly
+      .schema("budget_tool")
+      .from('appuser') // Using the correct schema and table
+      .insert([{ iduser, username }]);
 
     if (error) {
       return res.status(500).json({ message: 'Error adding data', error });
