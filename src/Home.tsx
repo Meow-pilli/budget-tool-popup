@@ -189,10 +189,12 @@ interface CategoryTotalProps {
 function CategoryTotal({ item }: CategoryTotalProps) {
   const { watch } = useFormContext();
   const data = watch(item.formKey);
+  const currency = watch("currency") || "$"; // Ensure default is $
+
   const totalSpent = useTotal("spent", data);
 
   // Ensure totalSpent is formatted to 2 decimal places
-  const formattedTotal = Number(totalSpent).toFixed(2);
+  const formattedTotal = `${currency} ${Number(totalSpent).toFixed(2)}`;
 
-  return <span className="menu-item-value"> {formattedTotal}</span>;
+  return <span className="menu-item-value">{formattedTotal}</span>;
 }
