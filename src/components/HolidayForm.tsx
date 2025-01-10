@@ -66,9 +66,9 @@ function MenuSelect({ name, placeholder, items = [], form }: MenuSelectProps) {
             </FormControl>
             <SelectContent className="z-[1001]">
               {items.map((h) => (
-                <SelectItem key={h.value} value={h.value}>
-                  {h.label}
-                </SelectItem>
+                <SelectItem key={h.value} value={h.symbol || h.value}>
+                {h.label}
+              </SelectItem>              
               ))}
             </SelectContent>
           </Select>
