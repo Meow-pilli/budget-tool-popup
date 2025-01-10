@@ -14,8 +14,8 @@ export interface Gift {
 }
 
 export const initialGiftsData: Gift[] = [
-  { item: "Family", budget: "500", spent: "0" },
-  { item: "Friends", budget: "250", spent: "0" },
+  { item: "Family", budget: "0", spent: "0" },
+  { item: "Friends", budget: "0", spent: "0" },
   { item: "Co-workers", budget: "0", spent: "0" },
   { item: "Teachers, nannies, babysitters, etc.", budget: "0", spent: "0" },
   { item: "Charitable donations", budget: "0", spent: "0" },
@@ -23,27 +23,33 @@ export const initialGiftsData: Gift[] = [
 
 function Gifts() {
   const navigate = useNavigate();
+
   const form = useFormContext();
 
   const { watch, control, getValues } = form;
-  const currency = watch("currency");
-  const currencyPrefix =
-    currencyItems.find((c) => c.value === currency)?.symbol || "$";
 
-  const { fields, append, remove } = useFieldArray({
+  const currency = watch("currency");
+
+  const currencyPrefix =
+    (currencyItems.find((c) => c.value === currency)?.symbol || "$") + " ";
+
+  const { fields, append, remove } = useFieldArray<Gift>({
     control,
     name: "gifts",
   });
 
+  console.log("🚀 ~ fields:", fields);
+
+  // Calculate totals
   const totalBudget = fields.reduce(
     (sum, field, index) =>
-      sum + parseFloat(getValues(`gifts.${index}.budget`) || 0),
+      sum + parseFloat(getValues(`gifts.${index}.budget`) || "0"),
     0
   );
 
   const totalSpent = fields.reduce(
     (sum, field, index) =>
-      sum + parseFloat(getValues(`gifts.${index}.spent`) || 0),
+      sum + parseFloat(getValues(`gifts.${index}.spent`) || "0"),
     0
   );
 
@@ -105,7 +111,7 @@ function Gifts() {
                     name={`gifts.${index}.budget`}
                     form={form}
                     placeholder={"0.00"}
-                    prefix={currencyPrefix}
+                    prefix={currencyPrefix} 
                   />
                 </td>
                 <td>
@@ -148,19 +154,16 @@ function Gifts() {
             <tr>
               <td colSpan={4}></td>
               <td className="add-row-cell">
-                <button
-                  onClick={addRow}
-                  className="add-row-button circle-button"
-                >
+                <button onClick={addRow} className="add-row-button circle-button">
                   +
                 </button>
               </td>
             </tr>
             <tr className="footer-row">
               <td>Total</td>
-              <td>${totalBudget.toFixed(2)}</td>
+              <td>{formatCurrency(totalBudget.toFixed(2), currencyPrefix)}</td>
               <td>
-                ${totalSpent.toFixed(2)}{" "}
+                {formatCurrency(totalSpent.toFixed(2), currencyPrefix)}{" "}
                 {totalSpent <= totalBudget ? (
                   <span className="checkmark">✔</span>
                 ) : (
@@ -168,8 +171,8 @@ function Gifts() {
                 )}
               </td>
               <td>
-                {totalDifference < 0 ? "- $" : "\u00A0$"}
-                {Math.abs(totalDifference).toFixed(2)}
+                {totalDifference < 0 ? "- " : ""}
+                {formatCurrency(Math.abs(totalDifference).toFixed(2), currencyPrefix)}
               </td>
               <td></td>
             </tr>
@@ -183,10 +186,12 @@ function Gifts() {
 export default Gifts;
 
 function formatCurrency(value: string, prefix: string): string | undefined {
-  return formatValue({
+  const formattedValue = formatValue({
     value: String(value),
     groupSeparator: ",",
     decimalSeparator: ".",
-    prefix,
+    prefix: `${prefix}`,
   });
+
+  return formattedValue;
 }

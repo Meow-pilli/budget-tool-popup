@@ -190,6 +190,9 @@ function CategoryTotal({ item }: CategoryTotalProps) {
   const { watch } = useFormContext();
   const data = watch(item.formKey);
   const totalSpent = useTotal("spent", data);
-  return <span className="menu-item-value"> {totalSpent}
-</span>
+
+  // Ensure totalSpent is formatted to 2 decimal places
+  const formattedTotal = Number(totalSpent).toFixed(2);
+
+  return <span className="menu-item-value"> {formattedTotal}</span>;
 }
