@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, useState, ReactNode } from "react";
-import { initialGiftsData } from "../Gifts";
+import { initialGiftsData } from "../routes/Gifts/Gifts";
 
 // Define the shape of the data
 type DataType = typeof initialGiftsData;

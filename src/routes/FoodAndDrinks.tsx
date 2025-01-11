@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import CurrencyInputField from "./components/CurrencyInputField";
-import { currencyItems } from "./components/HolidayForm";
-import InputField from "./components/InputField";
-import "./Gifts.css";
+import CurrencyInputField from "../components/CurrencyInputField";
+import { currencyItems } from "../components/HolidayForm";
+import InputField from "../components/InputField";
+//import "./Gifts.css";
 import { formatValue } from "react-currency-input-field";
 
 export interface FoodAndDrink {
@@ -32,17 +32,17 @@ function FoodAndDrinks() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "FoodAndDrinks",
+    name: "foodAndDrinks",
   });
 
   const totalBudget = fields.reduce(
-    (sum, field, index) =>
+    (sum, _field, index) =>
       sum + parseFloat(getValues(`foodAndDrinks.${index}.budget`) || 0),
     0
   );
 
   const totalSpent = fields.reduce(
-    (sum, field, index) =>
+    (sum, _field, index) =>
       sum + parseFloat(getValues(`foodAndDrinks.${index}.spent`) || 0),
     0
   );
@@ -98,7 +98,7 @@ function FoodAndDrinks() {
             {fields.map((row, index) => (
               <tr key={row.id}>
                 <td>
-                  <InputField form={form} name={`gifts.${index}.item`} />
+                  <InputField form={form} name={`foodAndDrinks.${index}.item`} />
                 </td>
                 <td>
                   <CurrencyInputField

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 // import CustomDropdown from "./CustomDropdown";
 import useTotal from "./hooks/useTotal";
 import HolidayForm from "./components/HolidayForm";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import holidayTrackerImg from "./Black2.png";
 import { useFormContext } from "react-hook-form";
 
@@ -55,11 +55,10 @@ const menuItems = [
 ];
 
 function Home() {
-  const navigate = useNavigate();
   //const { data } = useData();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [itemsState, setItemsState] = useState(menuItems);
+  const [itemsState] = useState(menuItems);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const menuContentRef = useRef<HTMLDivElement | null>(null);
@@ -136,7 +135,7 @@ function Home() {
 
             {/* Menu Items */}
             <ul>
-              {itemsState.map((item, index) => (
+              {itemsState.map((item) => (
                 <li
                   key={item.name}
                   className="menu-item"
@@ -156,6 +155,16 @@ function Home() {
                 </li>
               ))}
             </ul>
+            <div className="budget-insights-container">
+              <Link to="/budget" className="budget-insight-link">
+                <img src="images/Budget.png" alt="Budget" className="budget-icon" />
+                <span>Budget</span>
+              </Link>
+              <Link to="/insights" className="budget-insight-link">
+                <img src="images/Insights.png" alt="Insights" className="insights-icon" />
+                <span>Insights</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

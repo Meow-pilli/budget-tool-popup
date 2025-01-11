@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "./globals.css";
-import CustomDropdown from "./CustomDropdown";
 
-import Gifts, { initialGiftsData } from "./Gifts";
-import useTotal from "./hooks/useTotal";
+import Gifts from "./routes/Gifts";
 import DataProvider from "./context/DataContext";
 import Home from "./Home";
 import GlobalForm from "./components/GlobalForm";
-import Travel from "./Travel";
-import FoodAndDrinks from "./FoodAndDrinks";
+import Travel from "./routes/Travel";
+import FoodAndDrinks from "./routes/FoodAndDrinks";
+import Budget from "./routes/Budget";
+import { routeUrls } from "./routes/routeUrls";
 // import FoodAndDrinks from "./FoodAndDrinks";
 // import Entertainment from "./Entertainment";
 // import Decorations from "./Decorations";
@@ -19,18 +19,6 @@ import FoodAndDrinks from "./FoodAndDrinks";
 
 // const location = useLocation();
 
-// List of routes where the global header should not appear
-const noHeaderRoutes = [
-  "/gifts",
-  "/travel",
-  "/food-and-drinks",
-  "/entertainment",
-  "/decorations",
-  "/costumes-and-clothing",
-  "/stationery-and-packaging",
-  "/charitable-contributions",
-];
-
 function App() {
   return (
     <GlobalForm>
@@ -39,16 +27,17 @@ function App() {
         {/* Routes for Pages */}
         {/* Routes */}
         <Routes>
-          <Route path="/gifts" element={<Gifts />} />
+          <Route path={routeUrls.gifts} element={<Gifts />} />
           <Route path="/" element={<Home />} />
-          <Route path="/travel" element={<Travel />} />
-          <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
-          {/* <Route path="/food-and-drinks" element={<FoodAndDrinks />} />
-          <Route path="/entertainment" element={<Entertainment />} />
+          <Route path={routeUrls.travels} element={<Travel />} />
+          <Route path={routeUrls.foodAndDrinks} element={<FoodAndDrinks />} />
+          <Route path={routeUrls.budget} element={<Budget />} />
+          {/* <Route path="/entertainment" element={<Entertainment />} />
           <Route path="/decorations" element={<Decorations />} />
           <Route path="/costumes-and-clothing" element={<CostumesAndClothing />} />
           <Route path="/stationery-and-packaging" element={<StationeryAndPackaging />} />
-          <Route path="/charitable-contributions" element={<CharitableContributions />} /> */}
+          <Route path="/charitable-contributions" element={<CharitableContributions />} /> 
+          <Route path="/insights" element={<Insights />} */}
         </Routes>
     </Router>
     </DataProvider>

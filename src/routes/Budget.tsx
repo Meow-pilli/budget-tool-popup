@@ -1,71 +1,81 @@
+import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import CurrencyInputField from "./components/CurrencyInputField";
-import { currencyItems } from "./components/HolidayForm";
-import InputField from "./components/InputField";
-import "./Gifts.css";
+import CurrencyInputField from "../components/CurrencyInputField";
+import InputField from "../components/InputField";
+//import "./Gifts.css";
 import { formatValue } from "react-currency-input-field";
 
-export const initialTravelsData = [
-  { item: "Family", budget: "500", spent: "0" },
-  { item: "Friends", budget: "250", spent: "0" },
-  { item: "Co-workers", budget: "0", spent: "0" },
-  { item: "Teachers, nannies, babysitters, etc.", budget: "0", spent: "0" },
-  { item: "Charitable donations", budget: "0", spent: "0" },
+export interface BudgetCategory {
+  category: string;
+  budget: string;
+  spent: string;
+}
+
+export const initialBudgetData: BudgetCategory[] = [
+  { category: "Gifts", budget: "500", spent: "0" },
+  { category: "Travel", budget: "300", spent: "0" },
+  { category: "Food & Drinks", budget: "200", spent: "0" },
+  { category: "Entertainment", budget: "150", spent: "0" },
+  { category: "Decorations", budget: "100", spent: "0" },
+  { category: "Costumes & Clothing", budget: "80", spent: "0" },
+  { category: "Stationery & Packaging", budget: "50", spent: "0" },
+  { category: "Charitable Contributions", budget: "70", spent: "0" },
 ];
 
-function Travel() {
-  // const { data, setData } = useData();
+function Budget() {
   const navigate = useNavigate();
-
   const form = useFormContext();
 
   const { watch, control, getValues } = form;
   const currency = watch("currency");
   const currencyPrefix =
-    currencyItems.find((c) => c.value === currency)?.symbol || "$";
+    (currency === undefined ? "$" : currency) + " ";
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "travels",
+    name: "budget", // Ensure this matches the key for the budget data
   });
-  console.log("🚀 ~ fields:", fields);
 
   const totalBudget = fields.reduce(
-    (sum, _field, index) => sum + parseFloat(getValues(`travels.${index}.budget`) || 0),
+    (sum, _, index) =>
+      sum + parseFloat(getValues(`budget.${index}.budget`) || "0"),
     0
   );
-  
+
   const totalSpent = fields.reduce(
-    (sum, _field, index) => sum + parseFloat(getValues(`travels.${index}.spent`) || 0),
+    (sum, _, index) =>
+      sum + parseFloat(getValues(`budget.${index}.spent`) || "0"),
     0
   );
-  
+
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
   const addRow = () => {
-    append({ item: "", budget: "0", spent: "0" });
+    append({ category: "", budget: "0", spent: "0" });
   };
 
-  // useEffect(() => {
-  //   const globalNavBar = document.querySelector(".nav-bar");
-  //   const globalMenuContainer = document.querySelector(".menu-container");
+  useEffect(() => {
+    const globalNavBar = document.querySelector(".nav-bar") as HTMLElement | null;
+    const globalMenuContainer = document.querySelector(
+      ".menu-container"
+    ) as HTMLElement | null;
 
-  //   if (globalNavBar) globalNavBar.style.display = "none";
-  //   if (globalMenuContainer) globalMenuContainer.style.display = "none";
+    if (globalNavBar) globalNavBar.style.display = "none";
+    if (globalMenuContainer) globalMenuContainer.style.display = "none";
 
-  //   return () => {
-  //     if (globalNavBar) globalNavBar.style.display = "flex";
-  //     if (globalMenuContainer) globalMenuContainer.style.display = "block";
-  //   };
-  // }, []);
+    return () => {
+      if (globalNavBar) globalNavBar.style.display = "flex";
+      if (globalMenuContainer) globalMenuContainer.style.display = "block";
+    };
+  }, []);
 
   return (
     <div className="gifts-container">
       <header className="gifts-header">
         <div className="gifts-center-content">
-          <img src="images/Travel.png" alt="Travels" className="gifts-icon" />
-          <h1 className="gifts-title">Travels</h1>
+          <img src="./images/Budget.png" alt="Budget" className="budget-icon" />
+          <h1 className="gifts-title">Budget</h1>
         </div>
         <button
           type="button"
@@ -87,21 +97,14 @@ function Travel() {
             </tr>
           </thead>
           <tbody>
-            {/* {data.map((row, index) => ( */}
-            {fields.map((rawRow, index) => {
-              const row = rawRow as unknown as BudgetEntry;
-              return(
-              <tr key={index}>
+            {fields.map((row, index) => (
+              <tr key={row.id}>
                 <td>
-                  {index < 0 ? (
-                    row.item
-                  ) : (
-                    <InputField form={form} name={`travels.${index}.item`} />
-                  )}
+                  <InputField form={form} name={`budget.${index}.category`} />
                 </td>
                 <td>
                   <CurrencyInputField
-                    name={`travels.${index}.budget`}
+                    name={`budget.${index}.budget`}
                     form={form}
                     placeholder={"0.00"}
                     prefix={currencyPrefix}
@@ -110,12 +113,13 @@ function Travel() {
                 <td>
                   <div className="currency-input-with-status">
                     <CurrencyInputField
-                      name={`travels.${index}.spent`}
+                      name={`budget.${index}.spent`}
                       form={form}
                       placeholder={"0.00"}
                       prefix={currencyPrefix}
                     />
-                    {+row.spent <= +row.budget ? (
+                    {+getValues(`budget.${index}.spent`) <=
+                    +getValues(`budget.${index}.budget`) ? (
                       <span className="checkmark">✔</span>
                     ) : (
                       <span className="cross">✘</span>
@@ -124,32 +128,27 @@ function Travel() {
                 </td>
                 <td>
                   {formatCurrency(
-                    +getValues("travels")[index].budget -
-                      +getValues("travels")[index].spent,
+                    (
+                      +getValues(`budget.${index}.budget`) -
+                      +getValues(`budget.${index}.spent`)
+                    ).toFixed(2),
                     currencyPrefix
                   )}
-                  {/* {+row.budget - +row.spent < 0
-                    ? `- $${Math.abs(row.budget - row.spent).toFixed(2)}`
-                    : `\u00A0 $${(row.budget - row.spent).toFixed(2)}`} */}
                 </td>
                 <td>
                   <button
                     onClick={() => remove(index)}
-                    // onClick={() => deleteRow(index)}
                     className="delete-row-button circle-button"
                   >
                     −
                   </button>
                 </td>
               </tr>
-            )})}
+            ))}
           </tbody>
           <tfoot>
-            {/* Add Row Button */}
             <tr>
-              {/* Empty cells for alignment */}
               <td colSpan={4}></td>
-              {/* Add Row Button in ACTION column */}
               <td className="add-row-cell">
                 <button
                   onClick={addRow}
@@ -159,12 +158,11 @@ function Travel() {
                 </button>
               </td>
             </tr>
-            {/* Total Row */}
             <tr className="footer-row">
               <td>Total</td>
-              <td>${totalBudget.toFixed(2)}</td>
+              <td>{totalBudget.toFixed(2)}</td>
               <td>
-                ${totalSpent.toFixed(2)}{" "}
+                {totalSpent.toFixed(2)}{" "}
                 {totalSpent <= totalBudget ? (
                   <span className="checkmark">✔</span>
                 ) : (
@@ -184,15 +182,13 @@ function Travel() {
   );
 }
 
-export default Travel;
+export default Budget;
 
-function formatCurrency(value: number, prefix:string) {
-  const formattedValue = formatValue({
+function formatCurrency(value: string, prefix: string): string | undefined {
+  return formatValue({
     value: String(value),
     groupSeparator: ",",
     decimalSeparator: ".",
     prefix,
   });
-
-  return formattedValue;
 }

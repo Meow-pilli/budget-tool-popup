@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { Form } from './ui/form';
-import { initialGiftsData } from '@/Gifts';
-import { initialTravelsData } from '@/Travel';
+import { initialGiftsData } from '@/routes/Gifts/Gifts';
+import { initialTravelsData } from '@/routes/Travel';
+import { initialDrinksData } from '@/routes/FoodAndDrinks';
 
 // {
 //     holiday: 'christmas',
@@ -28,7 +29,7 @@ function GlobalForm({ children }: GlobalFormProps) {
         defaultValues: {
             gifts: initialGiftsData,
             travels: initialTravelsData,
-            foodAndDrinks: [],
+            foodAndDrinks: initialDrinksData,
         }
     });
     const watch = methods.watch;
