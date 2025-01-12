@@ -7,22 +7,33 @@ import {
 } from "chart.js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useFormContext } from "react-hook-form";
+import useTotal from "../hooks/useTotal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Insights = () => {
   const navigate = useNavigate();
+  const { watch } = useFormContext();
 
+  // Watch data for each category from the form context
   const categories = [
-    { name: "Gifts", budget: 300, spent: 200, color: "#E24831" },
-    { name: "Travel", budget: 200, spent: 100, color: "#FF93B8" },
-    { name: "Food & Drinks", budget: 400, spent: 200, color: "#786DD3" },
-    { name: "Entertainment", budget: 150, spent: 100, color: "#2088E7" },
-    { name: "Decorations", budget: 100, spent: 60, color: "#21C1E7" },
-    { name: "Costumes & Clothing", budget: 200, spent: 150, color: "#63AB5C" },
-    { name: "Stationery & Packaging", budget: 50, spent: 20, color: "#EAC934" },
-    { name: "Charitable Contributions", budget: 75, spent: 35, color: "#65328C" },
-  ];
+    { name: "Gifts", formKey: "gifts", color: "#E24831" },
+    { name: "Travel", formKey: "travels", color: "#FF93B8" },
+    { name: "Food & Drinks", formKey: "foodAndDrinks", color: "#786DD3" },
+    { name: "Entertainment", formKey: "entertainment", color: "#2088E7" },
+    { name: "Decorations", formKey: "decorations", color: "#21C1E7" },
+    { name: "Costumes & Clothing", formKey: "costumesAndClothing", color: "#63AB5C" },
+    { name: "Stationery & Packaging", formKey: "stationeryAndPackaging", color: "#EAC934" },
+    { name: "Charitable Contributions", formKey: "charitableContributions", color: "#65328C" },
+  ].map((category) => {
+    const data = watch(category.formKey) || []; // Get data for the category
+    return {
+      ...category,
+      budget: useTotal("budget", data), // Calculate total budget for the category
+      spent: useTotal("spent", data), // Calculate total spent for the category
+    };
+  });
 
   const totalBudget = categories.reduce((sum, cat) => sum + cat.budget, 0);
   const totalSpent = categories.reduce((sum, cat) => sum + cat.spent, 0);

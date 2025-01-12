@@ -36,7 +36,7 @@ function App() {
           <Route path="/costumes-and-clothing" element={<CostumesAndClothing />} />
           <Route path="/stationery-and-packaging" element={<StationeryAndPackaging />} />
           <Route path="/charitable-contributions" element={<CharitableContributions />} />
-          <Route path={routeUrls.budget} element={<Budget />} />
+          <Route path="/budget" element={<Budget />} />
           <Route path="/insights" element={<Insights />} />
         </Routes>
     </Router>

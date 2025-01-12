@@ -8,7 +8,7 @@ export type BudgetCategory = {
   spent: string;
 };
 
-export const initialBudgetData: BudgetCategory[] = [
+const budgetData: BudgetCategory[] = [
   { item: "Gifts", budget: "500", spent: "0" },
   { item: "Travels", budget: "300", spent: "0" },
   { item: "Food & Drinks", budget: "400", spent: "0" },
@@ -19,9 +19,11 @@ export const initialBudgetData: BudgetCategory[] = [
   { item: "Charitable Contributions", budget: "75", spent: "0" },
 ];
 
+export const initialBudgetData: BudgetCategory[] = budgetData;
+
 function Budget() {
   const form = useFormContext();
-  const { control, watch } = form;
+  const { watch } = form;
 
   // Watch data for all categories
   const categories = {
@@ -59,7 +61,6 @@ function Budget() {
   console.log("Budget Totals:", budgetTotals); // Debug final budget totals
 
   const { fields, append, remove } = useFieldArray({
-    control,
     name: "budget",
   });
 
