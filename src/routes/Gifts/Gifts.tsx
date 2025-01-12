@@ -1,12 +1,11 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import CategoryLayout from "../CategoryLayout/CategoryLayout";
-//import "./Gifts.css";
 
 export type Gift = {
   item: string;
   budget: string;
   spent: string;
-}
+};
 
 export const initialGiftsData: Gift[] = [
   { item: "Family", budget: "500", spent: "0" },
@@ -18,16 +17,25 @@ export const initialGiftsData: Gift[] = [
 
 function Gifts() {
   const form = useFormContext();
-
   const { control } = form;
 
-  const { fields } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "gifts",
   });
 
   return (
-    <CategoryLayout type='gifts' categoryFields={fields}/>
+    <CategoryLayout
+      type="gifts"
+      categoryFields={fields}
+      onAddRow={() => append({ item: "", budget: "0", spent: "0" })}
+      onRemoveRow={remove}
+      headerConfig={{
+        color: "#E24831",
+        title: "Gifts",
+        icon: "./images/Gifts.png",
+      }}
+    />
   );
 }
 

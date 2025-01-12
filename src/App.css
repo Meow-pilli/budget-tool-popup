@@ -99,15 +99,13 @@ body {
 
 /* Individual hover colors based on item color */
 .menu-item:nth-child(1):hover { background-color: #E24831; }
-.menu-item:nth-child(2):hover { background-color: #ff8c00; } 
-.menu-item:nth-child(3):hover { background-color: #f781ab; }
+.menu-item:nth-child(2):hover { background-color: #FF93B8; } 
+.menu-item:nth-child(3):hover { background-color: #786DD3; }
 .menu-item:nth-child(4):hover { background-color: #2088E7; }
-.menu-item:nth-child(5):hover { background-color: #17b6de; }
+.menu-item:nth-child(5):hover { background-color: #21C1E7; }
 .menu-item:nth-child(6):hover { background-color: #63AB5C; }
-.menu-item:nth-child(7):hover { background-color: #ffcc00; }
-/* #f0be41 */
-/*#ffcc00*/
-.menu-item:nth-child(8):hover { background-color: #786DD3; }
+.menu-item:nth-child(7):hover { background-color: #EAC934; }
+.menu-item:nth-child(8):hover { background-color: #65328C; }
 
 /* Menu icon styles - Hidden by default */
 .menu-icon {

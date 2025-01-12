@@ -6,11 +6,35 @@ import { formatValue } from "react-currency-input-field";
 import { useNav } from "@/hooks/useNav";
 
 type Props = {
-  type: "gifts" | "travels" | "accommodation" | "food" | "other";
+  type:
+    | "gifts"
+    | "travels"
+    | "foodAndDrinks"
+    | "entertainment"
+    | "decorations"
+    | "costumesAndClothing"
+    | "stationeryAndPackaging"
+    | "charitableContributions"
+    | "budget";
   categoryFields: Array<{ name?: string; id: string }>;
+  onAddRow: () => void;
+  onRemoveRow: (index: number) => void;
+  headerConfig: {
+    color: string; // Header background color
+    title: string; // Header title
+    icon: string; // Header icon path
+    textColor?: string; // Header text color
+  };
 };
 
-export default function CategoryLayout({ type, categoryFields }: Props) {
+export default function CategoryLayout({
+  type,
+  categoryFields,
+  onAddRow,
+  onRemoveRow,
+  headerConfig,
+}: Props) {
+  const { color, title, icon, textColor } = headerConfig;
   useNav();
   const navigate = useNavigate();
   const form = useFormContext();
@@ -32,21 +56,21 @@ export default function CategoryLayout({ type, categoryFields }: Props) {
 
   const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
-  const addRow = () => {
-    categoryFields.push({ id: `${Date.now()}`, name: "" });
-  };
-
-  const remove = (index: number) => {
-    categoryFields.splice(index, 1);
-  };
-
   return (
     <div className="flex flex-col h-screen">
       {/* Header Section */}
-      <header className="flex items-center justify-center relative h-[12vh] bg-[#E24831] shadow-md">
+      <header
+        className="flex items-center justify-center relative h-[12vh]"
+        style={{ backgroundColor: color }}
+      >
         <div className="flex items-center gap-[1vw]">
-          <img src="./images/Gifts.png" alt="Gifts" className="w-[6vh] h-[6vh]" />
-          <h1 className="text-[1.5rem] font-bold text-white">Gifts</h1>
+          <img src={icon} alt={title} className="w-[6vh] h-[6vh]" />
+          <h1
+            className={`text-[1.5rem] font-bold`}
+            style={{ color: textColor || "white" }} // Default to white if textColor is not provided
+          >
+            {title}
+          </h1>
         </div>
         <button
           type="button"
@@ -63,11 +87,21 @@ export default function CategoryLayout({ type, categoryFields }: Props) {
           {/* Table Head */}
           <thead>
             <tr className="bg-[#f7f7f7] border-b-[2px] border-[#d9d9d9]">
-              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">CATEGORY</th>
-              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">BUDGET</th>
-              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">SPENT</th>
-              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">DIFFERENCE</th>
-              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">ACTION</th>
+              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
+                CATEGORY
+              </th>
+              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
+                BUDGET
+              </th>
+              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
+                SPENT
+              </th>
+              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
+                DIFFERENCE
+              </th>
+              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
+                ACTION
+              </th>
             </tr>
           </thead>
 
@@ -118,7 +152,7 @@ export default function CategoryLayout({ type, categoryFields }: Props) {
                 </td>
                 <td className="p-[10px]">
                   <button
-                    onClick={() => remove(index)}
+                    onClick={() => onRemoveRow(index)}
                     className="w-[30px] h-[30px] border-[2px] border-red-500 text-red-500 rounded-full font-bold bg-white hover:bg-red-500 hover:text-white hover:scale-110 transition-transform"
                   >
                     −
@@ -134,7 +168,7 @@ export default function CategoryLayout({ type, categoryFields }: Props) {
               <td colSpan={4}></td>
               <td className="p-[10px]">
                 <button
-                  onClick={addRow}
+                  onClick={onAddRow}
                   className="w-[30px] h-[30px] border-[2px] border-green-500 text-green-500 rounded-full font-bold bg-white hover:bg-green-500 hover:text-white hover:scale-110 transition-transform"
                 >
                   +
@@ -157,8 +191,8 @@ export default function CategoryLayout({ type, categoryFields }: Props) {
                 )}
               </td>
               <td className="p-[10px]">
-                {currencyPrefix}
                 {totalDifference < 0 ? "- " : ""}
+                {currencyPrefix}
                 {Math.abs(totalDifference).toFixed(2)}
               </td>
               <td className="p-[10px]"></td>
@@ -171,10 +205,12 @@ export default function CategoryLayout({ type, categoryFields }: Props) {
 }
 
 function formatCurrency(value: string, prefix: string): string | undefined {
-  return formatValue({
-    value: String(value),
+  const formattedValue = formatValue({
+    value: String(value).replace("-", ""), // Remove negative sign temporarily
     groupSeparator: ",",
     decimalSeparator: ".",
     prefix,
   });
+
+  return value.startsWith("-") ? `- ${formattedValue}` : formattedValue;
 }

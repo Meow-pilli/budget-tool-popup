@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-// import { useData } from "./context/DataContext";
-// import CustomDropdown from "./CustomDropdown";
+import { Link } from "react-router-dom";
+import { useFormContext } from "react-hook-form";
 import useTotal from "./hooks/useTotal";
 import HolidayForm from "./components/HolidayForm";
-import { Link } from "react-router-dom";
 import holidayTrackerImg from "./Black2.png";
-import { useFormContext } from "react-hook-form";
 
 const menuItems = [
   { name: "Gifts", icon: "images/Gifts.png", isOpen: false, link: "/gifts", formKey: "gifts" },
@@ -55,8 +53,6 @@ const menuItems = [
 ];
 
 function Home() {
-  //const { data } = useData();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [itemsState] = useState(menuItems);
 
@@ -68,7 +64,6 @@ function Home() {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    console.log("🚀 ~ handleClickOutside ~ event:", event);
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as HTMLDivElement) &&
@@ -77,14 +72,6 @@ function Home() {
       setIsMenuOpen(false);
     }
   };
-
-  // const toggleItem = (index) => {
-  //   setItemsState((prev) =>
-  //     prev.map((item, i) =>
-  //       i === index ? { ...item, isOpen: !item.isOpen } : item
-  //     )
-  //   );
-  // };
 
   useEffect(() => {
     if (menuContentRef.current === null || dropdownRef.current === null) {
@@ -139,7 +126,6 @@ function Home() {
                 <li
                   key={item.name}
                   className="menu-item"
-                  // onClick={() => navigate(item.link)}
                 >
                   <Link to={item.link} className="menu-item-link">
                     <img
@@ -155,14 +141,30 @@ function Home() {
                 </li>
               ))}
             </ul>
-            <div className="budget-insights-container">
-              <Link to="/budget" className="budget-insight-link">
-                <img src="images/Budget.png" alt="Budget" className="budget-icon" />
-                <span>Budget</span>
+
+            {/* Budget and Insights */}
+            <div className="budget-insights-container flex justify-center gap-8 mt-4">
+              <Link
+                to="/budget"
+                className="budget-insight-link flex flex-col items-center text-center"
+              >
+                <img
+                  src="images/Budget.png"
+                  alt="Budget"
+                  className="budget-icon w-16 h-16" // Increased size
+                />
+                <span className="text-md">Budget</span> {/* Not bold */}
               </Link>
-              <Link to="/insights" className="budget-insight-link">
-                <img src="images/Insights.png" alt="Insights" className="insights-icon" />
-                <span>Insights</span>
+              <Link
+                to="/insights"
+                className="budget-insight-link flex flex-col items-center text-center"
+              >
+                <img
+                  src="images/Insights.png"
+                  alt="Insights"
+                  className="insights-icon w-16 h-16" // Increased size
+                />
+                <span className="text-md">Insights</span> {/* Not bold */}
               </Link>
             </div>
           </div>
@@ -179,16 +181,12 @@ function isClickOutsideArea(element: HTMLDivElement, event: MouseEvent) {
   const clickX = event.clientX;
   const clickY = event.clientY;
 
-  if (
+  return (
     clickX < rect.left ||
     clickX > rect.right ||
     clickY < rect.top ||
     clickY > rect.bottom
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 interface CategoryTotalProps {
@@ -200,7 +198,6 @@ function CategoryTotal({ item }: CategoryTotalProps) {
   const data = watch(item.formKey);
   const totalSpent = useTotal("spent", data);
 
-  // Ensure totalSpent is formatted to 2 decimal places
   const formattedTotal = Number(totalSpent).toFixed(2);
 
   return <span className="menu-item-value"> {formattedTotal}</span>;

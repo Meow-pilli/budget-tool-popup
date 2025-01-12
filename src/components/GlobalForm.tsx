@@ -2,7 +2,13 @@ import { useForm } from 'react-hook-form';
 import { Form } from './ui/form';
 import { initialGiftsData } from '@/routes/Gifts/Gifts';
 import { initialTravelsData } from '@/routes/Travel';
-import { initialDrinksData } from '@/routes/FoodAndDrinks';
+import { initialFoodAndDrinksData } from '@/routes/FoodAndDrinks';
+import { initialEntertainmentData } from '@/routes/Entertainment';
+import { initialDecorationsData } from '@/routes/Decorations';
+import { initialCostumesAndClothingData } from '@/routes/CostumesAndClothing';
+import { initialStationeryAndPackagingData } from '@/routes/StationeryAndPackaging';
+import { initialCharitableContributionsData } from '@/routes/CharitableContributions';
+import { initialBudgetData } from '@/routes/Budget';
 
 // {
 //     holiday: 'christmas',
@@ -16,6 +22,12 @@ interface GlobalFormTypes {
     gifts: BudgetEntry[];
     travels: BudgetEntry[];
     foodAndDrinks: BudgetEntry[];
+    entertainment: BudgetEntry[];
+    decorations: BudgetEntry[];
+    costumesAndClothing: BudgetEntry[];
+    stationeryAndPackaging: BudgetEntry[];
+    charitableContributions: BudgetEntry[];
+    budget: BudgetEntry[];
     holiday: string;
     currency: string;
 }
@@ -29,7 +41,13 @@ function GlobalForm({ children }: GlobalFormProps) {
         defaultValues: {
             gifts: initialGiftsData,
             travels: initialTravelsData,
-            foodAndDrinks: initialDrinksData,
+            foodAndDrinks: initialFoodAndDrinksData,
+            entertainment: initialEntertainmentData,
+            decorations: initialDecorationsData,
+            costumesAndClothing: initialCostumesAndClothingData,
+            stationeryAndPackaging: initialStationeryAndPackagingData,
+            charitableContributions: initialCharitableContributionsData,
+            budget: initialBudgetData
         }
     });
     const watch = methods.watch;
