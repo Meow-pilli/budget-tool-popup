@@ -3,6 +3,7 @@ import InputField from "@/components/InputField";
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { formatValue } from "react-currency-input-field";
+import { currencyItems } from "@/components/HolidayForm"; // Import currencyItems if it's defined elsewhere
 import { useNav } from "@/hooks/useNav";
 
 type Props = {
@@ -39,8 +40,11 @@ export default function CategoryLayout({
   const navigate = useNavigate();
   const form = useFormContext();
   const { watch, getValues } = form;
-  const currency = watch("currency");
-  const currencyPrefix = currency ? `${currency} ` : "$ ";
+
+  // Fix for currency symbol
+  const currencyValue = watch("currency") || "dollar";
+  const currencyPrefix =
+    currencyItems.find((c) => c.value === currencyValue)?.symbol + " " || "$ ";
 
   const totalBudget = categoryFields.reduce(
     (sum, _field, index) =>
