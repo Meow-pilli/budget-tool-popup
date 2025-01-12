@@ -8,7 +8,7 @@ export type BudgetCategory = {
   spent: string;
 };
 
-const budgetData: BudgetCategory[] = [
+export const initialBudgetData: BudgetCategory[] = [
   { item: "Gifts", budget: "500", spent: "0" },
   { item: "Travels", budget: "300", spent: "0" },
   { item: "Food & Drinks", budget: "400", spent: "0" },
@@ -19,66 +19,55 @@ const budgetData: BudgetCategory[] = [
   { item: "Charitable Contributions", budget: "75", spent: "0" },
 ];
 
-export const initialBudgetData: BudgetCategory[] = budgetData;
-
 function Budget() {
-  const form = useFormContext();
-  const { watch } = form;
+  const { control, watch } = useFormContext();
 
-  // Watch data for all categories
-  const categories = {
-    gifts: watch("gifts"),
-    travels: watch("travels"),
-    foodAndDrinks: watch("foodAndDrinks"),
-    entertainment: watch("entertainment"),
-    decorations: watch("decorations"),
-    costumesAndClothing: watch("costumesAndClothing"),
-    stationeryAndPackaging: watch("stationeryAndPackaging"),
-    charitableContributions: watch("charitableContributions"),
-  };
+  // Categories array with form keys
+  const categories = [
+    { name: "Gifts", formKey: "gifts" },
+    { name: "Travels", formKey: "travels" },
+    { name: "Food & Drinks", formKey: "foodAndDrinks" },
+    { name: "Entertainment", formKey: "entertainment" },
+    { name: "Decorations", formKey: "decorations" },
+    { name: "Costumes & Clothing", formKey: "costumesAndClothing" },
+    { name: "Stationery & Packaging", formKey: "stationeryAndPackaging" },
+    { name: "Charitable Contributions", formKey: "charitableContributions" },
+  ];
 
-  console.log("Categories Data:", categories); // Debug categories data
-
-  // Calculate totals for budget and spent dynamically
-  const budgetTotals = Object.entries(categories).map(([key, data]) => {
-    console.log(`Data for ${key}:`, data); // Debug each category data
-
-    if (!data) return { item: key, budget: "0", spent: "0" };
-
-    const budgetTotal = useTotal("budget", data);
-    const spentTotal = useTotal("spent", data);
-
-    console.log(`${key} Budget Total:`, budgetTotal); // Debug budget total
-    console.log(`${key} Spent Total:`, spentTotal); // Debug spent total
-
+  // Calculate totals dynamically
+  const budgetTotals = categories.map((category) => {
+    const data = watch(category.formKey) || []; 
+    const budgetTotal = useTotal("budget", data); // Calculate total budget
+    const spentTotal = useTotal("spent", data); // Calculate total spent
     return {
-      item: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, " $1"),
-      budget: budgetTotal.toFixed(2),
-      spent: spentTotal.toFixed(2),
+      item: category.name,
+      budget: budgetTotal ? budgetTotal.toFixed(2) : "0",
+      spent: spentTotal ? spentTotal.toFixed(2) : "0", 
     };
   });
 
-  console.log("Budget Totals:", budgetTotals); // Debug final budget totals
+  console.log("Budget Totals:", budgetTotals); // Debugging
 
   const { fields, append, remove } = useFieldArray({
+    control,
     name: "budget",
   });
 
   return (
     <CategoryLayout
       type="budget"
-      categoryFields={budgetTotals.map((total, index) => ({
-        id: fields[index]?.id || `${index}`,
-        name: total.item,
-        budget: total.budget,
-        spent: total.spent,
+      categoryFields={fields.map((field, index) => ({
+        id: field.id,
+        name: budgetTotals[index]?.item,
+        budget: budgetTotals[index]?.budget,
+        spent: budgetTotals[index]?.spent,
       }))}
-      onAddRow={() => append({ item: "", budget: "0", spent: "0" })} // Add logic
-      onRemoveRow={remove} // Remove logic
+      onAddRow={() => append({ item: "", budget: "0", spent: "0" })}
+      onRemoveRow={remove}
       headerConfig={{
         color: "#21C1E7",
         title: "Budget",
-        icon: "/images/Budget.png", // Update with the correct path to the Budget icon
+        icon: "/images/Budget.png",
         textColor: "black",
       }}
     />
