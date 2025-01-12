@@ -15,13 +15,13 @@ const Insights = () => {
 
   const categories = [
     { name: "Gifts", budget: 300, spent: 200, color: "#E24831" },
-    { name: "Travels", budget: 200, spent: 100, color: "#FF93B8" },
+    { name: "Travel", budget: 200, spent: 100, color: "#FF93B8" },
     { name: "Food & Drinks", budget: 400, spent: 200, color: "#786DD3" },
     { name: "Entertainment", budget: 150, spent: 100, color: "#2088E7" },
     { name: "Decorations", budget: 100, spent: 60, color: "#21C1E7" },
-    { name: "Stationery", budget: 50, spent: 20, color: "#63AB5C" },
-    { name: "Charitable Contributions", budget: 75, spent: 35, color: "#EAC934" },
-    { name: "Costumes & Clothing", budget: 150, spent: 80, color: "#65328C" },
+    { name: "Costumes & Clothing", budget: 200, spent: 150, color: "#63AB5C" },
+    { name: "Stationery & Packaging", budget: 50, spent: 20, color: "#EAC934" },
+    { name: "Charitable Contributions", budget: 75, spent: 35, color: "#65328C" },
   ];
 
   const totalBudget = categories.reduce((sum, cat) => sum + cat.budget, 0);
