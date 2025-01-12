@@ -78,7 +78,7 @@ function Home() {
       return;
     }
     if (isMenuOpen) {
-      const contentHeight = menuContentRef.current.offsetHeight - 60; // Adjust height based on content
+      const contentHeight = menuContentRef.current.offsetHeight - 200; // Adjust height based on content
       dropdownRef.current.style.height = `${contentHeight}px`;
       dropdownRef.current.style.width = "500px"; // Fixed width for dropdown
       document.addEventListener("mousedown", handleClickOutside);
