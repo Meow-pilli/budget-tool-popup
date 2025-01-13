@@ -35,8 +35,7 @@ export default function CurrencyInputField({
               decimalSeparator="."
               groupSeparator=","
               decimalScale={2}
-              className="shadcn-input-class"
-              style={{ width: "120px" }}
+              className="shadcn-input-class w-32 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" // Match width
               value={field.value}
               onValueChange={(value) => form.setValue(name, value)}
             />

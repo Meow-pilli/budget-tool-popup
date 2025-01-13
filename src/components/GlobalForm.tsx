@@ -1,7 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { Form } from './ui/form';
-import { initialGiftsData } from '@/Gifts';
-import { initialTravelsData } from '@/Travel';
+import { initialGiftsData } from '@/routes/Gifts/Gifts';
+import { initialTravelsData } from '@/routes/Travel';
+import { initialFoodAndDrinksData } from '@/routes/FoodAndDrinks';
+import { initialEntertainmentData } from '@/routes/Entertainment';
+import { initialDecorationsData } from '@/routes/Decorations';
+import { initialCostumesAndClothingData } from '@/routes/CostumesAndClothing';
+import { initialStationeryAndPackagingData } from '@/routes/StationeryAndPackaging';
+import { initialCharitableContributionsData } from '@/routes/CharitableContributions';
+import { initialBudgetData } from '@/routes/Budget';
 
 // {
 //     holiday: 'christmas',
@@ -11,10 +18,17 @@ import { initialTravelsData } from '@/Travel';
 //     ]
 // }
 
-interface GlobalFormTypes {
+
+export type GlobalFormTypes = {
     gifts: BudgetEntry[];
     travels: BudgetEntry[];
     foodAndDrinks: BudgetEntry[];
+    entertainment: BudgetEntry[];
+    decorations: BudgetEntry[];
+    costumesAndClothing: BudgetEntry[];
+    stationeryAndPackaging: BudgetEntry[];
+    charitableContributions: BudgetEntry[];
+    budget: BudgetEntry[];
     holiday: string;
     currency: string;
 }
@@ -28,15 +42,15 @@ function GlobalForm({ children }: GlobalFormProps) {
         defaultValues: {
             gifts: initialGiftsData,
             travels: initialTravelsData,
-            foodAndDrinks: [],
+            foodAndDrinks: initialFoodAndDrinksData,
+            entertainment: initialEntertainmentData,
+            decorations: initialDecorationsData,
+            costumesAndClothing: initialCostumesAndClothingData,
+            stationeryAndPackaging: initialStationeryAndPackagingData,
+            charitableContributions: initialCharitableContributionsData,
+            budget: initialBudgetData
         }
     });
-    const watch = methods.watch;
-    const holiday = watch('holiday');
-    const currency = watch('currency');
-    const formData = watch();
-
-    console.log("🚀 ~ GlobalForm ~ holiday, currency:", {holiday, currency, formData});
 
     return (
         <Form {...methods}>
