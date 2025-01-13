@@ -12,7 +12,7 @@ export default function CategoryLayoutHeader({ color, icon, title, textColor = "
 
     return (
         <header
-            className="flex items-center justify-center relative h-[12vh]"
+            className="flex items-center justify-center relative p-4"
             style={{ backgroundColor: color }}
         >
             <div className="flex items-center gap-[1vw]">
