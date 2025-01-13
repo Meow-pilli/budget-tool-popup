@@ -102,7 +102,7 @@ const Insights = () => {
 
       {/* Insights Content */}
       <div className="flex-grow p-6 space-y-8">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Total Spent Chart */}
           <Card className="flex flex-col items-center">
             <CardHeader className="flex justify-center items-center">

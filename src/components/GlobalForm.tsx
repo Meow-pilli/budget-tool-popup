@@ -18,7 +18,8 @@ import { initialBudgetData } from '@/routes/Budget';
 //     ]
 // }
 
-interface GlobalFormTypes {
+
+export type GlobalFormTypes = {
     gifts: BudgetEntry[];
     travels: BudgetEntry[];
     foodAndDrinks: BudgetEntry[];
@@ -50,12 +51,6 @@ function GlobalForm({ children }: GlobalFormProps) {
             budget: initialBudgetData
         }
     });
-    const watch = methods.watch;
-    const holiday = watch('holiday');
-    const currency = watch('currency');
-    const formData = watch();
-
-    console.log("🚀 ~ GlobalForm ~ holiday, currency:", {holiday, currency, formData});
 
     return (
         <Form {...methods}>

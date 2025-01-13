@@ -3,7 +3,6 @@ import "./App.css";
 import "./globals.css";
 
 import Gifts from "./routes/Gifts";
-import DataProvider from "./context/DataContext";
 import Home from "./Home";
 import GlobalForm from "./components/GlobalForm";
 import Travel from "./routes/Travel";
@@ -22,7 +21,6 @@ import Insights from "./routes/Insights";
 function App() {
   return (
     <GlobalForm>
-    <DataProvider>
     <Router>
         {/* Routes for Pages */}
         {/* Routes */}
@@ -40,7 +38,6 @@ function App() {
           <Route path="/insights" element={<Insights />} />
         </Routes>
     </Router>
-    </DataProvider>
     </GlobalForm>
   );
 }

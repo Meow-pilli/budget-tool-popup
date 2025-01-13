@@ -1,5 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import CategoryLayout from "./CategoryLayout/CategoryLayout";
+import useTotal from "@/hooks/useTotal";
+import { categoryConfig } from "./CategoryLayout/categoryConfig";
 
 export type Travel = {
   item: string;
@@ -15,26 +17,27 @@ export const initialTravelsData: Travel[] = [
   { item: "Excursions", budget: "400", spent: "0" },
 ];
 
+const TYPE = 'travels';
+
 function Travel() {
   const form = useFormContext();
   const { control } = form;
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "travels",
+    name: TYPE,
   });
+
+  const headerProps = categoryConfig[TYPE];
+  const data = form.watch(TYPE);
+  const totalBudget = useTotal("budget", data);
+  const totalSpent = useTotal("spent", data);
 
   return (
     <CategoryLayout
-      type="travels"
-      categoryFields={fields}
-      onAddRow={() => append({ item: "", budget: "0", spent: "0" })}
-      onRemoveRow={remove}
-      headerConfig={{
-        color: "#FF93B8",
-        title: "Travel",
-        icon: "./images/Travel.png",
-      }}
+      header={<CategoryLayout.Header {...headerProps} />}
+      categoryData={<CategoryLayout.Data type={TYPE} rows={fields} onRemoveRow={remove} />}
+      dataFooter={<CategoryLayout.DataFooter onAddRow={() => append({ item: "", budget: "0", spent: "0" })} totalBudget={totalBudget} totalSpent={totalSpent} />}
     />
   );
 }

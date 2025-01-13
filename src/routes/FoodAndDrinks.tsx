@@ -1,5 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import CategoryLayout from "./CategoryLayout/CategoryLayout";
+import { categoryConfig } from "./CategoryLayout/categoryConfig";
+import useTotal from "@/hooks/useTotal";
 
 export type FoodAndDrinks = {
   item: string;
@@ -14,26 +16,27 @@ export const initialFoodAndDrinksData: FoodAndDrinks[] = [
   { item: "Drinks", budget: "100", spent: "0" },
 ];
 
+const TYPE = 'foodAndDrinks';
+
 function FoodAndDrinks() {
   const form = useFormContext();
   const { control } = form;
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "foodAndDrinks", // Form field array name
+    name: TYPE,
   });
+
+  const headerProps = categoryConfig[TYPE];
+  const data = form.watch(TYPE);
+  const totalBudget = useTotal("budget", data);
+  const totalSpent = useTotal("spent", data);
 
   return (
     <CategoryLayout
-      type="foodAndDrinks"
-      categoryFields={fields}
-      onAddRow={() => append({ item: "", budget: "0", spent: "0" })} // Add logic
-      onRemoveRow={remove} // Remove logic
-      headerConfig={{
-        color: "#786DD3", // Unique color for Food and Drinks
-        title: "Food & Drinks", // Unique title
-        icon: "./images/Food.png", // Unique icon path
-      }}
+      header={<CategoryLayout.Header {...headerProps} />}
+      categoryData={<CategoryLayout.Data type={TYPE} rows={fields} onRemoveRow={remove} />}
+      dataFooter={<CategoryLayout.DataFooter onAddRow={() => append({ item: "", budget: "0", spent: "0" })} totalBudget={totalBudget} totalSpent={totalSpent} />}
     />
   );
 }

@@ -4,6 +4,8 @@ import { useFormContext } from "react-hook-form";
 import useTotal from "./hooks/useTotal";
 import HolidayForm from "./components/HolidayForm";
 import holidayTrackerImg from "./Black2.png";
+import { useCurrencySymbol } from "./hooks/useCurrencySymbol";
+import { formatCurrency } from "./components/utils/format";
 
 const menuItems = [
   { name: "Gifts", icon: "images/Gifts.png", isOpen: false, link: "/gifts", formKey: "gifts" },
@@ -78,7 +80,7 @@ function Home() {
       return;
     }
     if (isMenuOpen) {
-      const contentHeight = menuContentRef.current.offsetHeight - 200; // Adjust height based on content
+      const contentHeight = menuContentRef.current.offsetHeight; // Adjust height based on content
       dropdownRef.current.style.height = `${contentHeight}px`;
       dropdownRef.current.style.width = "500px"; // Fixed width for dropdown
       document.addEventListener("mousedown", handleClickOutside);
@@ -127,7 +129,7 @@ function Home() {
                   key={item.name}
                   className="menu-item"
                 >
-                  <Link to={item.link} className="menu-item-link">
+                  <Link to={item.link} className="flex w-full">
                     <img
                       src={item.icon}
                       alt={item.name}
@@ -197,8 +199,13 @@ function CategoryTotal({ item }: CategoryTotalProps) {
   const { watch } = useFormContext();
   const data = watch(item.formKey);
   const totalSpent = useTotal("spent", data);
+  const currencySymbol = useCurrencySymbol();
+  
+  if(totalSpent <= 0) {
+    return null;
+  }
+  
+  const formattedTotal = formatCurrency(totalSpent.toFixed(2), currencySymbol);
 
-  const formattedTotal = Number(totalSpent).toFixed(2);
-
-  return <span className="menu-item-value"> {formattedTotal}</span>;
+  return <span className="menu-item-value ml-auto"> {formattedTotal}</span>;
 }

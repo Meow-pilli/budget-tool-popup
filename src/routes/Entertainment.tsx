@@ -1,5 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import CategoryLayout from "./CategoryLayout/CategoryLayout";
+import { categoryConfig } from "./CategoryLayout/categoryConfig";
+import useTotal from "@/hooks/useTotal";
 
 export type Entertainment = {
   item: string;
@@ -14,28 +16,30 @@ export const initialEntertainmentData: Entertainment[] = [
   { item: "Subscriptions", budget: "30", spent: "0" },
 ];
 
+const TYPE = 'entertainment';
+
 function Entertainment() {
   const form = useFormContext();
   const { control } = form;
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "entertainment", // Form field array name
+    name: TYPE,
   });
+
+  const headerProps = categoryConfig[TYPE];
+  const data = form.watch(TYPE);
+  const totalBudget = useTotal("budget", data);
+  const totalSpent = useTotal("spent", data);
 
   return (
     <CategoryLayout
-      type="entertainment"
-      categoryFields={fields}
-      onAddRow={() => append({ item: "", budget: "0", spent: "0" })}
-      onRemoveRow={remove}
-      headerConfig={{
-        color: "#2088E7",
-        title: "Entertainment",
-        icon: "./images/Entertainment.png",
-      }}
+      header={<CategoryLayout.Header {...headerProps} />}
+      categoryData={<CategoryLayout.Data type={TYPE} rows={fields} onRemoveRow={remove} />}
+      dataFooter={<CategoryLayout.DataFooter onAddRow={() => append({ item: "", budget: "0", spent: "0" })} totalBudget={totalBudget} totalSpent={totalSpent} />}
     />
   );
+
 }
 
 export default Entertainment;
