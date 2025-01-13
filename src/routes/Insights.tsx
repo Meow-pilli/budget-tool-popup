@@ -76,16 +76,16 @@ const Insights = () => {
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Header Section */}
       <header
-        className="flex items-center justify-center relative h-16 bg-[#2088E7]" // Ensure fixed height with `h-16`
+        className="flex items-center justify-center relative p-2 bg-[#2088E7]" // Ensure fixed height with `h-16`
       >
         <div className="flex items-center gap-[1vw]">
           <img
             src="/images/Insights.png"
             alt="Insights"
-            className="w-[6vh] h-[6vh]"
+            className="w-[12vh] h-[12vh]"
           />
           <h1
-            className={`text-[1.5rem] font-bold`}
+            className={`text-[1.6rem] font-bold`}
             style={{ color: "black" }}
           >
             Insights
