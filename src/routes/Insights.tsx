@@ -9,12 +9,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import useTotal from "../hooks/useTotal";
+import { useCurrencySymbol } from "../hooks/useCurrencySymbol";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Insights = () => {
   const navigate = useNavigate();
   const { watch } = useFormContext();
+
+  // Fetch the currency symbol
+  const currencySymbol = useCurrencySymbol();
 
   // Watch data for each category from the form context
   const categories = [
@@ -76,7 +80,7 @@ const Insights = () => {
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Header Section */}
       <header
-        className="flex items-center justify-center relative p-2 bg-[#2088E7]" // Ensure fixed height with `h-16`
+        className="flex items-center justify-center relative p-2 bg-[#2088E7]"
       >
         <div className="flex items-center gap-[1vw]">
           <img
@@ -84,10 +88,7 @@ const Insights = () => {
             alt="Insights"
             className="w-[12vh] h-[12vh]"
           />
-          <h1
-            className={`text-[1.6rem] font-bold`}
-            style={{ color: "black" }}
-          >
+          <h1 className={`text-[1.6rem] font-bold`} style={{ color: "black" }}>
             Insights
           </h1>
         </div>
@@ -115,6 +116,12 @@ const Insights = () => {
                   options={{
                     plugins: {
                       legend: { display: false },
+                      tooltip: {
+                        callbacks: {
+                          label: (tooltipItem) =>
+                            `${currencySymbol} ${(tooltipItem.raw as number).toFixed(2)}`,
+                        },
+                      },
                     },
                   }}
                 />
@@ -135,15 +142,23 @@ const Insights = () => {
                 <Doughnut
                   data={doughnutDataBudget}
                   options={{
-                    cutout: "75%", // Adjust the cutout percentage to make the ring thinner
+                    cutout: "75%",
                     plugins: {
                       legend: { display: false },
+                      tooltip: {
+                        callbacks: {
+                          label: (tooltipItem) =>
+                            `${currencySymbol} ${(tooltipItem.raw as number).toFixed(2)}`,
+                        },
+                      },
                     },
                   }}
                 />
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
                   <span className="text-sm text-gray-500">Total Budget</span>
-                  <div className="text-4xl font-bold">${totalBudget.toFixed(2)}</div>
+                  <div className="text-4xl font-bold">
+                    {currencySymbol} {totalBudget.toFixed(2)}
+                  </div>
                 </div>
               </div>
               <div className="w-1/3 flex flex-col justify-center items-start p-4 space-y-2">
@@ -162,10 +177,10 @@ const Insights = () => {
             <div className="flex flex-col items-center space-y-4">
               <div className="flex items-center justify-between w-full">
                 <span className="text-lg font-bold text-green-500">
-                  ${totalSpent.toFixed(2)}
+                  {currencySymbol} {totalSpent.toFixed(2)}
                 </span>
                 <span className="text-lg font-bold text-black">
-                  ${remainingBudget.toFixed(2)}
+                  {currencySymbol} {remainingBudget.toFixed(2)}
                 </span>
               </div>
               <div className="w-full h-6 bg-gray-200 rounded-full">
