@@ -61,7 +61,9 @@ function Budget() {
     const totalCategorySpent = formatCurrency(totalCategorySpentNumber, currencySymbol)!;
     
     const totalCategoryDifferenceNumber = parseFloat(totalCategoryBudgetNumber) - parseFloat(totalCategorySpentNumber);
-    const totalCategoryDifference = formatCurrency(String(totalCategoryDifferenceNumber), currencySymbol)!;
+const formattedDifferenceNumber = totalCategoryDifferenceNumber.toFixed(2); // Ensure 2 decimal places
+const totalCategoryDifference = formatCurrency(formattedDifferenceNumber, currencySymbol)!;
+
 
     const budgetRow: BudgetRow = {
       id: categoryKey,
