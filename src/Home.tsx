@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-// import { useData } from "./context/DataContext";
-// import CustomDropdown from "./CustomDropdown";
+import { Link } from "react-router-dom";
+import { useFormContext } from "react-hook-form";
 import useTotal from "./hooks/useTotal";
 import HolidayForm from "./components/HolidayForm";
-import { Link, useNavigate } from "react-router-dom";
 import holidayTrackerImg from "./Black2.png";
-import { useFormContext } from "react-hook-form";
+import { useCurrencySymbol } from "./hooks/useCurrencySymbol";
+import { formatCurrency } from "./components/utils/format";
 
 const menuItems = [
   { name: "Gifts", icon: "images/Gifts.png", isOpen: false, link: "/gifts", formKey: "gifts" },
@@ -55,11 +55,8 @@ const menuItems = [
 ];
 
 function Home() {
-  const navigate = useNavigate();
-  //const { data } = useData();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [itemsState, setItemsState] = useState(menuItems);
+  const [itemsState] = useState(menuItems);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const menuContentRef = useRef<HTMLDivElement | null>(null);
@@ -69,7 +66,6 @@ function Home() {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    console.log("🚀 ~ handleClickOutside ~ event:", event);
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as HTMLDivElement) &&
@@ -79,20 +75,12 @@ function Home() {
     }
   };
 
-  // const toggleItem = (index) => {
-  //   setItemsState((prev) =>
-  //     prev.map((item, i) =>
-  //       i === index ? { ...item, isOpen: !item.isOpen } : item
-  //     )
-  //   );
-  // };
-
   useEffect(() => {
     if (menuContentRef.current === null || dropdownRef.current === null) {
       return;
     }
     if (isMenuOpen) {
-      const contentHeight = menuContentRef.current.offsetHeight - 60; // Adjust height based on content
+      const contentHeight = menuContentRef.current.offsetHeight; // Adjust height based on content
       dropdownRef.current.style.height = `${contentHeight}px`;
       dropdownRef.current.style.width = "500px"; // Fixed width for dropdown
       document.addEventListener("mousedown", handleClickOutside);
@@ -136,13 +124,12 @@ function Home() {
 
             {/* Menu Items */}
             <ul>
-              {itemsState.map((item, index) => (
+              {itemsState.map((item) => (
                 <li
                   key={item.name}
                   className="menu-item"
-                  // onClick={() => navigate(item.link)}
                 >
-                  <Link to={item.link} className="menu-item-link">
+                  <Link to={item.link} className="flex w-full">
                     <img
                       src={item.icon}
                       alt={item.name}
@@ -156,6 +143,32 @@ function Home() {
                 </li>
               ))}
             </ul>
+
+            {/* Budget and Insights */}
+            <div className="budget-insights-container flex justify-center gap-8 mt-4">
+              <Link
+                to="/budget"
+                className="budget-insight-link flex flex-col items-center text-center"
+              >
+                <img
+                  src="images/Budget.png"
+                  alt="Budget"
+                  className="budget-icon w-16 h-16" // Increased size
+                />
+                <span className="text-md">Budget</span> {/* Not bold */}
+              </Link>
+              <Link
+                to="/insights"
+                className="budget-insight-link flex flex-col items-center text-center"
+              >
+                <img
+                  src="images/Insights.png"
+                  alt="Insights"
+                  className="insights-icon w-16 h-16" // Increased size
+                />
+                <span className="text-md">Insights</span> {/* Not bold */}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -170,16 +183,12 @@ function isClickOutsideArea(element: HTMLDivElement, event: MouseEvent) {
   const clickX = event.clientX;
   const clickY = event.clientY;
 
-  if (
+  return (
     clickX < rect.left ||
     clickX > rect.right ||
     clickY < rect.top ||
     clickY > rect.bottom
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 interface CategoryTotalProps {
@@ -190,9 +199,13 @@ function CategoryTotal({ item }: CategoryTotalProps) {
   const { watch } = useFormContext();
   const data = watch(item.formKey);
   const totalSpent = useTotal("spent", data);
+  const currencySymbol = useCurrencySymbol();
+  
+  if(totalSpent <= 0) {
+    return null;
+  }
+  
+  const formattedTotal = formatCurrency(totalSpent.toFixed(2), currencySymbol);
 
-  // Ensure totalSpent is formatted to 2 decimal places
-  const formattedTotal = Number(totalSpent).toFixed(2);
-
-  return <span className="menu-item-value"> {formattedTotal}</span>;
+  return <span className="menu-item-value ml-auto"> {formattedTotal}</span>;
 }

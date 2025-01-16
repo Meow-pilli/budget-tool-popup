@@ -35,13 +35,13 @@ function HolidayForm() {
     <form name="holiday-form" className="grid grid-cols-2 gap-4 px-4 mb-2">
       <MenuSelect
         name="holiday"
-        placeholder="-- Select a Holiday --"
+        placeholder="-- Holiday --"
         items={holidayItems}
         form={form}
       />
       <MenuSelect
         name="currency"
-        placeholder="-- Select a Currency --"
+        placeholder="-- Currency --"
         items={currencyItems}
         form={form}
       />

@@ -99,22 +99,19 @@ body {
 
 /* Individual hover colors based on item color */
 .menu-item:nth-child(1):hover { background-color: #E24831; }
-.menu-item:nth-child(2):hover { background-color: #ff8c00; } 
-.menu-item:nth-child(3):hover { background-color: #f781ab; }
+.menu-item:nth-child(2):hover { background-color: #FF93B8; } 
+.menu-item:nth-child(3):hover { background-color: #786DD3; }
 .menu-item:nth-child(4):hover { background-color: #2088E7; }
-.menu-item:nth-child(5):hover { background-color: #17b6de; }
+.menu-item:nth-child(5):hover { background-color: #21C1E7; }
 .menu-item:nth-child(6):hover { background-color: #63AB5C; }
-.menu-item:nth-child(7):hover { background-color: #ffcc00; }
-/* #f0be41 */
-/*#ffcc00*/
-.menu-item:nth-child(8):hover { background-color: #786DD3; }
+.menu-item:nth-child(7):hover { background-color: #EAC934; }
+.menu-item:nth-child(8):hover { background-color: #65328C; }
+
 
 /* Menu icon styles - Hidden by default */
 .menu-icon {
   width: 24px;
   height: 24px;
-  position: absolute; /* Place icon in the text's original position */
-  left: 1; /* Icon starts at the text's original position */
   margin-right: 10px;
   opacity: 0; /* Hidden by default */
   transition: opacity 0.3s ease; /* Smooth fade-in */
@@ -125,25 +122,20 @@ body {
   opacity: 1; /* Fully visible on hover */
 }
 
-/* For the menu item text shift */
-.menu-item span {
-  display: inline-block;
-  position: relative; /* To allow independent movement */
-  transition: transform 0.6s ease, opacity 0.3s ease;
-  margin-left: 30; /* Initially aligned with the icon */
-}
-
-.menu-item:hover span {
-  transform: translateX(45px); /* Shift text to the left */
-}
-
 .menu-item:hover .menu-icon {
   opacity: 1; /* Fully visible on hover */
 }
 
 .menu-item-text {
   position: relative; /* Ensures proper positioning for value */
-  display: inline-block; /* Keep text and value inline */
+  display: inline-flex;
+  flex-grow: 1;
+  transition: transform 0.6s ease, opacity 0.3s ease;
+  transform: translateX(-34px);
+}
+
+.menu-item:hover .menu-item-text {
+  transform: translateX(5px); /* Shift text to the left */
 }
 
 /* Initially hide the value */
@@ -152,7 +144,6 @@ body {
   position: static;
   visibility: hidden; /* Hide the value */
   opacity: 0; /* Fully transparent */
-  margin-left: 100px; /* Add space between name and value */
   font-weight: normal; /* Optional: differentiate visually */
   color: black; /* Optional: differentiate value text */
 }
