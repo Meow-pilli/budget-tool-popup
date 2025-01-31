@@ -55,12 +55,13 @@ export default function CategoryColumns({ type, index, onRemoveRow }: Props) {
                 )}
             </td>
             <td className="p-2">
-                <button
-                    onClick={() => onRemoveRow(index)}
-                    className="w-[30px] h-[30px] border-[2px] border-red-500 text-red-500 rounded-full font-bold bg-white hover:bg-red-500 hover:text-white hover:scale-110 transition-transform"
-                >
-                    −
-                </button>
+            <button
+  onClick={() => onRemoveRow(index)}
+  className="w-[30px] h-[30px] border-[2px] border-black text-black rounded-full font-bold bg-white hover:bg-black hover:text-white hover:scale-110 transition-transform"
+>
+  −
+</button>
+
             </td>
         </>
     )

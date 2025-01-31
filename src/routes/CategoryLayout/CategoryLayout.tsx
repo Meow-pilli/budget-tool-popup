@@ -4,7 +4,8 @@ import CategoryLayoutData from "./CategoryLayoutData";
 import CategoryLayoutDataFooter from "./CategoryLayoutDataFooter";
 import CategoryLayoutHeader from "./CategoryLayoutHeader";
 
-export type CategoryType = "gifts"
+export type CategoryType =
+  | "gifts"
   | "travels"
   | "foodAndDrinks"
   | "entertainment"
@@ -15,15 +16,17 @@ export type CategoryType = "gifts"
   | "budget";
 
 type Props = {
-  header: React.ReactNode,
-  categoryData: React.ReactNode,
-  dataFooter: React.ReactNode,
+  header: React.ReactNode;
+  categoryData: React.ReactNode;
+  dataFooter: React.ReactNode;
+  showActionColumn?: boolean; // Optional prop to control Action column visibility
 };
 
 export default function CategoryLayout({
   header,
   categoryData,
   dataFooter,
+  showActionColumn = true, // Default to true for other pages
 }: Props) {
   useNav();
 
@@ -49,16 +52,17 @@ export default function CategoryLayout({
               <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
                 DIFFERENCE
               </th>
-              <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
-                ACTION
-              </th>
+              {/* Conditionally render Action column */}
+              {showActionColumn && (
+                <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
+                  ACTION
+                </th>
+              )}
             </tr>
           </thead>
 
           {/* Table Body */}
-          <tbody>
-            {categoryData}
-          </tbody>
+          <tbody>{categoryData}</tbody>
 
           {/* Table Footer */}
           {dataFooter}
@@ -67,7 +71,6 @@ export default function CategoryLayout({
     </div>
   );
 }
-
 
 CategoryLayout.Header = CategoryLayoutHeader;
 CategoryLayout.Data = CategoryLayoutData;

@@ -15,12 +15,13 @@ export default function CategoryLayoutDataFooter({onAddRow, totalBudget, totalSp
             <tr>
                 <td colSpan={4}></td>
                 <td className="p-[10px]">
-                    <button
-                        onClick={onAddRow}
-                        className="w-[30px] h-[30px] border-[2px] border-green-500 text-green-500 rounded-full font-bold bg-white hover:bg-green-500 hover:text-white hover:scale-110 transition-transform"
-                    >
-                        +
-                    </button>
+                <button
+                 onClick={onAddRow}
+                  className="w-[30px] h-[30px] border-[2px] border-black text-black rounded-full font-bold bg-white hover:bg-black hover:text-white hover:scale-110 transition-transform"
+                   >
+                  +
+                </button>
+
                 </td>
             </tr>
             <tr className="bg-[#f7f7f7] font-bold border-t-[2px] border-[#d9d9d9]">
