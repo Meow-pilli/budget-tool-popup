@@ -17,6 +17,7 @@ export default function CategoryLayoutDataFooter({
     return (
         <tfoot>
             <tr>
+                {/* Adjust Add Row Button */}
                 <td colSpan={4}></td>
                 <td className="p-[10px]">
                     <button
