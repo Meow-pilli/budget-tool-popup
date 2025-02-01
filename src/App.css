@@ -59,13 +59,20 @@ body {
 .menu-header {
   text-align: center;
   margin-bottom: 20px;
-  padding: 0;
+  padding: 15px; 
+  background-color: #7CD6E5; 
+  width: 100%; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 10px 10px 0 0; 
 }
 
 .menu-title-image {
-  width: 100%;
-  height: auto;
+  width: 210px; 
+  height: auto; 
 }
+
 
 .menu ul {
   list-style-type: none;

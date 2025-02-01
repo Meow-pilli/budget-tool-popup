@@ -5,20 +5,25 @@ type Props = {
     totalBudget: number;
     totalSpent: number;
     onAddRow: () => void;
-}
+};
 
-export default function CategoryLayoutDataFooter({onAddRow, totalBudget, totalSpent }: Props) {
+export default function CategoryLayoutDataFooter({
+    onAddRow,
+    totalBudget,
+    totalSpent,
+}: Props) {
     const currencySymbol = useCurrencySymbol();
     const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
     return (
         <tfoot>
             <tr>
+                {/* Adjust Add Row Button */}
                 <td colSpan={4}></td>
                 <td className="p-[10px]">
                     <button
                         onClick={onAddRow}
-                        className="w-[30px] h-[30px] border-[2px] border-green-500 text-green-500 rounded-full font-bold bg-white hover:bg-green-500 hover:text-white hover:scale-110 transition-transform"
+                        className="w-[24px] h-[24px] border-[2px] border-black text-black rounded-full font-bold text-sm bg-white hover:bg-black hover:text-white hover:scale-110 transition-transform"
                     >
                         +
                     </button>
@@ -44,5 +49,5 @@ export default function CategoryLayoutDataFooter({onAddRow, totalBudget, totalSp
                 <td className="p-[10px]"></td>
             </tr>
         </tfoot>
-    )
+    );
 }
