@@ -41,6 +41,13 @@ const Insights = () => {
   const totalSpent = categories.reduce((sum, cat) => sum + cat.spent, 0);
   const remainingBudget = totalBudget - totalSpent;
 
+// Determine if budget is exceeded
+const budgetExceeded = totalSpent > totalBudget;
+const exceededAmount = totalSpent - totalBudget;
+
+// Calculate progress bar width
+const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
+
   const pieDataSpent = {
     labels: categories.map((cat) => cat.name),
     datasets: [
@@ -75,7 +82,7 @@ const Insights = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Header Section */}
-      <header className="flex items-center justify-center relative p-2 bg-[#2088E7]">
+      <header className="flex items-center justify-center relative p-2 bg-[#21C1E7]">
         <div className="flex items-center gap-[1vw]">
           <img src="/images/Insights.png" alt="Insights" className="w-[12vh] h-[12vh]" />
           <h1 className="text-[1.6rem] font-bold text-black">Insights</h1>
@@ -163,32 +170,47 @@ const Insights = () => {
 
         {/* Budget vs Spent */}
         <Card>
-          <CardHeader className="flex justify-center items-center">
-            <CardTitle className="text-center uppercase">Budget vs Spent</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center space-y-4">
-              <div className="flex items-center justify-between w-full">
-                <span className="text-lg font-bold text-green-500">
-                  {currencySymbol} {totalSpent.toFixed(2)}
-                </span>
-                <span className="text-lg font-bold text-black">
-                  {currencySymbol} {remainingBudget.toFixed(2)}
-                </span>
-              </div>
-              <div className="w-full h-6 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-green-500 rounded-full"
-                  style={{ width: `${(totalSpent / totalBudget) * 100}%` }}
-                ></div>
-              </div>
-              <div className="flex justify-between w-full text-sm">
-                <span className="text-green-500">Budget Spent</span>
-                <span className="text-black">Budget Remaining</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+  <CardHeader className="flex justify-center items-center">
+    <CardTitle className="text-center uppercase">Budget vs Spent</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="flex flex-col items-center space-y-4">
+      {/* Budget Summary */}
+      <div className="flex items-center justify-between w-full">
+        {!budgetExceeded && (
+          <span className="text-lg font-bold text-black">
+            {currencySymbol} {totalSpent.toFixed(2)}
+          </span>
+        )}
+        <span className={`text-lg font-bold ${budgetExceeded ? "text-red-500 ml-auto" : "text-black"}`}>
+          {currencySymbol} {budgetExceeded ? exceededAmount.toFixed(2) : remainingBudget.toFixed(2)}
+        </span>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="w-full h-6 bg-gray-200 rounded-full">
+        <div
+          className={`h-full rounded-full transition-all ${
+            budgetExceeded ? "bg-red-500" : "text-black"
+          }`}
+          style={{ width: `${spentPercentage}%` }}
+        ></div>
+      </div>
+
+      {/* Labels for Budget Remaining or Budget Exceeded */}
+      {!budgetExceeded ? (
+        <div className="flex justify-between w-full text-sm">
+          <span className="text-black">Budget Spent</span>
+          <span className="text-black">Budget Remaining</span>
+        </div>
+      ) : (
+        <div className="flex justify-end w-full text-sm">
+          <span className="text-red-500">Budget Exceeded</span>
+        </div>
+      )}
+    </div>
+  </CardContent>
+</Card>
       </div>
     </div>
   );
