@@ -2,7 +2,7 @@ import { formatCurrency } from "@/components/utils/format";
 import { useCurrencySymbol } from "@/hooks/useCurrencySymbol";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { calculateTotal } from "../hooks/useTotal";
-import { categoryConfig } from "./CategoryLayout/categoryConfig";
+import { categoryConfig, CategoryKeyType } from "./CategoryLayout/categoryConfig";
 import CategoryLayout from "./CategoryLayout/CategoryLayout";
 
 export type BudgetCategory = {
@@ -33,16 +33,11 @@ function Budget() {
   const form = useFormContext();
   const { watch } = form;
 
-  const categoryKeys = Object.keys(categoryConfig);
+  const categoryKeys = Object.keys(categoryConfig) as CategoryKeyType[]; // ✅ Fixed typing here
   const allCategoriesData = watch(categoryKeys).flat();
 
-  const totalBudget = allCategoriesData.reduce((acc, val) => {
-    return acc + +val.budget;
-  }, 0);
-
-  const totalSpent = allCategoriesData.reduce((acc, val) => {
-    return acc + +val.spent;
-  }, 0);
+  const totalBudget = allCategoriesData.reduce((acc, val) => acc + +val.budget, 0);
+  const totalSpent = allCategoriesData.reduce((acc, val) => acc + +val.spent, 0);
 
   const currencySymbol = useCurrencySymbol();
 
@@ -62,7 +57,7 @@ function Budget() {
 
     const budgetRow: BudgetRow = {
       id: categoryKey,
-      name: categoryConfig[categoryKey]?.title!,
+      name: categoryConfig[categoryKey as CategoryKeyType]?.title!, // ✅ Fixed typing here
       totalCategoryBudget,
       totalCategorySpent,
       totalCategoryDifference,
@@ -96,21 +91,17 @@ type BudgetDataRowsType = {
 };
 
 function BudgetDataRows({ rows }: BudgetDataRowsType) {
-  return rows.map((r, index) => {
-    return (
-      <tr
-        key={r.id}
-        className={`border-b ${
-          index % 2 === 0 ? "bg-white" : "bg-[#f9f9f9]"
-        } border-[#e0e0e0]`}
-      >
-        <td className="p-2">{r.name}</td>
-        <td className="p-2">{r.totalCategoryBudget}</td>
-        <td className="p-2">{r.totalCategorySpent}</td>
-        <td className="p-2">{r.totalCategoryDifference}</td>
-      </tr>
-    );
-  });
+  return rows.map((r, index) => (
+    <tr
+      key={r.id}
+      className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-[#f9f9f9]"} border-[#e0e0e0]`}
+    >
+      <td className="p-2">{r.name}</td>
+      <td className="p-2">{r.totalCategoryBudget}</td>
+      <td className="p-2">{r.totalCategorySpent}</td>
+      <td className="p-2">{r.totalCategoryDifference}</td>
+    </tr>
+  ));
 }
 
 type BudgetFooterProps = {
