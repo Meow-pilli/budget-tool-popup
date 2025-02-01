@@ -15,6 +15,7 @@ export default function CategoryColumns({ type, index, onRemoveRow }: Props) {
     const form = useFormContext();
     const { getValues } = form;
     const currencySymbol = useCurrencySymbol();
+    const currencyPrefix = `${currencySymbol} `;
 
     return (
         <>
@@ -26,7 +27,7 @@ export default function CategoryColumns({ type, index, onRemoveRow }: Props) {
                     name={`${type}.${index}.budget`}
                     form={form}
                     placeholder={"0.00"}
-                    prefix={currencySymbol}
+                    prefix={currencyPrefix}
                 />
             </td>
             <td className='p-2'>
@@ -35,7 +36,7 @@ export default function CategoryColumns({ type, index, onRemoveRow }: Props) {
                         name={`${type}.${index}.spent`}
                         form={form}
                         placeholder={"0.00"}
-                        prefix={currencySymbol}
+                        prefix={currencyPrefix}
                     />
                     {+getValues(`${type}.${index}.spent`) <=
                         +getValues(`${type}.${index}.budget`) ? (
@@ -46,13 +47,7 @@ export default function CategoryColumns({ type, index, onRemoveRow }: Props) {
                 </div>
             </td>
             <td className="p-2">
-                {formatCurrency(
-                    (
-                        +getValues(`${type}.${index}.budget`) -
-                        +getValues(`${type}.${index}.spent`)
-                    ).toFixed(2),
-                    currencySymbol
-                )}
+                {formatDifference(+getValues(`${type}.${index}.budget`), +getValues(`${type}.${index}.spent`), currencySymbol)}
             </td>
             <td className="p-2">
                 <button
@@ -66,3 +61,19 @@ export default function CategoryColumns({ type, index, onRemoveRow }: Props) {
     )
 }
 
+function formatDifference(budget: number, spent: number, currencySymbol: string) {
+
+    const formatted = formatCurrency(
+        (budget - spent).toFixed(2),
+        currencySymbol
+    );
+
+    if (budget - spent >= 0) {
+        return <span>
+            <span className="invisible">+</span>
+            {formatted}
+        </span>;
+    }
+
+    return formatted
+}
