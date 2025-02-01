@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/components/utils/format';
 import { useCurrencySymbol } from '@/hooks/useCurrencySymbol';
 
 type Props = {
@@ -31,12 +32,11 @@ export default function CategoryLayoutDataFooter({
             <tr className="bg-[#f7f7f7] font-bold border-t-[2px] border-[#d9d9d9]">
                 <td className="p-[10px]">Total</td>
                 <td className="p-[10px]">
-                    {currencySymbol}
-                    {totalBudget.toFixed(2)}
+                    {formatCurrency(totalBudget.toFixed(2), currencySymbol)}
                 </td>
                 <td className="p-[10px]">
-                    {currencySymbol}
-                    {totalSpent.toFixed(2)}{" "}
+                    {formatCurrency(totalSpent.toFixed(2), currencySymbol)}
+                    {" "}
                     {totalSpent <= totalBudget ? (
                         <span className="text-green-500 font-bold">✔</span>
                     ) : (
@@ -44,14 +44,7 @@ export default function CategoryLayoutDataFooter({
                     )}
                 </td>
                 <td className="p-[10px]">
-                    {/* Ensure Proper Alignment for Difference Column */}
-                    <span className="inline-flex items-center gap-[2px]">
-                        {totalDifference < 0 && <span>-</span>}
-                        <span>
-                            {currencySymbol}
-                            {Math.abs(totalDifference).toFixed(2)}
-                        </span>
-                    </span>
+                    {formatCurrency(totalDifference.toFixed(2), currencySymbol)}
                 </td>
                 <td className="p-[10px]"></td>
             </tr>

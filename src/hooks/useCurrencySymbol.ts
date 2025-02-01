@@ -5,7 +5,7 @@ export function useCurrencySymbol() {
     const { watch } = useFormContext();
     const currencyValue = watch("currency") || "dollar";
     const currencySymbol =
-        currencyItems.find((c) => c.value === currencyValue)?.symbol + " " || "$ ";
+        currencyItems.find((c) => c.value === currencyValue)?.symbol || "$";
 
     return currencySymbol
 }

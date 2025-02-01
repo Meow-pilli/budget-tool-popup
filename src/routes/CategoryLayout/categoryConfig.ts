@@ -5,7 +5,9 @@ type CategoryConfigType = {
     textColor?: string; // Header text color
 }
 
-export const categoryConfig: Record<string, CategoryConfigType> = {
+export type CategoryKeyType = 'gifts' | 'travels' | 'foodAndDrinks' | 'entertainment' | 'decorations' | 'costumesAndClothing' | 'stationeryAndPackaging' | 'charitableContributions';
+
+export const categoryConfig: Record<CategoryKeyType, CategoryConfigType> = {
     gifts: {
         color: "#E24831",
         title: "Gifts",

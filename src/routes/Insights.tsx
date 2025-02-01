@@ -1,79 +1,129 @@
-import { Pie, Doughnut } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import {
+  ArcElement,
+  Chart as ChartJS,
+  Legend,
+  Tooltip,
+} from "chart.js";
 import { useFormContext } from "react-hook-form";
-import useTotal from "../hooks/useTotal";
+import { useNavigate } from "react-router-dom";
 import { useCurrencySymbol } from "../hooks/useCurrencySymbol";
+import { calculateTotal } from "../hooks/useTotal";
+import { categoryConfig, CategoryKeyType } from "./CategoryLayout/categoryConfig";
+import TotalBudgetChart from "@/components/TotalBudgetChart";
+import TotalSpentChart from "@/components/TotalSpentChart";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+
+type DatasetType = { 
+  labels: string[];
+  datasets: { 
+    data: number[], 
+    backgroundColor: string[],
+    currency: string 
+  }[];
+};
+
 
 const Insights = () => {
   const navigate = useNavigate();
   const { watch } = useFormContext();
-
   const currencySymbol = useCurrencySymbol();
 
-  const categories = [
-    { name: "Gifts", formKey: "gifts", color: "#E24831" },
-    { name: "Travel", formKey: "travels", color: "#FF93B8" },
-    { name: "Food & Drinks", formKey: "foodAndDrinks", color: "#786DD3" },
-    { name: "Entertainment", formKey: "entertainment", color: "#2088E7" },
-    { name: "Decorations", formKey: "decorations", color: "#21C1E7" },
-    { name: "Costumes & Clothing", formKey: "costumesAndClothing", color: "#63AB5C" },
-    { name: "Stationery & Packaging", formKey: "stationeryAndPackaging", color: "#EAC934" },
-    { name: "Charitable Contributions", formKey: "charitableContributions", color: "#65328C" },
-  ].map((category) => {
-    const data = watch(category.formKey) || [];
+  const categories = Object.entries(categoryConfig).map(([key, config]) => {
+    const categoryKey = key as CategoryKeyType;
+    const data = watch(categoryKey) || [];
+
     return {
-      ...category,
-      budget: useTotal("budget", data),
-      spent: useTotal("spent", data),
+      ...config,
+      budget: parseFloat(calculateTotal(data, "budget")), //useTotal("budget", data),
+      spent: parseFloat(calculateTotal(data, "spent")) //useTotal("spent", data),
     };
   });
+
+
 
   const totalBudget = categories.reduce((sum, cat) => sum + cat.budget, 0);
   const totalSpent = categories.reduce((sum, cat) => sum + cat.spent, 0);
   const remainingBudget = totalBudget - totalSpent;
 
-// Determine if budget is exceeded
-const budgetExceeded = totalSpent > totalBudget;
-const exceededAmount = totalSpent - totalBudget;
+  // Determine if budget is exceeded
+  const budgetExceeded = totalSpent > totalBudget;
+  const exceededAmount = totalSpent - totalBudget;
 
-// Calculate progress bar width
-const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
+  // Calculate progress bar width
+  const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
 
-  const pieDataSpent = {
-    labels: categories.map((cat) => cat.name),
-    datasets: [
-      {
-        data: categories.map((cat) => cat.spent),
-        backgroundColor: categories.map((cat) => cat.color),
-      },
-    ],
-  };
+  // const pieDataSpent = Object.entries(categoryConfig).map(([key, config]) => {
+  //   const categoryKey = key as CategoryKeyType;
+  //   const data = watch(categoryKey) || [];
+  //   const totalSpent = parseFloat(calculateTotal(data, "spent"));
 
-  const doughnutDataBudget = {
-    labels: categories.map((cat) => cat.name),
-    datasets: [
-      {
-        data: categories.map((cat) => cat.budget),
-        backgroundColor: categories.map((cat) => cat.color),
-      },
-    ],
-  };
+  //   return {
+  //     category: categoryKey, totalSpent, fill: config.color
+  //   };
+  // }).filter(spentData => spentData.totalSpent > 0);
+
+  const pieDataSpent = Object.entries(categoryConfig).reduce((acc, [key, config]) => {
+      const categoryKey = key as CategoryKeyType;
+      const data = watch(categoryKey) || [];
+      const totalSpent = parseFloat(calculateTotal(data, "spent"));
+  
+      if(totalSpent > 0) {
+        const label = config.title;
+        const color = config.color;
+        acc.labels.push(label);
+        acc.datasets[0].data.push(totalSpent);
+        acc.datasets[0].backgroundColor.push(color);
+      }
+      return acc;
+    }, { labels: [], datasets: [ { data: [], backgroundColor: [], currency: currencySymbol } ] } as DatasetType);
+
+
+
+  // const doughnutDataBudget = Object.entries(categoryConfig).map(([key, config]) => {
+  //   const categoryKey = key as CategoryKeyType;
+  //   const data = watch(categoryKey) || [];
+  //   const totalBudget = parseFloat(calculateTotal(data, "budget"));
+
+  //   return {
+  //     category: categoryKey, totalBudget, fill: config.color
+  //   };
+  // }).filter(budgetData => budgetData.totalBudget > 0);
+
+  // const doughnutDataBudget = {
+  //   labels: categories.map((cat) => cat.title),
+  //   datasets: [
+  //     {
+  //       data: categories.map((cat) => cat.budget),
+  //       backgroundColor: categories.map((cat) => cat.color),
+  //     },
+  //   ],
+  // };
+
+  const doughnutDataBudget = Object.entries(categoryConfig).reduce((acc, [key, config]) => {
+    const categoryKey = key as CategoryKeyType;
+    const data = watch(categoryKey) || [];
+    const totalBudget = parseFloat(calculateTotal(data, "budget"));
+
+    if(totalBudget > 0) {
+      const label = config.title;
+      const color = config.color;
+      acc.labels.push(label);
+      acc.datasets[0].data.push(totalBudget);
+      acc.datasets[0].backgroundColor.push(color);
+    }
+    return acc;
+  }, { labels: [], datasets: [ { data: [], backgroundColor: [], currency: currencySymbol } ] } as DatasetType);
+
 
   const legendItems = (
     <div className="flex flex-wrap justify-center gap-2 mt-4">
       {categories.map((cat) => (
-        <div key={cat.name} className="flex items-center space-x-2">
+        <div key={cat.title} className="flex items-center space-x-2">
           <div className="w-4 h-4" style={{ backgroundColor: cat.color }}></div>
-          <span className="text-sm">{cat.name}</span>
+          <span className="text-sm">{cat.title}</span>
         </div>
       ))}
     </div>
@@ -100,69 +150,13 @@ const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
       <div className="flex-grow p-6 space-y-8">
         {/* Mobile: Budget → Legend → Spent | Desktop: Spent → Budget → Legend Below */}
         <div className="flex flex-col md:grid md:grid-cols-2 gap-6">
-          {/* Mobile: Budget Chart First */}
-          <Card className="flex flex-col items-center order-1 md:order-2">
-            <CardHeader className="flex justify-center items-center">
-              <CardTitle className="text-center uppercase">Total Budget</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center w-full">
-              <div className="relative w-[80%] h-[280px] flex justify-center">
-                <Doughnut
-                  data={doughnutDataBudget}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: "75%",
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        callbacks: {
-                          label: (tooltipItem) =>
-                            `${currencySymbol} ${(tooltipItem.raw as number).toFixed(2)}`,
-                        },
-                      },
-                    },
-                  }}
-                />
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                  <span className="text-sm text-gray-500">Total Budget</span>
-                  <div className="text-4xl font-bold">
-                    {currencySymbol} {totalBudget.toFixed(2)}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TotalBudgetChart data={doughnutDataBudget} currencySymbol={currencySymbol} total={totalBudget.toFixed(2)} />
 
           {/* Mobile: Legend in Between */}
           <div className="md:hidden flex justify-center order-2">{legendItems}</div>
 
           {/* Mobile: Spent Chart Below, Desktop: Spent Chart on Left */}
-          <Card className="flex flex-col items-center order-3 md:order-1">
-            <CardHeader className="flex justify-center items-center">
-              <CardTitle className="text-center uppercase">Total Spent</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center w-full">
-              <div className="w-[80%] h-[280px] flex justify-center">
-                <Pie
-                  data={pieDataSpent}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        callbacks: {
-                          label: (tooltipItem) =>
-                            `${currencySymbol} ${(tooltipItem.raw as number).toFixed(2)}`,
-                        },
-                      },
-                    },
-                  }}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <TotalSpentChart data={pieDataSpent} currencySymbol={currencySymbol} />
         </div>
 
         {/* Desktop: Legend Below Charts */}
@@ -170,47 +164,46 @@ const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
 
         {/* Budget vs Spent */}
         <Card>
-  <CardHeader className="flex justify-center items-center">
-    <CardTitle className="text-center uppercase">Budget vs Spent</CardTitle>
-  </CardHeader>
-  <CardContent>
-    <div className="flex flex-col items-center space-y-4">
-      {/* Budget Summary */}
-      <div className="flex items-center justify-between w-full">
-        {!budgetExceeded && (
-          <span className="text-lg font-bold text-black">
-            {currencySymbol} {totalSpent.toFixed(2)}
-          </span>
-        )}
-        <span className={`text-lg font-bold ${budgetExceeded ? "text-red-500 ml-auto" : "text-black"}`}>
-          {currencySymbol} {budgetExceeded ? exceededAmount.toFixed(2) : remainingBudget.toFixed(2)}
-        </span>
-      </div>
+          <CardHeader className="flex justify-center items-center">
+            <CardTitle className="text-center uppercase">Budget vs Spent</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center space-y-4">
+              {/* Budget Summary */}
+              <div className="flex items-center justify-between w-full">
+                {!budgetExceeded && (
+                  <span className="text-lg font-bold text-black">
+                    {currencySymbol} {totalSpent.toFixed(2)}
+                  </span>
+                )}
+                <span className={`text-lg font-bold ${budgetExceeded ? "text-red-500 ml-auto" : "text-black"}`}>
+                  {currencySymbol} {budgetExceeded ? exceededAmount.toFixed(2) : remainingBudget.toFixed(2)}
+                </span>
+              </div>
 
-      {/* Progress Bar */}
-      <div className="w-full h-6 bg-gray-200 rounded-full">
-        <div
-          className={`h-full rounded-full transition-all ${
-            budgetExceeded ? "bg-red-500" : "text-black"
-          }`}
-          style={{ width: `${spentPercentage}%` }}
-        ></div>
-      </div>
+              {/* Progress Bar */}
+              <div className="w-full h-6 bg-gray-200 rounded-full">
+                <div
+                  className={`h-full rounded-full transition-all ${budgetExceeded ? "bg-red-500" : "bg-green-500"
+                    }`}
+                  style={{ width: `${spentPercentage}%` }}
+                ></div>
+              </div>
 
-      {/* Labels for Budget Remaining or Budget Exceeded */}
-      {!budgetExceeded ? (
-        <div className="flex justify-between w-full text-sm">
-          <span className="text-black">Budget Spent</span>
-          <span className="text-black">Budget Remaining</span>
-        </div>
-      ) : (
-        <div className="flex justify-end w-full text-sm">
-          <span className="text-red-500">Budget Exceeded</span>
-        </div>
-      )}
-    </div>
-  </CardContent>
-</Card>
+              {/* Labels for Budget Remaining or Budget Exceeded */}
+              {!budgetExceeded ? (
+                <div className="flex justify-between w-full text-sm">
+                  <span className="text-black">Budget Spent</span>
+                  <span className="text-black">Budget Remaining</span>
+                </div>
+              ) : (
+                <div className="flex justify-end w-full text-sm">
+                  <span className="text-red-500">Budget Exceeded</span>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
