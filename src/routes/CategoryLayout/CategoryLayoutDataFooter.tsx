@@ -4,9 +4,13 @@ type Props = {
     totalBudget: number;
     totalSpent: number;
     onAddRow: () => void;
-}
+};
 
-export default function CategoryLayoutDataFooter({onAddRow, totalBudget, totalSpent }: Props) {
+export default function CategoryLayoutDataFooter({
+    onAddRow,
+    totalBudget,
+    totalSpent,
+}: Props) {
     const currencySymbol = useCurrencySymbol();
     const totalDifference = parseFloat((totalBudget - totalSpent).toFixed(2));
 
@@ -15,13 +19,12 @@ export default function CategoryLayoutDataFooter({onAddRow, totalBudget, totalSp
             <tr>
                 <td colSpan={4}></td>
                 <td className="p-[10px]">
-                <button
-                 onClick={onAddRow}
-                  className="w-[30px] h-[30px] border-[2px] border-black text-black rounded-full font-bold bg-white hover:bg-black hover:text-white hover:scale-110 transition-transform"
-                   >
-                  +
-                </button>
-
+                    <button
+                        onClick={onAddRow}
+                        className="w-[24px] h-[24px] border-[2px] border-black text-black rounded-full font-bold text-sm bg-white hover:bg-black hover:text-white hover:scale-110 transition-transform"
+                    >
+                        +
+                    </button>
                 </td>
             </tr>
             <tr className="bg-[#f7f7f7] font-bold border-t-[2px] border-[#d9d9d9]">
@@ -40,12 +43,17 @@ export default function CategoryLayoutDataFooter({onAddRow, totalBudget, totalSp
                     )}
                 </td>
                 <td className="p-[10px]">
-                    {totalDifference < 0 ? "- " : ""}
-                    {currencySymbol}
-                    {Math.abs(totalDifference).toFixed(2)}
+                    {/* Ensure Proper Alignment for Difference Column */}
+                    <span className="inline-flex items-center gap-[2px]">
+                        {totalDifference < 0 && <span>-</span>}
+                        <span>
+                            {currencySymbol}
+                            {Math.abs(totalDifference).toFixed(2)}
+                        </span>
+                    </span>
                 </td>
                 <td className="p-[10px]"></td>
             </tr>
         </tfoot>
-    )
+    );
 }

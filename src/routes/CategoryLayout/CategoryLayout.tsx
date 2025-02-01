@@ -55,7 +55,7 @@ export default function CategoryLayout({
               {/* Conditionally render Action column */}
               {showActionColumn && (
                 <th className="font-bold p-[10px] border-b border-[#d9d9d9]">
-                  ACTION
+                  
                 </th>
               )}
             </tr>
