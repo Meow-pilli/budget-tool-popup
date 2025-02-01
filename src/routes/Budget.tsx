@@ -23,7 +23,7 @@ export const initialBudgetData: BudgetCategory[] = [
 ];
 
 const HEADER_PROPS = {
-  color: "#21C1E7",
+  color: "#7CD6E5",
   title: "Budget",
   icon: "/images/Budget.png",
   textColor: "black",
