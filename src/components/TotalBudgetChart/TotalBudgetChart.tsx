@@ -1,144 +1,92 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-
-import { Label, Pie, PieChart } from "recharts"
-
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart";
-
-import { categoryConfig, CategoryKeyType } from "@/routes/CategoryLayout/categoryConfig";
-
-import { renderCustomizedLabel } from "../utils/charts";
 import { Doughnut } from "react-chartjs-2";
-import { ChartData } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+  ChartData,
+  ChartOptions,
+  ChartDataset,
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-const chartConfig = Object.entries(categoryConfig).reduce((acc, [categoryKey, config]) => {
-    const ckey = categoryKey as CategoryKeyType;
-    acc[ckey] = {
-        label: config.title,
-        color: config.color
-    }
-    return acc;
-}, {} as ChartConfig);
-
-
+// Register necessary Chart.js components along with DataLabels plugin
+ChartJS.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
 
 type Props = {
-    data: ChartData<"doughnut", number[], unknown>,
-    currencySymbol: string;
-    total: string;
+  data: ChartData<"doughnut", number[], string>;
+  currencySymbol: string;
+  total: string;
+};
+
+// Ensure dataset structure is properly typed
+interface DatasetWithCurrency extends ChartDataset<"doughnut"> {
+  currency?: string;
 }
 
-export default function TotalBudgetChart({ data, currencySymbol, total }: Props) {
-    return (
-        <Card className="flex flex-col items-center order-1 md:order-2">
-            <CardHeader className="flex justify-center items-center">
-                <CardTitle className="text-center uppercase">Total Budget</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center w-full">
-                {/* <ChartContainer
-                    config={chartConfig}
-                    className="mx-auto aspect-square max-h-[450px] w-full p-0"
-                >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Pie
-                            data={data}
-                            label={renderCustomizedLabel}
-                            labelLine={false}
-                            dataKey="totalBudget"
-                            nameKey="category"
-                            innerRadius={100}
-                            strokeWidth={0}
-            
-                            // cx="50%"
-                            // cy="50%"
-            
-            
-                            // outerRadius={90}
-                            fill="#8884d8"
-                        >
-                            <Label
-                                content={({ viewBox }) => {
-                                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                                        return (
-                                            <text
-                                                x={viewBox.cx}
-                                                y={viewBox.cy}
-                                                textAnchor="middle"
-                                                dominantBaseline="middle"
-                                            >
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={(viewBox.cy || 0) - 15}
-                                                    className="fill-muted-foreground"
-                                                >
-                                                    Total Budget
-                                                </tspan>
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={(viewBox.cy || 0) + 15}
-                                                    className="fill-foreground text-3xl font-bold"
-                                                >
-                                                    {`${currencySymbol} ${total}`} 
-                                                </tspan>
-                                                
-                                            </text>
-                                        )
-                                    }
-                                }}
-                            />
-                        </Pie>
-                    </PieChart>
-                </ChartContainer> */}
+const options: ChartOptions<"doughnut"> = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: (tooltipItem) => {
+          const dataset = tooltipItem.dataset as DatasetWithCurrency;
+          const currency = dataset.currency || "";
+          return `  ${currency}${(tooltipItem.raw as number).toFixed(2)}`; // Ensure blank space before currency
+        },
+      },
+    },
+    datalabels: {
+      formatter: (value, context) => {
+        const dataset = context.dataset.data as number[];
+        const total = dataset.reduce((acc, val) => acc + val, 0);
+        if (total === 0) return "";
+        const percentage = ((value / total) * 100).toFixed(0);
+        return `${percentage}%`; // Display percentage
+      },
+      color: "white",
+      font: {
+        weight: "bold",
+        size: 14,
+      },
+      textAlign: "center",
+    },
+  },
+  responsive: true,
+  maintainAspectRatio: false,
+  cutout: "75%",
+};
 
-                
-                <div className="relative w-[80%] h-[280px] flex justify-center">
-                    <Doughnut
-                        data={data}
-                        options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            cutout: "75%",
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    callbacks: {
-                                        label: (tooltipItem) =>
-                                            ` ${currencySymbol}${(tooltipItem.raw as number).toFixed(2)}`,
-                                    },
-                                },
-                                datalabels: {
-                                    formatter: (value, ctx) => {
-                                        const total = ctx.dataset.data.reduce((acc, value) => acc + value, 0);
-                                        const percentage = ((value / total) * 100).toFixed(0);
-                                        return `${percentage}%`;  // Display the percentage
-                                    },
-                                    color: 'white',  // Color of the percentage text
-                                    font: {
-                                        weight: 'bold',
-                                        size: 14,
-                                    },
-                                    textAlign: 'center',
-                                },
-                            },
-                        }}
-                    />
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                        <span className="text-sm text-gray-500">Total Budget</span>
-                        <div className="text-4xl font-bold">
-                            {currencySymbol} {total}
-                        </div>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    )
+export default function TotalBudgetChart({ data, currencySymbol, total }: Props) {
+  return (
+    <Card className="flex flex-col items-center order-1 md:order-2">
+      <CardHeader className="flex justify-center items-center">
+        <CardTitle className="text-center uppercase">Total Budget</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col items-center w-full">
+        <div className="relative w-[80%] h-[280px] flex justify-center">
+          <Doughnut
+            data={{
+              ...data,
+              datasets: data.datasets.map((dataset) => ({
+                ...dataset,
+                currency: currencySymbol, // Inject currency symbol into dataset
+              })),
+            }}
+            options={options}
+          />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <span className="text-sm text-gray-500">Total Budget</span>
+            <div className="text-4xl font-bold">
+              {currencySymbol} {total}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
