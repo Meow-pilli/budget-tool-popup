@@ -178,7 +178,7 @@ const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
       {/* Budget Summary */}
       <div className="flex items-center justify-between w-full">
         {!budgetExceeded && (
-          <span className="text-lg font-bold text-black">
+          <span className="text-lg font-bold black">
             {currencySymbol} {totalSpent.toFixed(2)}
           </span>
         )}
@@ -191,7 +191,7 @@ const spentPercentage = Math.min((totalSpent / totalBudget) * 100, 100);
       <div className="w-full h-6 bg-gray-200 rounded-full">
         <div
           className={`h-full rounded-full transition-all ${
-            budgetExceeded ? "bg-red-500" : "text-black"
+            budgetExceeded ? "bg-red-500" : "bg-black"
           }`}
           style={{ width: `${spentPercentage}%` }}
         ></div>
