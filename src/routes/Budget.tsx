@@ -55,7 +55,8 @@ function Budget() {
     const totalCategorySpentNumber = calculateTotal(categoryData, "spent");
     const totalCategorySpent = formatCurrency(totalCategorySpentNumber, currencySymbol)!;
 
-    const totalCategoryDifferenceNumber = parseFloat(totalCategoryBudgetNumber) - parseFloat(totalCategorySpentNumber);
+    const totalCategoryDifferenceNumber =
+      parseFloat(totalCategoryBudgetNumber) - parseFloat(totalCategorySpentNumber);
     const formattedDifferenceNumber = totalCategoryDifferenceNumber.toFixed(2);
     const totalCategoryDifference = formatCurrency(formattedDifferenceNumber, currencySymbol)!;
 
@@ -119,14 +120,24 @@ type BudgetFooterProps = {
 
 function BudgetFooter({ totalBudget, totalSpent }: BudgetFooterProps) {
   const currencySymbol = useCurrencySymbol();
+  const isSpentValid = totalSpent <= totalBudget; // Check if spent is within budget
 
   return (
     <tfoot>
       <tr className="font-bold border-t border-[#e0e0e0] bg-white">
         <td className="p-2">Total</td>
         <td className="p-2">{formatCurrency(totalBudget.toFixed(2), currencySymbol)}</td>
-        <td className="p-2">{formatCurrency(totalSpent.toFixed(2), currencySymbol)}</td>
-        <td className="p-2">{formatCurrency((totalBudget - totalSpent).toFixed(2), currencySymbol)}</td>
+        <td className="p-2">
+          {formatCurrency(totalSpent.toFixed(2), currencySymbol)}{" "}
+          {isSpentValid ? (
+            <span className="text-green-500 font-bold">✔</span>
+          ) : (
+            <span className="text-red-500 font-bold">✘</span>
+          )}
+        </td>
+        <td className="p-2">
+          {formatCurrency((totalBudget - totalSpent).toFixed(2), currencySymbol)}
+        </td>
       </tr>
     </tfoot>
   );
