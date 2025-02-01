@@ -15,30 +15,34 @@ import CostumesAndClothing from "./routes/CostumesAndClothing";
 import StationeryAndPackaging from "./routes/StationeryAndPackaging";
 import CharitableContributions from "./routes/CharitableContributions";
 import Insights from "./routes/Insights";
+import { Provider as StoreProvider } from 'react-redux'
+import { store } from './store';
 
 // const location = useLocation();
 
 function App() {
   return (
-    <GlobalForm>
-    <Router>
-        {/* Routes for Pages */}
-        {/* Routes */}
-        <Routes>
-          <Route path={routeUrls.gifts} element={<Gifts />} />
-          <Route path="/" element={<Home />} />
-          <Route path={routeUrls.travels} element={<Travel />} />
-          <Route path={routeUrls.foodAndDrinks} element={<FoodAndDrinks />} />
-          <Route path="/entertainment" element={<Entertainment />} />
-          <Route path="/decorations" element={<Decorations />} />
-          <Route path="/costumes-and-clothing" element={<CostumesAndClothing />} />
-          <Route path="/stationery-and-packaging" element={<StationeryAndPackaging />} />
-          <Route path="/charitable-contributions" element={<CharitableContributions />} />
-          <Route path="/budget" element={<Budget />} />
-          <Route path="/insights" element={<Insights />} />
-        </Routes>
-    </Router>
-    </GlobalForm>
+    <StoreProvider store={store}>
+      <GlobalForm>
+        <Router>
+          {/* Routes for Pages */}
+          {/* Routes */}
+          <Routes>
+            <Route path={routeUrls.gifts} element={<Gifts />} />
+            <Route path="/" element={<Home />} />
+            <Route path={routeUrls.travels} element={<Travel />} />
+            <Route path={routeUrls.foodAndDrinks} element={<FoodAndDrinks />} />
+            <Route path="/entertainment" element={<Entertainment />} />
+            <Route path="/decorations" element={<Decorations />} />
+            <Route path="/costumes-and-clothing" element={<CostumesAndClothing />} />
+            <Route path="/stationery-and-packaging" element={<StationeryAndPackaging />} />
+            <Route path="/charitable-contributions" element={<CharitableContributions />} />
+            <Route path="/budget" element={<Budget />} />
+            <Route path="/insights" element={<Insights />} />
+          </Routes>
+        </Router>
+      </GlobalForm>
+    </StoreProvider>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useFormContext, Control, FieldValues } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormMessage } from './ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { useGetCurrenciesQuery } from "@/api";
 
 const holidayItems = [
   { value: "all-holidays", label: "All Holidays" },
@@ -11,13 +12,13 @@ const holidayItems = [
   { value: "halloween", label: "Halloween" },
 ];
 
-export const currencyItems = [
-  { value: "dollar", label: "Dollar ($)", symbol: "$" },
-  { value: "pound", label: "Pound (£)", symbol: "£" },
-  { value: "euro", label: "Euro (€)", symbol: "€" },
-  { value: "rupees", label: "Rupees (₹)", symbol: "₹" },
-  { value: "yen", label: "Yen (¥)", symbol: "¥" },
-];
+// export const currencyItems = [
+//   { value: "dollar", label: "Dollar ($)", symbol: "$" },
+//   { value: "pound", label: "Pound (£)", symbol: "£" },
+//   { value: "euro", label: "Euro (€)", symbol: "€" },
+//   { value: "rupees", label: "Rupees (₹)", symbol: "₹" },
+//   { value: "yen", label: "Yen (¥)", symbol: "¥" },
+// ];
 
 interface MenuSelectProps {
   name: string;
@@ -30,6 +31,7 @@ interface MenuSelectProps {
 
 function HolidayForm() {
   const form = useFormContext();
+  const {data: currencyItems, isLoading} = useGetCurrenciesQuery();
 
   return (
     <form name="holiday-form" className="grid grid-cols-2 gap-4 px-4 mb-2">
@@ -42,7 +44,7 @@ function HolidayForm() {
       <MenuSelect
         name="currency"
         placeholder=" Currency "
-        items={currencyItems}
+        items={currencyItems || []}
         form={form}
       />
     </form>
@@ -62,6 +64,7 @@ function MenuSelect({ name, placeholder, items = [], form }: MenuSelectProps) {
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
+                {/* {isLoading ? <LoadingSpinner /> : <SelectValue />} */}
               </SelectTrigger>
             </FormControl>
             <SelectContent className="z-[1001]">
