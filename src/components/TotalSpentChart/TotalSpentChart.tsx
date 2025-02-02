@@ -61,7 +61,7 @@ const options: ChartOptions<"pie"> = {
 
 export default function TotalSpentChart({ data, currencySymbol }: Props) {
   return (
-    <Card className="flex flex-col items-center order-3 md:order-1">
+    <Card className="flex flex-col items-center order-2">
       <CardHeader className="flex justify-center items-center">
         <CardTitle className="text-center uppercase">Total Spent</CardTitle>
       </CardHeader>

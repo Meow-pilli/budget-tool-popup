@@ -63,7 +63,7 @@ const options: ChartOptions<"doughnut"> = {
 
 export default function TotalBudgetChart({ data, currencySymbol, total }: Props) {
   return (
-    <Card className="flex flex-col items-center order-1 md:order-2">
+    <Card className="flex flex-col items-center order-1">
       <CardHeader className="flex justify-center items-center">
         <CardTitle className="text-center uppercase">Total Budget</CardTitle>
       </CardHeader>

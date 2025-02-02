@@ -153,14 +153,11 @@ const Insights = () => {
           <TotalBudgetChart data={doughnutDataBudget} currencySymbol={currencySymbol} total={totalBudget.toFixed(2)} />
 
           {/* Mobile: Legend in Between */}
-          <div className="md:hidden flex justify-center order-2">{legendItems}</div>
+          <div className="flex justify-center order-2 md:order-3 md:col-span-2">{legendItems}</div>
 
           {/* Mobile: Spent Chart Below, Desktop: Spent Chart on Left */}
           <TotalSpentChart data={pieDataSpent} currencySymbol={currencySymbol} />
         </div>
-
-        {/* Desktop: Legend Below Charts */}
-        <div className="hidden md:flex justify-center">{legendItems}</div>
 
         {/* Budget vs Spent */}
         <Card>
